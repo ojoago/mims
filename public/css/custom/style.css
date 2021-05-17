@@ -1,0 +1,178 @@
+ /* @import url(./fonts.css); */
+/* @import url(./partial/variable.css);
+@import url(./partial/_global.css); */
+.header_area {
+    padding: 0 1rem 0 4rem;
+    background-color:#fff !important;
+    /* background-color:#c74c3c !important; */
+  	border-color:#c0392b !important;
+    border: solid #c0392b 1px ;
+}
+.b-nav-fixed >nav{
+  background-color: red !important;
+}
+.stick_header {
+  width:100%;
+  z-index: 99;
+  margin-bottom:5px;
+  font-size: 12px !important;
+  line-height: 1.42857143 !important;
+  border-radius: 0;
+  height: 40px;
+}
+/* ul li a{
+  height: 100%;
+  font-family: arial;
+  color: #000 !important;
+  background: #fff;
+  font-weight: normal;
+  margin: 0 0 0 1rem 0;
+  border-radius: 5px;
+}
+ul li a:hover{
+  color: #fff !important;
+  background: #c74c3c;
+  transition: 1s ease;
+}
+ul li a:active{
+  color: #000;
+  background: #c74c3c;
+  font-weight: bold;
+} */
+#logo{
+  float: left !important;
+  /* position: absolute; */
+  width: 150px;
+  height: auto !important;
+  margin-right: 10px;
+  z-index: 999;
+}
+.red{
+  color: #c74c3c;
+}
+.btn-xs{
+  font-weight:bold;
+	border:0 none;
+	color:white;
+	cursor:pointer;
+	padding:5px !important;
+	border-radius:3px;
+	font-size:10px;
+	font-weight:normal;
+}
+
+.pointer{
+    cursor: pointer;
+}
+.loader{
+    display: none;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    z-index: 9999;
+    top:30% !important;
+    left: 50% !important;
+}
+.spiner{
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    animation: scale 2.2s infinite;
+    float:center;
+}
+.spiner span:nth-child(1){
+    left: 0;
+    top: 0;
+    background: rgb(0, 0, 10);
+    /* border-top-left-radius: 100%; */
+}
+.spiner span:nth-child(2){
+    left: 0;
+    bottom: 0;
+    background: rgb(1, 0, 1);
+    /* border-bottom-left-radius: 100%; */
+}
+.spiner span:nth-child(3){
+    right: 0;
+    top: 0;
+    background: rgba(255, 0, 0, 0.808);
+    /* border-top-right-radius: 100%; */
+}
+.spiner span:nth-child(4){
+    right: 0;
+    bottom: 0;
+    background: rgb(0, 0, 10);
+    /* border-bottom-right-radius: 100%; */
+}
+@keyframes scale{
+    50%{
+        width: 150px;
+        height: 150px;
+        transform: rotate(270deg);
+    }
+}
+.spiner span{
+    opacity: .9;
+    position: absolute;
+    animation: rotate 2.2s infinite;
+    width: 40px;
+    height: 40px;
+}
+@keyframes rotate{
+    50%{
+        border-radius: 100%;
+        opacity: 1;
+    }
+}
+/* #logo{
+  width: 50px;
+} */
+
+.img-small{
+  width: 20px;
+  margin: 0;
+  padding: 0;
+}
+.img-small:hover{
+  width: 250px;
+  position: absolute;
+	top: auto;
+	right: 0;
+	bottom: auto;
+	z-index: 990
+  transition: 1s ease;
+}
+/* back to top button */
+#backToTop{
+	display: none; /* Hidden by default */
+	position: fixed; /* Fixed/sticky position */
+	bottom: 50px; /* Place the button at the bottom of the page */
+	right:3px; /* Place the button 30px from the right */
+	z-index: 99; /* Make sure it does not overlap */
+	/* border: #fff1 px; Remove borders */
+	outline: none; /* Remove outline */
+	/* background-color: #f1f1f1; /* Set a background color */
+	/* color: red; Text color */
+	cursor: pointer; /* Add a mouse pointer on hover */
+	padding: 4px; /* Some padding */
+	border-radius: 5px; /* Rounded corners */
+	/* font-size: 12px; /* Increase font size */
+	/* width:40px; */
+	text-align:center;
+	opacity:0.6;
+}
+#backToTop:hover {
+  background-color: #d64c3a; /* Add a red background on hover */
+	color:#fff;
+	opacity:.8;
+}
+@media screen and (max-width:560px){
+    .navbar-brand{
+      display: none;
+    }
+    .navbar-brand::after{
+      content: 'MIMS |' !important;
+    }
+}
