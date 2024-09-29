@@ -19,42 +19,6 @@ function public_id()
 }
 
 
-function slotText($data)
-{
-    if (getUserPid() == $data->user_pid) {
-        $msg = str_replace(['{you}'], 'YOU:', $data->message);
-        $msg = str_replace(['{your}'], 'Your ', $msg);
-    } else {
-        $msg = str_replace(['{you}', '{your}'], $data->fullname . ':', $data->message);
-    }
-    return $msg;
-    return str_replace('<br>', ', ', $msg);
-}
-
-function slotWard($data,$user=null)
-{
-    if($user==getUserPid()){
-        $msg = str_replace(['{you}'], 'you ', $data);
-        $msg = str_replace(['{your}'], 'Your ', $msg);
-    }else{
-        $msg = str_replace(['{you}'], 'He/She ', $data);
-        $msg = str_replace(['{your}'], 'His/Her ', $msg);
-    }
-
-    return $msg;
-}
-
-function slotKeyWord($data,$key= 'message'){
-    if (getUserPid() == $data->user_pid) {
-        $msg = str_replace(['{you}'], 'You: ', $data->$key);
-        $msg = str_replace(['{your}'], 'Your ', $msg);
-    } else {
-        $msg = str_replace(['{you}', '{your}'],  ' He/She :', $data->$key);
-    }
-    return $msg;
-    return str_replace('<br>', ', ', $msg);
-}
-
 function responseMessage($status, $data = [], $msg = null, $code = 200)
 {
     return response([

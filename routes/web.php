@@ -14,6 +14,34 @@ Route::get('/', function () {
     ]);
 });
 
+Route::middleware(['auth', 'role:super admin'])->group(function(){
+    
+});
+
+Route::middleware(['auth', 'role:region admin'])->group(function(){
+
+});
+
+Route::middleware(['auth', 'role:supervisor'])->group(function(){
+
+});
+
+Route::middleware(['auth', 'role:staff'])->group(function(){
+
+});
+
+Route::middleware(['auth', 'role:installer'])->group(function(){
+
+});
+
+Route::middleware(['auth', 'role:store'])->group(function(){
+
+});
+
+Route::get('/super', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'role:super admin']);//->name('dashboard');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
