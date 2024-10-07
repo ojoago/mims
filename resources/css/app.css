@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.table-bordered{
+    @apply border border-gray-300 px-4 py-2;
+}

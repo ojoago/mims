@@ -14,9 +14,13 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    title:{
+        type:String,
+        default:null 
+    }
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close','submit']);
 
 watch(
     () => props.show,
@@ -33,6 +37,9 @@ const close = () => {
     if (props.closeable) {
         emit('close');
     }
+};
+const submit = () => {
+    emit('submit');
 };
 
 const closeOnEscape = (e) => {
@@ -89,7 +96,17 @@ const maxWidthClass = computed(() => {
                         class="mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto"
                         :class="maxWidthClass"
                     >
+                    <div  class="px-4 py-2 flex justify-between">
+                        <span>{{ title }}</span>
+                        <span @click="close" class="rounded-full bg-red-500 w-5 text-center cursor-pointer ">X</span>
+                    </div>
+                    <hr>
                         <slot v-if="show" />
+                        <hr>
+                        <div class="py-2 px-4">
+                            <button  @click="submit" class=" bg-optimal text-white px-4 py-2 rounded mr-2">Submit</button>
+                            <button  @click="close" class=" bg-red-500 text-white px-4 py-2 rounded">Close</button>
+                        </div>
                     </div>
                 </Transition>
             </div>

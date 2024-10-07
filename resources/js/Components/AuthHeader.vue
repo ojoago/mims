@@ -26,9 +26,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
                             </button>
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                   <div class="shrink-0 flex items-center">
-                                    Triple Seventh, Bauchi [Region]
+                                <NavLink :href="route('dashboard')">
+                                   <div class="shrink-0 flex items-center brand-name">
+                                    Triple Seventh, <small class="ml-2 region-name">[Bauchi]</small>
                                 </div>
                                 </NavLink>
                             </div>
@@ -137,10 +137,23 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     </div>
 </template>
 
-<script setup>
-
-</script>
-
 <style scoped>
+
+ .brand-name {
+    font-size: 22px;
+    color: #000;
+    font-weight: 600;
+    transition: .3s ease;
+    transition-delay: .1s;
+    text-transform: uppercase;
+}
+ .region-name {
+    font-size: 16px;
+    color: #000;
+    font-weight: 600;
+    transition: .3s ease;
+    transition-delay: .1s;
+    text-transform: uppercase;
+}
 
 </style>

@@ -1,5 +1,4 @@
 <script setup>
-
 import AuthHeader from '@/Components/AuthHeader.vue';
 import SideBar from '@/Components/SideBar.vue';
 
@@ -8,6 +7,7 @@ import SideBar from '@/Components/SideBar.vue';
 <template>
     <!-- component -->
     <div class="h-screen flex">
+        <spinner-loader></spinner-loader>
     <!-- Sidebar -->
         <SideBar/>
             <main class="flex min-h-[90vh] flex-col w-full overflow-x-hidden overflow-y-auto mb-14">

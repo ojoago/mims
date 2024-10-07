@@ -53,23 +53,6 @@ function uniqueId()
 {
     return strtoupper(date('yMd'));
 }
-function optimalId($tbl,$col){
-    $count = DB::table($tbl)->count();
-    return sprintNumber($count+1, 9);
-    // $id = uniqueId();
-    // $count = DB::table($tbl)->where($col, 'like', '%' . $id . '%')->count() + 1;
-    // return strtoupper($id . sprintNumber($count, 2));
-}
-
-function optimalUsername($val, $tbl = 'users', $col = 'username'){
-    $name = str_replace(' ','.',$val);
-    $count = DB::table($tbl)->where($col, 'like', '%' . $name . '%')->count();
-    if($count>0){
-        return $name. sprintNumber($count, 2);
-    }
-    return $name;
-    // return strtoupper($id . sprintNumber($count, 2));
-}
 
 function base64Encode($var)
 {

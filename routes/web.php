@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DropDownController;
+use App\Http\Controllers\DependencyController;
+use App\Http\Controllers\Region\RegionController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -14,29 +17,42 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth', 'role:super admin'])->group(function(){
+Route::middleware(['auth'])->group(function(){
     
+    // super admin roles 
+    Route::middleware(['role:super admin'])->group(function(){
+        Route::get('/dependency', [DependencyController::class, 'index'])->name('dependency');
+        Route::get('/load-regions', [RegionController::class, 'index'])->name('load.regions');
+        Route::post('/create-region', [RegionController::class, 'createRegion'])->name('create.region');
+        
+    });
+    
+    // region admin 
+    Route::middleware(['role:region admin,role:super admin'])->group(function(){
+    
+    });
+
+    //filed supervisor
+    Route::middleware(['role:supervisor,super admin'])->group(function () {});
+    // data staff
+    Route::middleware(['role:data entry,super admin'])->group(function () {});
+    // staff
+    Route::middleware(['role:staff,super admin'])->group(function () {});
+    // installer 
+    Route::middleware(['role:installer,super admin'])->group(function () {});
+
+    // store manager 
+    Route::middleware(['role:store,super admin'])->group(function () {});
+
 });
 
-Route::middleware(['auth', 'role:region admin'])->group(function(){
+Route::get('/load-states', [DropDownController::class, 'loadStates'])->name('load.states');
+Route::get('/load-state-lga/{id}', [DropDownController::class, 'loadStateLga'])->name('load.state.lga');
 
-});
 
-Route::middleware(['auth', 'role:supervisor'])->group(function(){
 
-});
 
-Route::middleware(['auth', 'role:staff'])->group(function(){
 
-});
-
-Route::middleware(['auth', 'role:installer'])->group(function(){
-
-});
-
-Route::middleware(['auth', 'role:store'])->group(function(){
-
-});
 
 Route::get('/super', function () {
     return Inertia::render('Dashboard');
