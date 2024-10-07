@@ -29,6 +29,8 @@ Route::middleware(['auth'])->group(function(){
 
         Route::post('/create-33kv-feeder', [FeederController::class, 'create33kvFeeder'])->name('create.33kv.feeder');
         Route::get('/load-feeder-33', [FeederController::class, 'load33kvFeeder']);//->name('create.33kv.feeder');
+        Route::post('/create-11kv-feeder', [FeederController::class, 'create11kvFeeder'])->name('create.11kv.feeder');
+        Route::get('/load-feeder-11', [FeederController::class, 'load11kvFeeder']);//->name('create.33kv.feeder');
         
     });
     
@@ -55,6 +57,8 @@ Route::get('/load-states', [DropDownController::class, 'loadStates'])->name('loa
 Route::get('/load-state-lga/{id}', [DropDownController::class, 'loadStateLga'])->name('load.state.lga');
 Route::get('/load-state-regions', [DropDownController::class, 'loadStateRegion']);//->name('load.regions');
 Route::get('/load-regions/{state}', [DropDownController::class, 'loadRegions']);//->name('load.regions');
+Route::get('/load-regions-admin', [DropDownController::class, 'loadRegionsAdmin']);//->name('load.regions');
+Route::get('/load-feeder-33/{region}', [DropDownController::class, 'loadRegion33KvFeeder']);//->name('load.regions');
 
 
 

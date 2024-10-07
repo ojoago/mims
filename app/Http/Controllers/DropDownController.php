@@ -33,6 +33,32 @@ class DropDownController extends Controller
             return response()->json([]);
         }
     }
+   
+    // load regions 
+    public function loadRegionsAdmin()
+    {
+        try {
+            $result = DB::table('regions')
+                ->get(['pid as id', 'region as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+
+    // load regions 
+    public function loadRegion33KvFeeder($region)
+    {
+        try {
+            $result = DB::table('feeder33s')->where('region_pid', $region)
+                ->get(['pid as id', 'name as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
 
 
 

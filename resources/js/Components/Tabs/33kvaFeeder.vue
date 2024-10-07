@@ -4,10 +4,9 @@
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
     import SelectComponent from '@/Components/Select.vue';
-        import store from '@/store';
- 
-
+    import store from '@/store';
     import { ref } from 'vue';
+
     const showModal = ref(false)
     const closeModal = () =>{
         reset33Form()
@@ -36,6 +35,7 @@ const removeFeeder = (i) => {
     }
     feederForm.value.feeder.splice(i, 1);
 }
+
     const reset33Form = () =>{
         feederForm.value = {
             state:'',
@@ -46,6 +46,7 @@ const removeFeeder = (i) => {
             errors:{}
         }
     }
+
     const addFeeder33 = () =>{
         feederForm.errors = {}
         store.dispatch('postMethod', { url: '/create-33kv-feeder', param: feederForm.value }).then((data ) => {
@@ -80,7 +81,7 @@ const removeFeeder = (i) => {
         })
     }
 
-      const feeder33s = ref({})
+    const feeder33s = ref({})
     function loadRegin(url){
         store.dispatch('getMethod', { url:url }).then((data) => {
         if (data?.status == 200) {
@@ -101,7 +102,7 @@ const removeFeeder = (i) => {
          
         <Modal :show="showModal" @close="closeModal" title="Add Feeder " @submit="addFeeder33">
            <form action="" class="px-4 py-2">
-            {{ regionForm }}
+            
                <div class="grid grid-cols-2 gap-2">
                      <div>
                         <InputLabel for="state" value="State" />
@@ -148,21 +149,21 @@ const removeFeeder = (i) => {
                     </div>
 
                </div>
-               <button class="bg-blue-500 text-white btn-sm" type="button" @click="addFeeder">
+               <button class="bg-blue-500 text-white btn-sm mt-1" type="button" @click="addFeeder">
                         <font-awesome-icon icon="fa-solid fa-plus-circle" />
                     </button>
            </form>
         </Modal>
         <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Feeder</button>
         
-         <div class="overflow-auto rounded-lg shadow">
+        <div class="overflow-auto rounded-lg shadow">
                     
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>
                             <th width ="5%" class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">S/N</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Region</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">State</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Feeder </th>
                             <th width ="10%"  class="p-3 text-sm font-semibold tracking-wide text-left"> 
                                 <font-awesome-icon class="fa-solid fa fa-cog"/>
                             </th>
@@ -173,10 +174,10 @@ const removeFeeder = (i) => {
                     <tbody>
                         <tr class="bg-white" v-for="(feeder,loop) in feeder33s" :key="loop">
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ loop+1 }}</td>
+                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.region.region }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.name }}</td>
-                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.state }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
-                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editRegion(region)">Preview</button>
+                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editRegion(feeder)">Preview</button>
                             </td>
                             
                             
@@ -184,6 +185,6 @@ const removeFeeder = (i) => {
                     </tbody>
                 </table>
                 
-            </div>
+        </div>
     </div>
 </template>
