@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DropDownController;
 use App\Http\Controllers\DependencyController;
+use App\Http\Controllers\Item\ItemController;
 use App\Http\Controllers\Region\FeederController;
 use App\Http\Controllers\Region\RegionController;
 
@@ -31,6 +32,10 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/load-feeder-33', [FeederController::class, 'load33kvFeeder']);//->name('create.33kv.feeder');
         Route::post('/create-11kv-feeder', [FeederController::class, 'create11kvFeeder'])->name('create.11kv.feeder');
         Route::get('/load-feeder-11', [FeederController::class, 'load11kvFeeder']);//->name('create.33kv.feeder');
+        
+        // create store Item 
+        Route::post('/create-item-name', [ItemController::class, 'createItemName']);//->name('create.33kv.feeder');
+        Route::get('/load-item-names', [ItemController::class, 'loadItemNames']);//->name('create.33kv.feeder');
         
     });
     

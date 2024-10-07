@@ -5,6 +5,7 @@ import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Region from '@/Components/Tabs/Region.vue';
 import Feeders from '@/Components/Tabs/33kvaFeeder.vue';
+import Items from '@/Components/Tabs/Items.vue';
 const tab = ref(1);
 const currentTab = (tabNumber) => (tab.value = tabNumber);
 
@@ -18,7 +19,7 @@ const currentTab = (tabNumber) => (tab.value = tabNumber);
                 <nav class=" text-sm flex justify-center bg-gray-200">
                     <a @click="currentTab(1)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 1 && `active`" >Regions</a>
                     <a @click="currentTab(2)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 2 && `active`">Feeders</a>
-                    <a @click="currentTab(3)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 3 && `active`">Program</a>
+                    <a @click="currentTab(3)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 3 && `active`">Store Items</a>
                 </nav>
 
             
@@ -44,8 +45,8 @@ const currentTab = (tabNumber) => (tab.value = tabNumber);
                
                 <div v-if="tab === 3">
                    <fieldset class="border border-gray-300 rounded-lg p-4">
-                        <legend class="text-lg font-medium text-left px-2">Program</legend>
-                       
+                        <legend class="text-lg font-medium text-left px-2">Items</legend>
+                       <Items/>
 
                    </fieldset>
                 </div>
