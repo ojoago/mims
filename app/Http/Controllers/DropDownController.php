@@ -10,10 +10,28 @@ class DropDownController extends Controller
     //
 
     // load regions 
-    public function loadRegions(Request $request)
+    public function loadStateRegion()
     {
-        $result = DB::table('regions')
-            ->get(['pid as id', 'name']); //
+        try {
+            $result = DB::table('regions')->distinct('state')
+                ->get(['state as id', 'state as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+    // load regions 
+    public function loadRegions($state)
+    {
+        try {
+            $result = DB::table('regions')->where('state',$state)
+                ->get(['pid as id', 'region as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
     }
 
 
@@ -30,6 +48,7 @@ class DropDownController extends Controller
             return response()->json([]);
         }
     }
+    
     public function loadStateLga($id)
     {
         try {
@@ -42,5 +61,7 @@ class DropDownController extends Controller
             return response()->json([]);
         }
     }
+
+    
 
 }

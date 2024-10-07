@@ -38,6 +38,10 @@
                     <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
                     <span class="nav-name">Dependency </span>
                 </Link>
+                <Link :href="route('feeders')" class="flex link " :class="'active-link' && activeRoute('dependency') ">
+                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                    <span class="nav-name">Feeders </span>
+                </Link>
                 
             </ul>
         </div>

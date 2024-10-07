@@ -21,7 +21,7 @@
             console.log(e);
         })
     }
-    loadRegin('load-regions')
+    loadRegin('load-all-regions')
 
     const showModal = ref(false)
     const closeModal = () =>{
@@ -84,6 +84,7 @@
 
 <template>
     <div>
+        
         <Modal :show="showModal" @close="closeModal" title="Add Region " @submit="createRegion">
            <form action="" class="px-4 py-2">
             {{ regionForm }}
@@ -115,6 +116,7 @@
            </form>
         </Modal>
         <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Region</button>
+
          <div class="overflow-auto rounded-lg shadow">
                     
                 <table class="w-full">
