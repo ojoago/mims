@@ -1,5 +1,6 @@
 <script setup>
 import AuthHeader from '@/Components/AuthHeader.vue';
+import Footer from '@/Components/Footer.vue';
 import SideBar from '@/Components/SideBar.vue';
 
 
@@ -10,7 +11,7 @@ import SideBar from '@/Components/SideBar.vue';
         <spinner-loader></spinner-loader>
     <!-- Sidebar -->
         <SideBar/>
-            <main class="flex min-h-[90vh] flex-col w-full overflow-x-hidden overflow-y-auto mb-14">
+            <main class="flex min-h-[90vh] flex-col w-full overflow-x-hidden overflow-y-auto ">
             <!-- Header-->
             <AuthHeader/>
             <!--content-->
@@ -20,7 +21,7 @@ import SideBar from '@/Components/SideBar.vue';
                     </div>
                 </div>
                 <!--- footer -->
-                <!--- <Footer class="mt-auto"/> -->
+             <Footer class="mt-auto"/>
         </main>
     </div>
 </template>

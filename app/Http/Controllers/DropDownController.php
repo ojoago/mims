@@ -10,6 +10,18 @@ class DropDownController extends Controller
     //
 
     // load regions 
+    public function loadItemName()
+    {
+        try {
+            $result = DB::table('items')
+                ->get(['pid as id', 'name as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+    // load regions 
     public function loadStateRegion()
     {
         try {

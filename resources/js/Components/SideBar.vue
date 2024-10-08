@@ -42,6 +42,22 @@
                     <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
                     <span class="nav-name">Feeders </span>
                 </Link>
+                <Link :href="route('create.staff')" class="flex link " :class="'active-link' && activeRoute('dependency') ">
+                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                    <span class="nav-name">Staff </span>
+                </Link>
+                <Link :href="route('meter.list')" class="flex link " :class="'active-link' && activeRoute('dependency') ">
+                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                    <span class="nav-name">Meter List </span>
+                </Link>
+                <Link :href="route('inventory.list')" class="flex link " :class="'active-link' && activeRoute('dependency') ">
+                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                    <span class="nav-name">Inventory Item </span>
+                </Link>
+                <Link :href="route('damage.item')" class="flex link " :class="'active-link' && activeRoute('dependency') ">
+                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                    <span class="nav-name">Damaged Item </span>
+                </Link>
                 
             </ul>
         </div>

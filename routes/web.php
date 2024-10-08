@@ -6,9 +6,10 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DropDownController;
 use App\Http\Controllers\DependencyController;
-use App\Http\Controllers\Item\ItemController;
 use App\Http\Controllers\Region\FeederController;
 use App\Http\Controllers\Region\RegionController;
+use App\Http\Controllers\Inventory\ItemController;
+use App\Http\Controllers\Inventory\MeterController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -34,14 +35,19 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/load-feeder-11', [FeederController::class, 'load11kvFeeder']);//->name('create.33kv.feeder');
         
         // create store Item 
-        Route::post('/create-item-name', [ItemController::class, 'createItemName']);//->name('create.33kv.feeder');
-        Route::get('/load-item-names', [ItemController::class, 'loadItemNames']);//->name('create.33kv.feeder');
+        Route::post('/create-item-name', [ItemController::class, 'createItemName']);
+        Route::get('/item-names', [ItemController::class, 'loadItemNames']);
+        
+        // users 
+        // Route::post(, [StaffController::class, 'createStaff'])->name('');
+        Route::inertia('/create-staff','Staff/StaffForm')->name('create.staff');
         
     });
     
     // region admin 
-    Route::middleware(['role:region admin,role:super admin'])->group(function(){
-    
+    Route::middleware(['role:region admin|super admin|supervisor'])->group(function(){
+        Route::get('/meter-list', [MeterController::class, 'index'])->name('meter.list');
+        
     });
 
     //filed supervisor
@@ -54,7 +60,15 @@ Route::middleware(['auth'])->group(function(){
     Route::middleware(['role:installer,super admin'])->group(function () {});
 
     // store manager 
-    Route::middleware(['role:store,super admin'])->group(function () {});
+    Route::middleware(['role:store|super admin'])->group(function () {
+        Route::get('/meter-list',[MeterController::class,'index'])->name('meter.list');
+        Route::post('/meter-list',[MeterController::class,'addMeterList']);
+        Route::get('/inventory-list',[ItemController::class,'inventoryList'])->name('inventory.list');
+        Route::post('/add-inventory-item',[ItemController::class,'addInventoryItem'])->name('add.inventory.item');
+        Route::post('/remove-damage-item',[ItemController::class,'removeDamageItem'])->name('remove.damage.item');
+        Route::get('/damaged-items',[ItemController::class,'damagedItems'])->name('damage.item');
+        Route::get('/damaged-item-details',[ItemController::class,'damagedItemDetail'])->name('damaged.item.detail');
+    });
 
 });
 
@@ -64,6 +78,7 @@ Route::get('/load-state-regions', [DropDownController::class, 'loadStateRegion']
 Route::get('/load-regions/{state}', [DropDownController::class, 'loadRegions']);//->name('load.regions');
 Route::get('/load-regions-admin', [DropDownController::class, 'loadRegionsAdmin']);//->name('load.regions');
 Route::get('/load-feeder-33/{region}', [DropDownController::class, 'loadRegion33KvFeeder']);//->name('load.regions');
+Route::get('/load-item-names', [DropDownController::class, 'loadItemName']);
 
 
 

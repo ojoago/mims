@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('item_pid');
             $table->foreign('item_pid')->references('pid')->on('items')->onDelete('cascade');
             $table->string('date');
+            $table->float('quantity',20,2);
             $table->longText('cause')->nullable();
             $table->string('creator');
             $table->foreign('creator')->references('pid')->on('users')->onDelete('cascade');

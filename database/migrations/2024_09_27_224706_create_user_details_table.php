@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('user_pid');
             $table->foreign('user_pid')->references('pid')->on('users')->onDelete('cascade');
             $table->string('staff_id');
+            $table->string('gsm');
             $table->string('firstname');
             $table->string('lastname');
             $table->string('othername')->nullable();

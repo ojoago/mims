@@ -20,6 +20,7 @@ return new class extends Migration
             $table->tinyInteger('status')->default(1)->comment('1:in store,2:taken out,3:installed,4:faulty');
             $table->string('phase');
             $table->string('type')->nullable();
+            $table->string('brand')->nullable();
             $table->string('creator')->nullable();
             $table->foreign('creator')->references('pid')->on('users')->onDelete('cascade');
             $table->timestamps();

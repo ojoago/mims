@@ -21,6 +21,7 @@
             }],
             errors:{}
     })
+    
     const reset11Form = () =>{
         feederForm.value = {
             region:'',
@@ -99,6 +100,7 @@
 
 <template>
     <div>
+
         <Modal :show="showModal" @close="closeModal" title="Add Feeder " @submit="addFeeder11">
            <form action="" class="px-4 py-2">
             

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items_quantities', function (Blueprint $table) {
+        Schema::create('item_quantities', function (Blueprint $table) {
             $table->id();
             $table->string('region_pid');
             $table->foreign('region_pid')->references('pid')->on('regions')->onDelete('cascade');

@@ -64,7 +64,7 @@
 
 
     const items = ref({})
-    function loadItem(url = 'load-item-names'){
+    function loadItem(url = 'item-names'){
         store.dispatch('getMethod', { url:url }).then((data) => {
         if (data?.status == 200) {
             items.value = data.data;
@@ -125,7 +125,7 @@
         </Modal>
         <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Item</button>
 
-         <div class="overflow-auto rounded-lg shadow">
+        <div class="overflow-auto rounded-lg shadow">
                     
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
@@ -142,6 +142,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                      
                         <tr class="bg-white" v-for="(item,loop) in items" :key="loop">
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ loop+1 }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.name }}</td>
@@ -158,7 +159,7 @@
                     </tbody>
                 </table>
                 
-            </div>
+        </div>
     </div>
 </template>
 

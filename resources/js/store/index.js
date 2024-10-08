@@ -1,6 +1,8 @@
 import { createStore } from "vuex";
 import axios from 'axios'
+import { usePage } from '@inertiajs/vue3';
 
+const page = usePage();
 const store = createStore({
     state:{
         user:{
@@ -52,6 +54,7 @@ const store = createStore({
             //load staff  
             postMethod({commit},{url,param}){
                 commit('setSpinner', true)
+                param._token = page.props.csrf_token
                 return axios.post(url,param)
                     .then(({data})=>{
                         if(data?.status == 201){
@@ -110,6 +113,7 @@ const store = createStore({
                     }
                 }
                 commit('setSpinner', true)
+                param._token = page.props.csrf_token
                 return axios.put(url,param)
                     .then(({data})=>{
                         if(data?.status == 201){

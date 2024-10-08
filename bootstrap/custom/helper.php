@@ -36,7 +36,7 @@ function pushResponse($status,$msg,$code=201){
     return responseMessage(status: 204, data: [], msg: 'Operation Failed...');
 }
 
-function pushData($data,$msg){
+function pushData($data,$msg = 'Data Loaded'){
     if ($data->isNotEmpty()) {
         return responseMessage(status: 200, data: $data, msg: $msg);
     }
@@ -69,6 +69,17 @@ function getUserPid()
         return auth()->user()['pid'];
     }
 }
+
+function getRegionPid()
+{
+
+    return '17E37037U325P12SSN0419206280';
+    if (auth()->user()) {
+        return auth()->user()['pid'];
+    }
+}
+
+
 function approver()
 {
     if (auth()->user()) {

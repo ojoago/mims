@@ -5,7 +5,7 @@ namespace App\Models\Inventory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ItemsQuantity extends Model
+class ItemQuantity extends Model
 {
     use HasFactory;
 
@@ -14,5 +14,13 @@ class ItemsQuantity extends Model
         'item_pid',
         'quantity',
         'pid',
+        'creator'
     ];
+
+    public function item(){
+        return $this->belongsTo(Item::class, 'item_pid','pid');
+    }
+    public function region(){
+        return $this->belongsTo(Item::class, 'region_pid','pid');
+    }
 }
