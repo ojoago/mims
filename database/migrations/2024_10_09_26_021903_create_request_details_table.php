@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('region_pid');
             $table->foreign('region_pid')->references('pid')->on('regions')->onDelete('cascade');
             $table->string('team_pid');
-            $table->foreign('team_pid')->references('pid')->on('teams')->onDelete('cascade');
+            // $table->foreign('team_pid')->references('pid')->on('teams')->onDelete('cascade');
             $table->string('requested_by');
             $table->foreign('requested_by')->references('pid')->on('users')->onDelete('cascade');
             $table->string('receiver');
