@@ -7,6 +7,7 @@
     }
     public function index(){
       redirectAccess('home');// redirect if access not granted
+
       $data=[
         'company'=>$this->loadModel->countCompany(),
         'paidcustomer'=>$this->loadModel->countPaidCustomer(),
@@ -21,6 +22,7 @@
         'fixedfaultyMeter'=>$this->loadModel->countMeterByStatus('fixed'),
         'fixedFaultyEdat'=>$this->loadModel->countEdatByStatus('fixed')
       ];
+
       $this->view('admin/index',$data);
     }
     public function staff(){
@@ -30,10 +32,12 @@
     }
     // view asigned meters
     public function noedat(){
+
       $data['msg']='meters without edat';
       $data['cust']=$this->loadModel->viewNoEdat();
       $data['baseUrl']="/admins";
       $this->view('company/meters',$data);
+      
     }
     // all edats
     public function alledats(){
