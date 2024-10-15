@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('region_pid')->nullable();
             $table->foreign('region_pid')->references('pid')->on('regions')->onDelete('cascade');
             $table->string('date',20);
-            $table->string('meter_pid')->nullable();
+            $table->string('meter_pid');
             $table->foreign('meter_pid')->references('pid')->on('meter_lists')->onDelete('cascade');
             $table->string('creator')->nullable();
             $table->foreign('creator')->references('pid')->on('users')->onDelete('cascade');

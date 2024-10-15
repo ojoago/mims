@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('region_pid')->nullable();
             $table->foreign('region_pid')->references('pid')->on('regions')->onDelete('cascade');
-            $table->string('team_pid')->nullable();
+            $table->string('team_pid');
             $table->foreign('team_pid')->references('pid')->on('teams')->onDelete('cascade');
-            $table->string('user_pid')->nullable();
+            $table->string('user_pid');
             $table->foreign('user_pid')->references('pid')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
