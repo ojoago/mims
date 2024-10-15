@@ -123,6 +123,7 @@
 
            </form>
         </Modal>
+        
         <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Item</button>
 
         <div class="overflow-auto rounded-lg shadow">

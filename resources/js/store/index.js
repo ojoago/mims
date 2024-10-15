@@ -52,10 +52,12 @@ const store = createStore({
                     })
             },
             //load staff  
-            postMethod({commit},{url,param}){
+            postMethod({commit},{url,param,headers={}}){
                 commit('setSpinner', true)
                 param._token = page.props.csrf_token
-                return axios.post(url,param)
+                return axios.post(url,param,{
+                     headers: headers,
+                })
                     .then(({data})=>{
                         if(data?.status == 201){
                             commit('notify',{message:data.message})
@@ -137,7 +139,7 @@ const store = createStore({
 
             // load dropdown 
             loadDropdown({},url){
-            return axios.get('/load-'+url)
+            return axios.get('/drop-'+url)
                     .then(({data})=>{
                         if(data?.status==200){
                             return data;

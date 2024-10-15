@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('region_pid');
             $table->foreign('region_pid')->references('pid')->on('regions')->onDelete('cascade');
+            $table->string('request_pid');
+            $table->foreign('request_pid')->references('pid')->on('request_details')->onDelete('cascade');
             $table->string('item_pid');
             $table->foreign('item_pid')->references('pid')->on('items')->onDelete('cascade');
-            $table->float('quantity_requested',20,2);
-            $table->float('quantity_supplied',20,2);
-            $table->float('quantity_returned',20,2);
+            $table->float('quantity',20,2);
+            $table->float('quantity_supplied',20,2)->nullable();
+            $table->float('quantity_returned',20,2)->nullable();
             // $table->float('quantity_returned',20,2);
             $table->timestamps();
         });

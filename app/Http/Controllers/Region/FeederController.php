@@ -53,7 +53,7 @@ class FeederController extends Controller
 
         if (!$validator->fails()) {
             try {
-              $result = false;
+                $result = false;
                 $count = count($request->feeder);
                 if ($count > 0) {
                     for ($i = 0; $i < $count; $i++) {

@@ -6,10 +6,13 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DropDownController;
 use App\Http\Controllers\DependencyController;
+use App\Http\Controllers\Region\TeamController;
+use App\Http\Controllers\Staff\StaffController;
 use App\Http\Controllers\Region\FeederController;
 use App\Http\Controllers\Region\RegionController;
 use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Inventory\MeterController;
+use App\Http\Controllers\Inventory\RequestController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -38,22 +41,45 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/create-item-name', [ItemController::class, 'createItemName']);
         Route::get('/item-names', [ItemController::class, 'loadItemNames']);
         
-        // users 
-        // Route::post(, [StaffController::class, 'createStaff'])->name('');
-        Route::inertia('/create-staff','Staff/StaffForm')->name('create.staff');
         
     });
     
     // region admin 
-    Route::middleware(['role:region admin|super admin|supervisor'])->group(function(){
+    Route::middleware(['role:region admin|super admin'])->group(function(){
         Route::get('/meter-list', [MeterController::class, 'index'])->name('meter.list');
+        Route::inertia('/teams', 'Region/Team')->name('teams');
+        Route::get('/load-teams', [TeamController::class, 'loadTeams'])->name('load.teams');
+        Route::post('/create-team', [TeamController::class, 'createTeam'])->name('create.team');
+        Route::post('/add-team-member', [TeamController::class, 'addTeamMember'])->name('add.team.member');
+        Route::get('/load-team-member', [TeamController::class, 'loadTeamMembers'])->name('load.team.members');
+
+        // users 
+        Route::inertia('/staff', 'Staff/Staff')->name('create.staff');
+        Route::post('/staff' , [StaffController::class, 'createStaff']);
+        Route::get('/load-staff' , [StaffController::class, 'loadStaff']);
+        
+        // request 
+        Route::inertia('/request', 'Region/Request')->name('request');
+        Route::get('/load-request' , [RequestController::class, 'index']);
+        Route::post('/request-item' , [RequestController::class, 'itemRequest']);
+        //Schedule 
+        Route::get('/schedules' , [DependencyController::class, 'schedules'])->name('schedules');
+        Route::post('/schedules' , [DependencyController::class, 'uploadSchedule']);
+        
         
     });
-
+    
     //filed supervisor
-    Route::middleware(['role:supervisor,super admin'])->group(function () {});
+    Route::middleware(['role:supervisor|super admin'])->group(function () {
+        Route::inertia('/team-assigned-meters', 'Region/TeamAssignedMeter')->name('assigned.meters');
+        
+    });
     // data staff
-    Route::middleware(['role:data entry,super admin'])->group(function () {});
+    Route::middleware(['role:data entry|super admin'])->group(function () {
+        Route::inertia('/installations', 'Region/Installations')->name('installations');
+        Route::get('/schedule-list' , [DependencyController::class, 'scheduleList'])->name('schedule.list');
+
+    });
     // staff
     Route::middleware(['role:staff,super admin'])->group(function () {});
     // installer 
@@ -72,13 +98,17 @@ Route::middleware(['auth'])->group(function(){
 
 });
 
-Route::get('/load-states', [DropDownController::class, 'loadStates'])->name('load.states');
-Route::get('/load-state-lga/{id}', [DropDownController::class, 'loadStateLga'])->name('load.state.lga');
-Route::get('/load-state-regions', [DropDownController::class, 'loadStateRegion']);//->name('load.regions');
-Route::get('/load-regions/{state}', [DropDownController::class, 'loadRegions']);//->name('load.regions');
-Route::get('/load-regions-admin', [DropDownController::class, 'loadRegionsAdmin']);//->name('load.regions');
-Route::get('/load-feeder-33/{region}', [DropDownController::class, 'loadRegion33KvFeeder']);//->name('load.regions');
-Route::get('/load-item-names', [DropDownController::class, 'loadItemName']);
+Route::get('/drop-states', [DropDownController::class, 'loadStates'])->name('load.states');
+Route::get('/drop-state-lga/{id}', [DropDownController::class, 'loadStateLga'])->name('load.state.lga');
+Route::get('/drop-state-regions', [DropDownController::class, 'loadStateRegion']);//->name('load.regions');
+Route::get('/drop-regions/{state}', [DropDownController::class, 'loadRegions']);//->name('load.regions');
+Route::get('/drop-regions-admin', [DropDownController::class, 'loadRegionsAdmin']);//->name('load.regions');
+Route::get('/drop-feeder-33/{region}', [DropDownController::class, 'loadRegion33KvFeeder']);//->name('load.regions');
+Route::get('/drop-item-names', [DropDownController::class, 'loadItemName']);
+Route::get('/drop-item-quantity', [DropDownController::class, 'loadItemQuantity']);
+Route::get('/drop-teams', [DropDownController::class, 'loadTeams']);
+Route::get('/drop-roles', [DropDownController::class, 'dropDownRoles']);
+Route::get('/drop-users', [DropDownController::class, 'dropDownUsers']);
 
 
 

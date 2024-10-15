@@ -15,7 +15,6 @@ class ImportMeterList implements ToModel,WithHeadingRow
     */
     public function model(array $row)
     {
-        logError($row);
         return new MeterList([
             'region_pid' => getRegionPid(),
             'pid' => public_id(),

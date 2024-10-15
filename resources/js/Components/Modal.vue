@@ -62,6 +62,8 @@ const maxWidthClass = computed(() => {
         lg: 'sm:max-w-lg',
         xl: 'sm:max-w-xl',
         '2xl': 'sm:max-w-2xl',
+        '4xl': 'sm:max-w-4xl w-full',
+        '6xl': 'sm:max-w-6xl w-full',
     }[props.maxWidth];
 });
 </script>
@@ -103,7 +105,7 @@ const maxWidthClass = computed(() => {
                     <hr>
                         <slot v-if="show" />
                         <hr>
-                        <div class="py-2 px-4">
+                        <div class="py-2 px-8">
                             <button  @click="submit" class=" bg-optimal text-white px-4 py-2 rounded mr-2">Submit</button>
                             <button  @click="close" class=" bg-red-500 text-white px-4 py-2 rounded">Close</button>
                         </div>

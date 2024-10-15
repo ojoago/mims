@@ -45,27 +45,26 @@ const changePage = (url) => {
     <MainLayout>
         <div class="px-4 py-5">
              <form @submit.prevent="submit">
-                <div class="grid grid-col-2 gap-2">
-                    <div>
-                        
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="file"
-                    class="mt-1 block w-full"
-                    @input="form.file = $event.target.files[0]"
-                    autofocus
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-            
-            
-            <div class="flex items-center justify-end ">
-                <button  @click="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" class=" bg-optimal text-white px-4 py-2 rounded mr-2">Submit</button>
-               
-            </div>
+                <div class="grid grid-col-3 gap-2">
+                
+                    <div class="flex">
+                        <div class="flex">
+                        <InputLabel for="email" value="Email" />
+                        <TextInput
+                            id="email"
+                            type="text"
+                            class="mt-1 block w-full"
+                            autofocus
+                            autocomplete="off"
+                        />
+                        <InputError class="mt-2" :message="form.errors.email" />
+                    </div>
+                    
+                    </div>
+                    
+                    <div class="">
+                        <button  @click="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" class=" bg-optimal text-white px-4 py-2 rounded mr-2">Submit</button>
+                    </div>
                 </div>
         </form>
             <div class="overflow-auto rounded-lg shadow">
@@ -98,9 +97,11 @@ const changePage = (url) => {
                 </table>
                 <div class="mt-4">
                      <!-- Render the pagination links -->
-                    <nav v-if="data?.links?.length">
-                        <button @click="changePage(data?.prev_page_url)" :disabled="!data?.prev_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Previous</button>
-                        <button @click="changePage(data?.next_page_url)" :disabled="!data?.next_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Next</button>
+                    <nav v-if="data?.links.length">
+                  
+
+                    <button @click="changePage(data?.prev_page_url)" :disabled="!data?.prev_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Previous</button>
+<button @click="changePage(data?.next_page_url)" :disabled="!data?.next_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Next</button>
                     </nav>
                 </div>
                 

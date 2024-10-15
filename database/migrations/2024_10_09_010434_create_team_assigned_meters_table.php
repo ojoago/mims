@@ -11,21 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('team_assigned_meters', function (Blueprint $table) {
             $table->id();
-            $table->string('pid')->unique();
-            $table->string('date',20);
-            $table->text('note')->nullable();
-            $table->tinyInteger('status')->default(0);
-            $table->string('region_pid');
+            $table->string('region_pid')->nullable();
             $table->foreign('region_pid')->references('pid')->on('regions')->onDelete('cascade');
-            $table->string('requested_by');
-            $table->foreign('requested_by')->references('pid')->on('users')->onDelete('cascade');
-            $table->string('receiver');
-            $table->foreign('receiver')->references('pid')->on('users')->onDelete('cascade');
+            $table->string('date',20);
+            $table->string('meter_pid')->nullable();
+            $table->foreign('meter_pid')->references('pid')->on('meter_lists')->onDelete('cascade');
             $table->string('creator')->nullable();
             $table->foreign('creator')->references('pid')->on('users')->onDelete('cascade');
             $table->timestamps();
+            
         });
     }
 
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('team_assigned_meters');
     }
 };

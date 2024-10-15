@@ -21,6 +21,18 @@ class DropDownController extends Controller
             return response()->json([]);
         }
     }
+    // load quantity 
+    public function loadItemQuantity()
+    {
+        try {
+            $result = DB::table('items as i')->join('item_quantities as q','q.item_pid','i.pid')->where('q.region_pid',getRegionPid())
+                ->select('item_pid as id',DB::raw("CONCAT(name, ' | ', quantity,' ',unit) AS text"))->get(); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
     // load regions 
     public function loadStateRegion()
     {
@@ -94,6 +106,46 @@ class DropDownController extends Controller
             return responseMessage(status: 200, data: $data, msg: 'data loaded');
 
             return response()->json($data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+
+    
+    public function loadTeams()
+    {
+        try {
+            $data = DB::table('teams')->where('region_pid', getRegionPid())->select('pid as id', 'team as text')->get();
+            return responseMessage(status: 200, data: $data, msg: 'data loaded');
+
+            return response()->json($data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+
+    public function dropDownRoles()
+    {
+        try {
+            $data = DB::table('roles')->select('name as id', 'name as text')->get();
+            return responseMessage(status: 200, data: $data, msg: 'data loaded');
+
+            return response()->json($data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+
+    public function dropDownUsers()
+    {
+        try {
+            $data = DB::table('user_details')->select('user_pid as id', 'username as text')->get();
+
+            return responseMessage(status: 200, data: $data, msg: 'data loaded');
+
         } catch (\Throwable $e) {
             logError($e->getMessage());
             return response()->json([]);

@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import PaginationLink from '@/Components/PaginationLink.vue';
-import DamagedItemDetail from '@/Components/Tabs/DamagedItemDetail.vue';
+import DamagedItemDetail from '@/Components/Tabs/DamagedItemDetailTab.vue';
 
 
 

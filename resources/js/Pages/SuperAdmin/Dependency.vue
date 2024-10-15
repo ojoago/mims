@@ -3,9 +3,9 @@
 import MainLayout from '@/Layouts/MainLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import Region from '@/Components/Tabs/Region.vue';
-import Feeders from '@/Components/Tabs/33kvaFeeder.vue';
-import Items from '@/Components/Tabs/Items.vue';
+import Region from '@/Components/Tabs/RegionTab.vue';
+import Feeders from '@/Components/Tabs/33kvaFeederTab.vue';
+import Items from '@/Components/Tabs/ItemsTab.vue';
 const tab = ref(1);
 const currentTab = (tabNumber) => (tab.value = tabNumber);
 

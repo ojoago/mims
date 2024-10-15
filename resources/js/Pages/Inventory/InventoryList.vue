@@ -66,12 +66,14 @@ defineProps({
     
         const resetItemForm = () => {
              itemForm.value = {
-                    items:[
-                        {item_pid:'',
-                        quantity:'',}
-                    ],
-                    errors:{}
-                  }
+                items:[
+                    {
+                        item_pid:'',
+                        quantity:'',
+                    }
+                ],
+                errors:{}
+            }
         }
         const addItem = () => {
             itemForm.value.items.push({item_pid:'',
