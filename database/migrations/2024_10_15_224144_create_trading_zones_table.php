@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feeder33s', function (Blueprint $table) {
+        Schema::create('trading_zones', function (Blueprint $table) {
             $table->id();
-            $table->string('zone_pid');
-            // $table->foreign('zone_pid')->references('pid')->on('trading_zones')->onDelete('cascade');
-            $table->string('name');
+            $table->string('state_id');
+            $table->string('zone');
             $table->string('pid')->unique();
-            $table->string('creator')->nullable();
-            $table->foreign('creator')->references('pid')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('feeder33s');
+        Schema::dropIfExists('trading_zones');
     }
 };

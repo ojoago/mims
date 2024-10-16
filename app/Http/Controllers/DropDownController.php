@@ -75,7 +75,20 @@ class DropDownController extends Controller
     public function loadRegion33KvFeeder($region)
     {
         try {
-            $result = DB::table('feeder33s')->where('region_pid', $region)
+            $result = DB::table('feeder33s')->where('zone_pid', $region)
+                ->get(['pid as id', 'name as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+
+    // load regions 
+    public function loadRegion11KvFeeder($feeder33)
+    {
+        try {
+            $result = DB::table('feeder11s')->where('feeder_33_pid', $feeder33)
                 ->get(['pid as id', 'name as text']); //
             return responseMessage(status: 200, data: $result, msg: 'data loaded');
         } catch (\Throwable $e) {
@@ -151,6 +164,58 @@ class DropDownController extends Controller
             return response()->json([]);
         }
     }
+
+
+    // load regions 
+    public function dropDownZoneState()
+    {
+        try {
+            $result = DB::table('states as s')->join('trading_zones as z','z.state_id','s.id')->distinct('state')
+                ->get(['s.id', 's.state as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+
+    // load regions 
+    public function dropDownZone($state)
+    {
+        try {
+            $result = DB::table('trading_zones')->where('state_id', $state)
+                ->get(['pid as id', 'zone as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+    // load meter types 
+    public function dropDownMeterType()
+    {
+        try {
+            $result = DB::table('meter_types')
+                ->get(['type as id', 'type as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+    // load meter types 
+    public function dropDownMeterBrand()
+    {
+        try {
+            $result = DB::table('meter_brands')
+                ->get(['brand as id', 'brand as text']); //
+            return responseMessage(status: 200, data: $result, msg: 'data loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+   
 
     
 

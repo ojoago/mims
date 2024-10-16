@@ -54,7 +54,7 @@ const removeFeeder = (i) => {
             feederForm.value.errors = transformValidationErrors(data.data)
         } else if (data?.status == 201) {
             closeModal()
-            loadRegin('load-regions')
+            loadRegin()
         }
         }).catch(e => {
             console.log(e);
@@ -64,7 +64,7 @@ const removeFeeder = (i) => {
 
     const states = ref({})
     function loadState() {
-        store.dispatch('loadDropdown', 'state-regions').then(({ data }) => {
+        store.dispatch('loadDropdown', 'zone-state').then(({ data }) => {
             states.value = data;
         }).catch(e => {
             console.log(e);
@@ -74,7 +74,7 @@ const removeFeeder = (i) => {
     loadState()
     const regions = ref({})
     function loadRegions(id) {
-        store.dispatch('loadDropdown', 'regions/'+id).then(({ data }) => {
+        store.dispatch('loadDropdown', 'zone/'+id).then(({ data }) => {
             regions.value = data;
         }).catch(e => {
             console.log(e);
@@ -82,7 +82,7 @@ const removeFeeder = (i) => {
     }
 
     const feeder33s = ref({})
-    function loadRegin(url){
+    function loadRegin(url = 'load-feeder-33'){
         store.dispatch('getMethod', { url:url }).then((data) => {
         if (data?.status == 200) {
             feeder33s.value = data.data;
@@ -91,7 +91,7 @@ const removeFeeder = (i) => {
             console.log(e);
         })
     }
-    loadRegin('load-feeder-33')
+    loadRegin()
 
 
     
@@ -109,7 +109,7 @@ const removeFeeder = (i) => {
 
                             <select @change="loadRegions($event.target.value)" v-model="feederForm.state" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                 <option value="" selected>Select State</option>
-                                <option v-for="(state,loop) in states" :key="loop" >{{ state.text }}</option>
+                                <option v-for="(state,loop) in states" :key="loop" :value="state.id" >{{ state.text }}</option>
                             </select>
                         
 
@@ -117,7 +117,7 @@ const removeFeeder = (i) => {
                     </div>
                      <div>
 
-                       <SelectComponent v-model="feederForm.region" label="33 kv feeder"  placeholder="Select Region"
+                       <SelectComponent v-model="feederForm.region" label="Trading Zone"  placeholder="Select Option"
                                          :options="regions" />
 
                         <InputError class="mt-2" :message="feederForm.errors.feeder" />
@@ -174,7 +174,7 @@ const removeFeeder = (i) => {
                     <tbody>
                         <tr class="bg-white" v-for="(feeder,loop) in feeder33s" :key="loop">
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ loop+1 }}</td>
-                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.region.region }}</td>
+                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder?.zone?.zone }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.name }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
                                 <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editRegion(feeder)">Preview</button>

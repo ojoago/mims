@@ -32,6 +32,16 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/load-all-regions', [RegionController::class, 'index'])->name('load.regions');
         Route::post('/create-region', [RegionController::class, 'createRegion'])->name('create.region');
 
+        Route::post('/create-trading-zone', [DependencyController::class, 'createTradingZone'])->name('create.zone');
+        Route::get('/load-trading-zone', [DependencyController::class, 'loadTradingZone'])->name('load.zone');
+
+
+        Route::post('/create-meter-type', [DependencyController::class, 'createMeterType'])->name('create.zone');
+        Route::get('/load-meter-types', [DependencyController::class, 'loadMeterTypes'])->name('load.zone');
+
+        Route::post('/create-meter-brand', [DependencyController::class, 'createMeterBrand'])->name('create.types');
+        Route::get('/load-meter-brand', [DependencyController::class, 'loadMeterBrands'])->name('load.brands');
+
         Route::post('/create-33kv-feeder', [FeederController::class, 'create33kvFeeder'])->name('create.33kv.feeder');
         Route::get('/load-feeder-33', [FeederController::class, 'load33kvFeeder']);//->name('create.33kv.feeder');
         Route::post('/create-11kv-feeder', [FeederController::class, 'create11kvFeeder'])->name('create.11kv.feeder');
@@ -104,11 +114,17 @@ Route::get('/drop-state-regions', [DropDownController::class, 'loadStateRegion']
 Route::get('/drop-regions/{state}', [DropDownController::class, 'loadRegions']);//->name('load.regions');
 Route::get('/drop-regions-admin', [DropDownController::class, 'loadRegionsAdmin']);//->name('load.regions');
 Route::get('/drop-feeder-33/{region}', [DropDownController::class, 'loadRegion33KvFeeder']);//->name('load.regions');
+Route::get('/drop-feeder-11/{feeder33}', [DropDownController::class, 'loadRegion11KvFeeder']);//->name('load.regions');
 Route::get('/drop-item-names', [DropDownController::class, 'loadItemName']);
 Route::get('/drop-item-quantity', [DropDownController::class, 'loadItemQuantity']);
 Route::get('/drop-teams', [DropDownController::class, 'loadTeams']);
 Route::get('/drop-roles', [DropDownController::class, 'dropDownRoles']);
 Route::get('/drop-users', [DropDownController::class, 'dropDownUsers']);
+Route::get('/drop-zone-state', [DropDownController::class, 'dropDownZoneState']);
+Route::get('/drop-zone/{state_id}', [DropDownController::class, 'dropDownZone']);
+Route::get('/drop-meter-types', [DropDownController::class, 'dropDownMeterType']);
+Route::get('/drop-meter-brands', [DropDownController::class, 'dropDownMeterBrand']);
+
 
 
 

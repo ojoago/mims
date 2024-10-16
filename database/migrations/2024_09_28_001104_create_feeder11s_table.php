@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feeder11s', function (Blueprint $table) {
+        Schema::create('feeder11s_', function (Blueprint $table) {
             $table->id();
-            $table->string('region_pid')->nullable();
-            $table->foreign('region_pid')->references('pid')->on('regions')->onDelete('cascade');
+            // $table->string('zone_pid')->nullable();
+            $table->string('state_id');
+            $table->string('zone_pid');
             $table->string('feeder_33_pid')->nullable();
             $table->foreign('feeder_33_pid')->references('pid')->on('feeder33s')->onDelete('cascade');
             $table->string('name');

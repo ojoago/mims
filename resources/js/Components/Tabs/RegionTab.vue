@@ -87,7 +87,6 @@
         
         <Modal :show="showModal" @close="closeModal" title="Add Region " @submit="createRegion">
            <form action="" class="px-4 py-2">
-            {{ regionForm }}
                <div class="grid grid-cols-2 gap-2">
                      <div>
                         

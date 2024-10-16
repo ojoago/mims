@@ -2,7 +2,6 @@
 
 namespace App\Models\Admin\Feeder;
 
-use App\Models\Region\Region;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -10,18 +9,19 @@ class Feeder11 extends Model
 {
     use HasFactory;
     protected  $fillable = [
-        'region_pid',
+        'state_id',
+        'zone_pid',
         'name',
         'pid',
         'feeder_33_pid'
     ];
 
-    public function region()
+    public function zone()
     {
-        return $this->belongsTo(Region::class, 'region_pid', 'pid');
+        return $this->belongsTo(TradingZone::class, 'zone_pid', 'pid');
     }
 
-    public function feeder33()
+    public function feeder()
     {
         return $this->belongsTo(Feeder33::class, 'feeder_33_pid', 'pid');
     }

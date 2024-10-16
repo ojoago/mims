@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin\Meter\MeterBrand;
+use App\Models\Admin\Meter\MeterType;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,6 +21,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AdminSeeder::class,
             RegionSeeder::class,
+            MeterTypeSeeder::class,
+            MeterBrandSeeder::class,
             ImportTableSeeder::class,
         ]);
     }

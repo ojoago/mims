@@ -14,7 +14,8 @@
     }
     
     const feederForm = ref({
-            region:'',
+            state_id:'',
+            zone_pid:'',
             feeder33:'',
             feeder:[{
                 name:''
@@ -24,7 +25,8 @@
     
     const reset11Form = () =>{
         feederForm.value = {
-            region:'',
+            state_id:'',
+            zone_pid:'',
             feeder33:'',
             feeder:[{
                 name:''
@@ -49,16 +51,28 @@
     }
 
 
+    
+
+    loadState()
     const regions = ref({})
-    function loadAllRegion() {
-        store.dispatch('loadDropdown', 'regions-admin').then(({ data }) => {
+    function loadRegions(id) {
+        store.dispatch('loadDropdown', 'zone/'+id).then(({ data }) => {
             regions.value = data;
         }).catch(e => {
             console.log(e);
         })
     }
 
-    loadAllRegion()
+     const states = ref({})
+    function loadState() {
+        store.dispatch('loadDropdown', 'zone-state').then(({ data }) => {
+            states.value = data;
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+
+
     const feeder33 = ref({})
     function load33(id) {
         store.dispatch('loadDropdown', 'feeder-33/'+id).then(({ data }) => {
@@ -68,11 +82,11 @@
         })
     }
 
-    const feeder33s = ref({})
+    const feeder11s = ref({})
     function loadFeeder11(url = 'load-feeder-11'){
         store.dispatch('getMethod', { url:url }).then((data) => {
         if (data?.status == 200) {
-            feeder33s.value = data.data;
+            feeder11s.value = data.data;
         }
         }).catch(e => {
             console.log(e);
@@ -106,23 +120,41 @@
             
                <div class="grid grid-cols-2 gap-2">
                      <div>
-                        <InputLabel for="region" value="Regions" />
 
-                            <select @change="load33($event.target.value)" v-model="feederForm.region" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                           <InputLabel for="state" value="State" />
+
+                            <select @change="loadRegions($event.target.value)" v-model="feederForm.state_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                <option value="" selected>Select State</option>
+                                <option v-for="(state,loop) in states" :key="loop" :value="state.id" >{{ state.text }}</option>
+                            </select>
+                        
+
+                        <InputError class="mt-2" :message="feederForm.errors.state_id" />
+                    </div>
+                     <div>
+                        <InputLabel for="region" value="Trading Zone" />
+
+                            <select @change="load33($event.target.value)" v-model="feederForm.zone_pid" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                 <option value="" selected>Select Region</option>
                                 <option v-for="(region,loop) in regions" :key="loop" :value="region.id" >{{ region.text }}</option>
                             </select>
                         
 
-                        <InputError class="mt-2" :message="feederForm.errors.region" />
+                        <InputError class="mt-2" :message="feederForm.errors.zone_pid" />
                     </div>
+                    
+
+               </div>
+            
+               <div class="grid grid-cols-1 gap-2">
                      <div>
 
                        <SelectComponent v-model="feederForm.feeder33" label="33 kv feeder"  placeholder="Select Region"
                                          :options="feeder33" />
 
-                        <InputError class="mt-2" :message="feederForm.errors.feeder" />
+                        <InputError class="mt-2" :message="feederForm.errors.feeder33" />
                     </div>
+                    
 
                </div>
                
@@ -159,7 +191,6 @@
 
         
         <div class="overflow-auto rounded-lg shadow">
-                    
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>
@@ -170,21 +201,17 @@
                             <th width ="10%"  class="p-3 text-sm font-semibold tracking-wide text-left"> 
                                 <font-awesome-icon class="fa-solid fa fa-cog"/>
                             </th>
-                       
-
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white" v-for="(feeder,loop) in feeder33s" :key="loop">
+                        <tr class="bg-white" v-for="(feeder,loop) in feeder11s" :key="loop">
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ loop+1 }}</td>
-                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.region.region }}</td>
-                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.feeder33.name }}</td>
+                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder?.zone?.zone }}</td>
+                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder?.feeder?.name }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.name }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
                                 <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editRegion(feeder)">Preview</button>
                             </td>
-                            
-                            
                         </tr>
                     </tbody>
                 </table>

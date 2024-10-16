@@ -23,7 +23,7 @@ class FeederController extends Controller
     public function load33kvFeeder(){
 
         try {
-            $data = Feeder33::with('region')->get();
+            $data = Feeder33::with('zone')->get();
             return pushData($data, '33 kv feeders loaded');
         } catch (\Throwable $th) {
             //throw $th;
@@ -34,7 +34,7 @@ class FeederController extends Controller
     public function load11kvFeeder(){
 
         try {
-            $data = Feeder11::with('region')->with('feeder33')->get();
+            $data = Feeder11::with('zone')->with('feeder')->get();
             return pushData($data, '11 kv feeders loaded');
         } catch (\Throwable $th) {
             //throw $th;
@@ -46,8 +46,8 @@ class FeederController extends Controller
     public function create33kvFeeder(Request $request){
 
         $validator =  Validator::make($request->all(), [
-            'state' => 'required|string',
-            'region' => 'required|string',
+            'state' => 'required',
+            'region' => 'required',
             'feeder.*.name' => 'required|string',
         ]);
 
@@ -61,7 +61,7 @@ class FeederController extends Controller
                             'name' => $request->feeder[$i]['name'],
                             'pid' => public_id(),
                             'creator' => getUserPid(),
-                            'region_pid' => $request->region,
+                            'zone_pid' => $request->region,
                         ];
                         $result = $this->addOrEditFeeder33($data);
                     }
@@ -78,8 +78,9 @@ class FeederController extends Controller
     public function create11kvFeeder(Request $request){
 
         $validator =  Validator::make($request->all(), [
-            'feeder33' => 'required|string',
-            'region' => 'required|string',
+            'state_id' => 'required',
+            'feeder33' => 'required',
+            'zone_pid' => 'required',
             'feeder.*.name' => 'required|string',
         ]);
 
@@ -93,7 +94,8 @@ class FeederController extends Controller
                             'name' => $request->feeder[$i]['name'],
                             'pid' => public_id(),
                             'creator' => getUserPid(),
-                            'region_pid' => $request->region,
+                            'zone_pid' => $request->zone_pid,
+                            'state_id' => $request->state_id,
                             'feeder_33_pid' => $request->feeder33,
                         ];
                         $result = $this->addOrEditFeeder11($data);
