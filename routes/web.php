@@ -111,8 +111,11 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/remove-damage-item',[ItemController::class,'removeDamageItem'])->name('remove.damage.item');
         Route::get('/damaged-items',[ItemController::class,'damagedItems'])->name('damage.item');
         Route::get('/damaged-item-details',[ItemController::class,'damagedItemDetail'])->name('damaged.item.detail');
-   
+        
     });
+    
+    
+    Route::post('/update-passord',[StaffController::class,'updatePassword']);//->name('damaged.item.detail');
 
 });
 

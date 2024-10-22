@@ -1,14 +1,45 @@
 <script setup>
     import { ref } from 'vue';
-    import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+    // import ApplicationLogo from '@/Components/ApplicationLogo.vue';
     import Dropdown from '@/Components/Dropdown.vue';
     import DropdownLink from '@/Components/DropdownLink.vue';
     import NavLink from '@/Components/NavLink.vue';
-    import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+    // import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
     import { Link,Head } from '@inertiajs/vue3';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+    import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+    import Modal from '@/Components/Modal.vue';
+    import InputError from '@/Components/InputError.vue';
+    import InputLabel from '@/Components/InputLabel.vue';
+    import TextInput from '@/Components/TextInput.vue';
+    import { formatError } from "@/composables/formatError";
+import store from '@/store';
+    const { transformValidationErrors } = formatError()
+    const showModal = ref(false)
+    const closeModal = () =>{
+        showModal.value = false;
+    }
 
-    const showingNavigationDropdown = ref(false);
+    
+    const form = ref({
+        current_password:'',
+        password:'',
+        password_confirmation:'',
+        errors:{}
+    });
+
+     function updatePassword() {
+        form.value.errors = {}
+        store.dispatch('postMethod', { url: '/update-passord', param: form.value }).then((data ) => {
+        if (data?.status == 422) {
+            form.value.errors = transformValidationErrors(data.data)
+        } else if (data?.status == 201) {
+            closeModal()
+        }
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+
 </script>
 
 <template>
@@ -16,6 +47,55 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
         <Head>
             <link rel="icon" type="image/png" href="/files/images/title.png" />
         </Head>
+         
+        <Modal :show="showModal" @close="closeModal" max-width="sm" title="Update Password " @submit="updatePassword">
+           <form action="" class="px-4 py-2">
+                    <div>
+                <InputLabel for="current_password" value="Current Password" />
+
+                <TextInput
+                    id="current_password"
+                    ref="currentPasswordInput"
+                    v-model="form.current_password"
+                    type="password"
+                    class="mt-1 block w-full"
+                    autocomplete="off"
+                    placeholder="current password"
+                />
+
+                <InputError :message="form.errors.current_password" class="mt-2" />
+            </div>
+            <div>
+                <InputLabel for="password" value="New Password" />
+                <TextInput
+                    id="password"
+                    ref="passwordInput"
+                    v-model="form.password"
+                    type="password"
+                    class="mt-1 block w-full"
+                    autocomplete="off"
+                    placeholder=" password"
+                />
+                <InputError :message="form.errors.password" class="mt-2" />
+            </div>
+            <div>
+                <InputLabel for="password_confirmation" value="Confirm Password" />
+
+                <TextInput
+                    id="password_confirmation"
+                    v-model="form.password_confirmation"
+                    type="password"
+                    class="mt-1 block w-full"
+                    autocomplete="new-password"
+                    placeholder="password confirmation"
+
+                />
+
+                <InputError :message="form.errors.password_confirmation" class="mt-2" />
+            </div>
+
+           </form>
+        </Modal>
          <nav class="bg-[#f1f1f1] border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,7 +109,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
                                
                                 <NavLink :href="route('dashboard')">
                                    <div class="shrink-0 flex items-center brand-name">
-                                    Triple Seventh, <small class="ml-2 region-name">[{{ $page?.props?.auth.region }}]</small>
+                                    Triple Seventh, <small class="ml-2 region-name">[{{ $page?.props?.auth?.region }}]</small>
                                 </div>
                                 </NavLink>
                             </div>
@@ -64,7 +144,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink class="bg-red-300 text-white hover:bg-red-300" :href="route('profile.edit')"> Update Password </DropdownLink>
+                                        <button class="bg-red-300 text-white w-full hover:bg-red-300" @click="showModal = true" type="button" as="button"> Update Password </button>
                                         <DropdownLink class="bg-red-600 text-white  hover:bg-red-600" :href="route('logout')" method="post" as="button">
                                             Log Out
                                         </DropdownLink>
