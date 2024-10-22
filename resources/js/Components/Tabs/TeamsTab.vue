@@ -28,7 +28,7 @@
         errors:{}
     });
 
-    function createItemName() {
+    function createTeam() {
         teamForm.errors = {}
         store.dispatch('postMethod', { url: '/create-team', param: teamForm.value }).then((data ) => {
         if (data?.status == 422) {
@@ -61,8 +61,9 @@
     };
 
 
+    // supervisors
+
     const teams = ref({})
-    const supervisor = ref({})
     function loadTeams(url = 'load-teams'){
         store.dispatch('getMethod', { url:url }).then((data) => {
         if (data?.status == 200) {
@@ -74,12 +75,23 @@
     }
     loadTeams()
 
+    supervisor()
+    const supervisors = ref({})
+
+     function supervisor() {
+        store.dispatch('loadDropdown', 'supervisors').then(({ data }) => {
+            supervisors.value = data;
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+
 </script>
 
 <template>
     <div>
         
-        <Modal :show="showModal" @close="closeModal" max-width="sm" title="Add Item Name " @submit="createItemName">
+        <Modal :show="showModal" @close="closeModal" max-width="sm" title="Add Team " @submit="createTeam">
            <form action="" class="px-4 py-2">
            
                      
@@ -100,6 +112,7 @@
                     </div>
 
                      <div>
+                       
                         <SelectComponent v-model="teamForm.supervisor" label="Supervisor"  placeholder="Select supervisor"
                                          :options="supervisors" />
 
@@ -120,7 +133,7 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Team</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Supervisor</th>
                             <th width ="10%"  class="p-3 text-sm font-semibold tracking-wide text-left table-bordered"> 
-                                <font-awesome-icon class="fa-solid fa fa-cog"/>
+                                <font-awesome-icon icon="fa-solid fa fa-cog"/>
                             </th>
                        
 

@@ -3,8 +3,10 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 import { ref } from 'vue';
 import { Head } from '@inertiajs/vue3';
 
-import InstallationFormTab from '@/Components/Tabs/InstallationFormTab.vue';
+// import InstallationFormTab from '@/Components/Tabs/InstallationFormTab.vue';
 import InstallationListTab from '@/Components/Tabs/InstallationListTab.vue';
+import InstalledTab from '@/Components/Tabs/InstalledTab.vue';
+
 
 const tab = ref(1);
 const currentTab = (tabNumber) => (tab.value = tabNumber);
@@ -18,8 +20,8 @@ const currentTab = (tabNumber) => (tab.value = tabNumber);
         <div class="container mx-auto">
             <fieldset class="m-4 pb-4 border bg-gray-100 rounded-lg">
                 <nav class=" text-sm flex justify-center bg-gray-200">
-                    <a @click="currentTab(1)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 1 && `active`" >Record From Schedule</a>
-                    <a @click="currentTab(2)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 2 && `active`">Record Direct</a>
+                    <a @click="currentTab(1)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 1 && `active`" >Record Form</a>
+                    <a @click="currentTab(2)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 2 && `active`">Installed List</a>
                 </nav>
 
             
@@ -36,9 +38,9 @@ const currentTab = (tabNumber) => (tab.value = tabNumber);
                 <!-- step 2 education -->
                 <div v-if="tab === 2">
                     
-                    <fieldset class="border border-gray-300 rounded-lg p-4">
-                        <legend class="text-lg font-medium text-left px-2">Form</legend>
-                        <InstallationFormTab/>
+                    <fieldset class="border border-gray-300 rounded-lg px-2 py-4">
+                        <legend class="text-lg font-medium text-left px-1">Installed List</legend>
+                        <InstalledTab/>
                     </fieldset>
 
                 </div>

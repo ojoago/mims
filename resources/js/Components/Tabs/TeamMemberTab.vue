@@ -23,7 +23,7 @@
         errors:{}
     });
 
-    function createItemName() {
+    function addTeamMember() {
         teamMember.errors = {}
         store.dispatch('postMethod', { url: '/add-team-member', param: teamMember.value }).then((data ) => {
         if (data?.status == 422) {
@@ -40,7 +40,10 @@
     const resetTeamMember = () => {
       teamMember.value = {
         team: '',
-        user_pid: '',
+        // user_pid: '',
+        members:[{
+            user_pid: '',
+        }],
         errors:{}
       }
     };
@@ -48,6 +51,9 @@
    const  editTeam = (team) => {
       teamMember.value = {
         team: team.team?.team.pid,
+        members:[{
+            user_pid: '',
+        }],
         user_pid: team?.user?.user_pid,
         errors:{}
       }
@@ -69,11 +75,22 @@
     }
     loadTeams()
 
-    loadTeam()
+    dropDownTeam()
 
-    function loadTeam() {
+    function dropDownTeam() {
         store.dispatch('loadDropdown', 'teams').then(({ data }) => {
             teams.value = data;
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+    dropDownUsers()
+
+    const users = ref({})
+
+    function dropDownUsers() {
+        store.dispatch('loadDropdown', 'installers').then(({ data }) => {
+            users.value = data;
         }).catch(e => {
             console.log(e);
         })
@@ -84,7 +101,7 @@
 <template>
     <div>
         
-        <Modal :show="showModal" @close="closeModal" max-width="sm" title="Add Item Name " @submit="createItemName">
+        <Modal :show="showModal" @close="closeModal" max-width="sm" title="Add Team Member " @submit="addTeamMember">
            <form action="" class="px-4 py-2">
            
                      
@@ -98,10 +115,10 @@
 
                      <div>
                         
-                        <SelectComponent v-model="teamMember.user_pid" label="Supervisors"  placeholder="Select Supervisor"
-                                         :options="supervisors" />
+                        <SelectComponent v-model="teamMember.user_pid" label="Team Member"  placeholder="Select Member"
+                                         :options="users" />
 
-                        <InputError class="mt-2" :message="teamMember.errors.supervisor" />
+                        <InputError class="mt-2" :message="teamMember.errors.user_pid" />
                     </div>
                     
 
@@ -116,9 +133,9 @@
                         <tr>
                             <th width ="5%" class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">S/N</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Team</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Supervisor</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Member</th>
                             <th width ="10%"  class="p-3 text-sm font-semibold tracking-wide text-left table-bordered"> 
-                                <font-awesome-icon class="fa-solid fa fa-cog"/>
+                                <font-awesome-icon icon="fa-solid fa fa-cog"/>
                             </th>
                        
 
@@ -128,15 +145,11 @@
                       
                         <tr class="bg-white" v-for="(item,loop) in members" :key="loop">
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ loop+1 }}</td>
-                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.team }}</td>
-                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.supervisor?.email }}</td>
+                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.team?.team }}</td>
+                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.user?.username }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
                                 <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editTeam(item)">Edit</button>
                             </td>
-                            
-
-
-                            
                         </tr>
                     </tbody>
                 </table>

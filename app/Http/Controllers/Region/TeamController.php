@@ -25,7 +25,7 @@ class TeamController extends Controller
     //
     public function loadTeamMembers(){
         try {
-            $teams = TeamMember::with('user')->with('team')->where('region_pid',getRegionPid())->get();
+            $teams = TeamMember::with(['user' => function($q){$q->select('username','user_pid', 'gsm');}])->with(['team'  => function($q){$q->select('team','pid');}])->where('region_pid',getRegionPid())->get();
            return pushData($teams);
         } catch (\Throwable $e) {
             logError($e->getMessage());
@@ -38,7 +38,7 @@ class TeamController extends Controller
             'team' => ['required', Rule::unique('teams')->where(function ($param) use ($request) {
                 $param->where('pid', '<>', $request->pid)->where('region_pid', getRegionPid());
             })] ,
-            'supervisor' => 'nullable|exists:users,pid' ,
+            'supervisor' => 'required|exists:users,pid' ,
         ]);
 
        if(!$validator->fails()){
@@ -104,7 +104,7 @@ class TeamController extends Controller
     
     private function addMember(array $data){
         try {
-            return Team::updateOrCreate(['team_pid' => $data['team_pid'] ,'region_pid' => $data['region_pidzx']],$data);
+            return TeamMember::updateOrCreate(['team_pid' => $data['team_pid'] ,'region_pid' => $data['region_pid'] ,'user_pid' => $data['user_pid']],$data);
         } catch (\Throwable $e) {
             logError($e->getMessage());
             return false;

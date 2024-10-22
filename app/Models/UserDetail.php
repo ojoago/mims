@@ -11,7 +11,7 @@ class UserDetail extends Model
     use HasFactory;
     protected $fillable = [
         'user_pid', 'firstname', 'lastname' , 'othername' , 'path' , 'gender', 'religion' , 'dob' , 'state_of_origin' ,
-        'lga_of_origin' ,  'address' , 'creator' , 'region_pid','username', 'gsm'
+        'lga_of_origin' ,  'address' , 'creator' , 'region_pid','username', 'gsm' , 'path'
         ];
 
 

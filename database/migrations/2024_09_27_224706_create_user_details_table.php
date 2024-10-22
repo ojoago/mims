@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('dob', 20)->comment('date of birth');
             $table->string('state_of_origin')->nullable();
             $table->string('lga_of_origin')->nullable();
+            $table->string('path')->nullable();
             $table->string('region_pid');
             $table->foreign('region_pid')->references('pid')->on('regions')->onDelete('cascade');
             // $table->string('state_of_residence')->nullable();

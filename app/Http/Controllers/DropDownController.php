@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -156,6 +157,54 @@ class DropDownController extends Controller
     {
         try {
             $data = DB::table('user_details')->select('user_pid as id', 'username as text')->get();
+
+            return responseMessage(status: 200, data: $data, msg: 'data loaded');
+
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+
+
+    public function dropDownSupervisor()
+    {
+        try {
+            $data = [];
+            $users = User::from('users')->join('user_details as d','d.user_pid', 'users.pid')->where('d.region_pid',getRegionPid())->whereHas('roles', function ($query) {
+                $query->where('name', 'supervisor');
+            })->select('d.user_pid', 'd.username')->get();
+
+            foreach ($users as $row) {
+                $data[] = [
+                    'id' => $row->user_pid,
+                    'text' => $row->username,
+                ];
+            }
+
+            return responseMessage(status: 200, data: $data, msg: 'data loaded');
+
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return response()->json([]);
+        }
+    }
+
+
+    public function dropDownInstallers()
+    {
+        try {
+            $data = [];
+            $users = User::from('users')->join('user_details as d','d.user_pid', 'users.pid')->where('d.region_pid',getRegionPid())->whereHas('roles', function ($query) {
+                $query->where('name', 'installer');
+            })->select('d.user_pid', 'd.username')->get();
+
+            foreach ($users as $row) {
+                $data[] = [
+                    'id' => $row->user_pid,
+                    'text' => $row->username,
+                ];
+            }
 
             return responseMessage(status: 200, data: $data, msg: 'data loaded');
 

@@ -125,7 +125,7 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Region</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">State</th>
                             <th width ="10%"  class="p-3 text-sm font-semibold tracking-wide text-left"> 
-                                <font-awesome-icon class="fa-solid fa fa-cog"/>
+                                <font-awesome-icon icon="fa-solid fa fa-cog"/>
                             </th>
                        
 

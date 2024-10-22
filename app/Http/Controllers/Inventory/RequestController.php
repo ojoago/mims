@@ -13,7 +13,23 @@ class RequestController extends Controller
 {
     public function index(){
         try {
-            $data = RequestDetail::with('items')->withCount('items')->with('team')->with(['initiator' => function($q){$q->select('user_pid','username');}])->with(['collector' =>function($q){$q->select('user_pid','username');}])->where('region_pid', getRegionPid())->get();
+            $data = RequestDetail::with('items')->withCount('items')
+                                    ->with('team')->with(['initiator' => function($q){$q->select('user_pid','username');}])
+                                    ->with(['collector' =>function($q){$q->select('user_pid','username');}])
+                                    ->where(['region_pid' => getRegionPid() , 'requested_by'  => getUserPid()])->get();
+            return pushData($data, 'request loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+
+            return responseMessage(status: 204, data: [], msg: STS_500);
+        }
+    }
+    public function loadRequestList(){
+        try {
+            $data = RequestDetail::with('items')->withCount('items')->with('team')
+            ->with(['initiator' => function($q){$q->select('user_pid','username');}])
+            ->with(['collector' =>function($q){$q->select('user_pid','username');}])
+            ->where('region_pid', getRegionPid())->get();
             return pushData($data, 'request loaded');
         } catch (\Throwable $e) {
             logError($e->getMessage());
@@ -54,13 +70,13 @@ class RequestController extends Controller
                         for ($i = 0; $i < $count; $i++) {
                             $items[] = [
                                 'item_pid' => $request->items[$i]['item_pid'],
-                                'quantity_requested' => $request->items[$i]['quantity'],
-                                'requiest_pid' => $result->pid , 
+                                'quantity' => $request->items[$i]['quantity'],
+                                'request_pid' => $result->pid , 
                                 'region_pid' => getRegionPid() ,
                             ];
                         }
 
-                        RequestItem::where(['requiest_pid' => $result->pid, 'region_pid' => getRegionPid() ])->delete();
+                        RequestItem::where(['request_pid' => $result->pid, 'region_pid' => getRegionPid() ])->delete();
 
                        $result = RequestItem::insert($items);
                        if($result){

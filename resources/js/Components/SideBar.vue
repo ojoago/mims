@@ -17,7 +17,6 @@
    <aside class="hidden md:flex h-full w-64  bg-[#f1f1f1] text-white flex-col ">
     <div class="flex h-full w-full flex-col overflow-y-auto  pb-5">
         <div class="mb-auto border-b px-4 py-2  flex">
-
             <h2 class="text-xl font-bold text-optimal brand-name">MIMS</h2>
             <div class="shrink-0 flex items-center ml-2">
                 <Link :href="route('dashboard')">
@@ -34,6 +33,7 @@
                     <font-awesome-icon icon="fa-solid fa-house " class="facon pt-1" />
                     <span class="nav-name">Dashboard </span>
                 </Link>
+                
                 <Link :href="route('dependency')" class="flex link hover:bg-gray-300" :class="activeRoute('dependency') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
                     <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
                     <span class="nav-name">Dependency </span>
@@ -78,10 +78,14 @@
                    
                     <span class="nav-name">Installations </span>
                 </Link>
+
                 <Link :href="route('request')" class="flex link hover:bg-gray-300" :class="activeRoute('request') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
                     <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                   
                     <span class="nav-name">Request </span>
+                </Link>
+                <Link :href="route('request.list')" class="flex link hover:bg-gray-300" :class="activeRoute('request.list') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                    <span class="nav-name">Request List</span>
                 </Link>
                 
             </ul>

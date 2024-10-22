@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feeder11s_', function (Blueprint $table) {
+        Schema::create('feeder11s', function (Blueprint $table) {
             $table->id();
             // $table->string('zone_pid')->nullable();
             $table->string('state_id');

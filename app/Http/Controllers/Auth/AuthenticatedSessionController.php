@@ -32,6 +32,8 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        getUserRegion(auth()->user()['pid']);
+
         // dd(auth()->user());
         return redirect()->intended(route('dashboard', absolute: false));
     }

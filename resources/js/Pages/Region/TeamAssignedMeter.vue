@@ -48,8 +48,8 @@ const changePage = (url) => {
                 <div class="grid grid-col-3 gap-2">
                 
                     <div class="flex">
-                        <div class="flex">
-                        <InputLabel for="email" value="Email" />
+                        <div class="flex flex-col">
+                        <InputLabel for="email" value="Scan" />
                         <TextInput
                             id="email"
                             type="text"

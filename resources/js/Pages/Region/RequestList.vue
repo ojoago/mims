@@ -72,7 +72,7 @@
 
 
     const requests = ref({})
-    function loadItem(url = 'load-request'){
+    function loadItem(url = 'load-request-list'){
         store.dispatch('getMethod', { url:url }).then((data) => {
         if (data?.status == 200) {
             requests.value = data.data;
@@ -137,53 +137,17 @@
 </script>
 
 <template>
-    <Head title="Item Request"/>
+    <Head title="Item Request List"/>
     <MainLayout>
         
          <Modal :show="showModal" @close="closeModal" title="Request Item" @submit="createItemName">
            <form action="" class="px-4 py-2">
            
-                     <div>
-                        <InputLabel for="email" value="Request Note" />
-
-                        <textarea  v-model="requestForm.note" placeholder="Enter Note" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"></textarea>
-
-                        <InputError class="mt-2" :message="requestForm.errors.note" />
-                    </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-
-                    <div class="flex flex-col ">
-                            <InputLabel for="gsm" value="Date" />
-                            <TextInput
-                                id="date"
-                                type="date"
-                                class="mt-1 block w-full"
-                                v-model="requestForm.date"
-                                placeholder="Phone Number"
-                                required
-                            />
-                            <InputError class="mt-2" :message="requestForm.errors.date" />       
-                    </div>
-
-                    <div class="flex flex-col ">
-                                <SelectComponent v-model="requestForm.team" label="Team" placeholder="Select Team"
-                                :options="teams"/>
-                            <InputError class="mt-2" :message="requestForm.errors.team" />   
-                    </div>
-                    <div class="flex flex-col ">
-                                <SelectComponent v-model="requestForm.receiver" label="Team" placeholder="Select Receiver"
-                                :options="users"/>
-                            <InputError class="mt-2" :message="requestForm.errors.receiver" />   
-                    </div>
-                </div>
+                    
                 <hr class="mt-2">
                 
                <div class="" v-for="(item,loop) in requestForm.items" :key="loop">
-                         <div class="flex justify-end mt-1">
-                            <button class=" bg-yellow-500 text-white  btn-sm  " type="button"  @click="removeItem(loop)">
-                                    <font-awesome-icon icon="fa-solid fa-minus-circle" />
-                                </button>
-                        </div>
+                     
                      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
                         <div class="flex flex-col ">
@@ -206,19 +170,14 @@
                     </div>
 
                </div>
-               <button class="bg-blue-500 text-white btn-sm mt-1" type="button" @click="addItem">
-                        <font-awesome-icon icon="fa-solid fa-plus-circle" />
-                    </button>
-                
 
            </form>
         </Modal>
         <div>
             
-        <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Item</button>
         </div>
 
-        <div class="overflow-auto rounded-lg shadow">
+        <div class="overflow-auto rounded-lg shadow mt-3">
                     
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
@@ -245,8 +204,9 @@
                             <!--<td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.initiator }}</td> -->
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.collector?.username }}</td>
                             <!--<td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.description }}</td> -->
-                           <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
-                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editRequest(item)">Edit</button>
+                           <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered flex" >
+                                <button class="p-1 oy-1 text-sm bg-red-500 text-white me-2 inline-block" @click="editRequest(item)">Reject</button>
+                                <button class="p-1 oy-1 text-sm bg-optimal text-white me-2 inline-block" @click="editRequest(item)">Approve</button>
                             </td>
                             
 

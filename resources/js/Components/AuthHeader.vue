@@ -26,9 +26,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
                             </button>
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                               
                                 <NavLink :href="route('dashboard')">
                                    <div class="shrink-0 flex items-center brand-name">
-                                    Optimal, <small class="ml-2 region-name">[Region]</small>
+                                    Triple Seventh, <small class="ml-2 region-name">[{{ $page?.props?.auth.region }}]</small>
                                 </div>
                                 </NavLink>
                             </div>
@@ -44,7 +45,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {{'dhasmom01@gmail.com' }}
+                                                {{$page?.props?.auth?.user?.email }}
 
                                                 <svg
                                                     class="ms-2 -me-0.5 h-4 w-4"

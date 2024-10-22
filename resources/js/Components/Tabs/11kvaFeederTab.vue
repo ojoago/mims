@@ -34,6 +34,21 @@
             errors:{}
         }
     }
+    const editFeeder = (feeder) =>{
+        feederForm.value = {
+            state_id:feeder.state_id,
+            zone_pid:feeder.zone_pid,
+            feeder33:feeder.feeder_33_pid,
+            feeder:[{
+                name:feeder.name ,
+                pid:feeder.pid ,
+            }],
+            errors:{}
+        }
+
+        showModal.value = true;
+
+    }
 
     
     const addFeeder11 = () =>{
@@ -199,7 +214,7 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">33 kv Feeder</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">11 Kv Feeder </th>
                             <th width ="10%"  class="p-3 text-sm font-semibold tracking-wide text-left"> 
-                                <font-awesome-icon class="fa-solid fa fa-cog"/>
+                                <font-awesome-icon icon="fa-solid fa fa-cog"/>
                             </th>
                         </tr>
                     </thead>
@@ -210,7 +225,7 @@
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder?.feeder?.name }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.name }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
-                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editRegion(feeder)">Preview</button>
+                                <button class="p-1 oy-1 text-sm bg-yellow-500 rounded-md text-white me-2 inline-block" @click="editFeeder(feeder)">Edit</button>
                             </td>
                         </tr>
                     </tbody>

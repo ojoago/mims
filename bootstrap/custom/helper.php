@@ -73,20 +73,24 @@ function getUserPid()
 function getRegionPid()
 {
 
-    return '17E37037U325P12SSN0419206280';
-    if (auth()->user()) {
-        return auth()->user()['pid'];
-    }
+   return session('regionPid');
 }
 
 
-function approver()
+function setRegionPid($pid = null)
 {
-    if (auth()->user()) {
-        return auth()->user()['approval_level'];
-    }
-    return null;
+    session(['regionPid' => $pid]); //get  Type
 }
+function setRegionName($name = null)
+{
+    session(['regionName' => $name]); //get  Type
+}
+function getRegionName()
+{
+
+    return session('regionName');
+}
+
 
 function getUsername()
 {

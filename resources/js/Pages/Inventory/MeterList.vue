@@ -48,21 +48,21 @@ const changePage = (url) => {
                 <div class="grid grid-col-2 gap-2">
                     <div>
                         
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="file" value="Excel FIle" />
 
                 <TextInput
-                    id="email"
+                    id="file"
                     type="file"
                     class="mt-1 block w-full"
                     @input="form.file = $event.target.files[0]"
                     autofocus
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="form.errors.file" />
             </div>
             
             
-            <div class="flex items-center justify-end ">
+            <div class="justify-end mb-1 ">
                 <button  @click="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" class=" bg-optimal text-white px-4 py-2 rounded mr-2">Submit</button>
                
             </div>
@@ -78,9 +78,9 @@ const changePage = (url) => {
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Phase</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Type</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Status</th>
-                            <th width ="5%"  class="p-3 text-sm font-semibold tracking-wide text-left"> 
-                                <font-awesome-icon class="fa-solid fas fa-cog"/>
-                            </th>
+                            <!--<th width ="5%"  class="p-3 text-sm font-semibold tracking-wide text-left table-bordered"> 
+                                <font-awesome-icon icon="fa-solid fas fa-cog"/>
+                            </th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -89,10 +89,10 @@ const changePage = (url) => {
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.meter_number }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.phase }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.type }}</td>
-                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.status }}</td>
-                           <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
+                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.meter_status }}</td>
+                          <!--  <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
                                 <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editItem(item)">Edit</button>
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>

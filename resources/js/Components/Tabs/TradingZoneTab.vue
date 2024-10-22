@@ -89,11 +89,10 @@
 <template>
     <div>
         
-        <Modal :show="showModal" @close="closeModal" max-width="sm" title="Add Item Name " @submit="createTradingZone">
+        <Modal :show="showModal" @close="closeModal" max-width="sm" title="Add Trading Zone" @submit="createTradingZone">
            <form action="" class="px-4 py-2">
 
                      <div>
-                        <InputLabel for="text" value="Item Name" />
 
                        <SelectComponent v-model="zoneForm.state_id" label="State"  placeholder="Select State"
                                          :options="states" />
@@ -102,7 +101,7 @@
                     </div>
 
                      <div>
-                        <InputLabel for="text" value="Item Name" />
+                        <InputLabel for="text" value="Zone Name" />
 
                         <TextInput
                             id="text"
@@ -119,7 +118,7 @@
            </form>
         </Modal>
         
-        <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Item</button>
+        <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Zone</button>
 
         <div class="overflow-auto rounded-lg shadow">
                     
@@ -130,7 +129,7 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">State</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Trading Zone</th>
                             <th width ="10%"  class="p-3 text-sm font-semibold tracking-wide text-left  table-bordered"> 
-                                <font-awesome-icon class="fa-solid fa fa-cog"/>
+                                <font-awesome-icon icon="fa-solid fa fa-cog"/>
                             </th>
                        
 

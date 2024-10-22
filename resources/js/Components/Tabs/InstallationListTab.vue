@@ -81,14 +81,15 @@
         'din':'' ,
         'seal':'' ,
         'dt_code':'',
+        'zone':'',
         errors:{}
     })
 
     const recordForm = () => {
-        zoneForm.errors = {}
-        store.dispatch('postMethod', { url: '/create-trading-zone', param: zoneForm.value }).then((data ) => {
+        meterForm.value.errors = {}
+        store.dispatch('postMethod', { url: '/record-form', param: meterForm.value }).then((data ) => {
         if (data?.status == 422) {
-            zoneForm.value.errors = transformValidationErrors(data.data)
+            meterForm.value.errors = transformValidationErrors(data.data)
         } else if (data?.status == 201) {
             closeModal()
             loadItem()
@@ -131,7 +132,9 @@
         'rf_channel': ''  ,
         'din': ''  ,
         'seal': ''  ,
-        'dt_code': '' 
+        'dt_code': '' ,
+        'zone': '' ,
+        errors:{}
         }
     }
    
@@ -193,6 +196,15 @@
             console.log(e);
         })
     }
+    loadInstallers()
+    const installers = ref({})
+    function loadInstallers() {
+        store.dispatch('loadDropdown', 'installers').then(({ data }) => {
+            installers.value = data;
+        }).catch(e => {
+            console.log(e);
+        })
+    }
 
 
     const schedules = ref({})
@@ -207,13 +219,24 @@
     }
     loadItem()
 
+      const handleKeyup = (event) => {
+        
+        store.dispatch('getMethod', { url:'search-schedule-list/'+event.target.value }).then((data) => {
+        if (data?.status == 200) {
+            schedules.value = data.data;
+        }
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+
 </script>
 
 
 <template>
     <div>
         
-        <Modal :show="showModal" @close="closeModal" max-width="6xl" title="Record Data" @submit="createItemName">
+        <Modal :show="showModal" @close="closeModal" max-width="6xl" title="Record Data" @submit="recordForm">
            <form action="" >
                 
                     <div class="py-4 px-4">
@@ -334,14 +357,16 @@
                                             <div class="flex ">
                                                 <div class="flex items-center ml-2">
                                                     <label for="radio1" class="mr-2 text-sm font-medium text-gray-900">Public</label>
-                                                    <input id="radio1" type="radio" name="dt_type" v-model="meterForm.dt_type" value="Private" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                                                    <input id="radio1" type="radio" name="dt_type" v-model="meterForm.dt_type" value="Public" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
                                                 </div>
                                                 <div class="flex items-center ml-2">
                                                     <label for="radio2" class="mr-2 text-sm font-medium text-gray-900">Private</label>
                                                     <input id="radio2" type="radio" name="dt_type" v-model="meterForm.dt_type" value="Private" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
                                                 </div>      
                                                 
-                                            </div>      
+                                            </div>  
+                                            <InputError class="mt-2" :message="meterForm?.errors?.dt_type" />
+
                                         </div>
                                 </div>
 
@@ -453,10 +478,12 @@
                                             <input id="radio2" type="radio" name="phase" v-model="meterForm.phase" value="Yellow" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
                                         </div>      
                                         <div class="flex items-center ml-2">
-                                            <label for="radio2" class="mr-2 text-sm font-medium text-gray-900">Blue</label>
-                                            <input id="radio2" type="radio" name="phase" v-model="meterForm.phase" value="Blue" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                                            <label for="radio3" class="mr-2 text-sm font-medium text-gray-900">Blue</label>
+                                            <input id="radio3" type="radio" name="phase" v-model="meterForm.phase" value="Blue" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
                                         </div>
-                                    </div>      
+                                    </div>  
+                                        <InputError class="mt-2" :message="meterForm?.errors?.phase" />       
+
                                 </div>
                              <div class="flex flex-col ">
                                         <SelectComponent v-model="meterForm.meter_type" label="Meter Type" placeholder="Select Option"
@@ -480,7 +507,7 @@
                                             placeholder="New Seal Number"
                                             
                                         />
-                                        <InputError class="mt-2" :message="meterForm?.errors?.title" />       
+                                        <InputError class="mt-2" :message="meterForm?.errors?.seal" />       
                                 </div>
 
                                  <div class="flex flex-col ">
@@ -513,7 +540,7 @@
                                         <InputLabel for="pole" value="Service Center" />
                                         <TextInput
                                             id="pole"
-                                            type="number"
+                                            type="text"
                                             class="mt-1 block w-full"
                                             v-model="meterForm.service_center"
                                             placeholder="Customer Estimated Load"
@@ -603,6 +630,14 @@
         <!--<button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Team</button> -->
 
         <div class="overflow-auto rounded-lg shadow">
+            <TextInput
+                                            id="longitude"
+                                            type="text"
+                                            class="mt-1 block w-full"
+                                           @keyup="handleKeyup" 
+                                            placeholder="enter account number or name"
+                                            
+                                        />
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>

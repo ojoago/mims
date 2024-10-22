@@ -24,6 +24,23 @@ class DependencyController extends Controller
             logError($e->getMessage());
         }
     }
+
+
+    public function searchScheduleList($query)
+    {
+
+        try {
+            $data = Schedule::where('account_number', 'like', '%' . $query . '%')
+                ->orWhere('account_name', 'like', '%' . $query . '%')
+                ->orWhere('contact', 'like', '%' . $query . '%')->limit(15)->get();
+
+            return pushData($data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+        }
+    }
+
+
     
     public function schedules(){
         

@@ -50,6 +50,8 @@ return new class extends Migration
             $table->string('din')->nullable();
             $table->string('seal')->nullable();
             $table->string('dt_code')->nullable();
+            $table->string('trading_zone')->nullable();
+            $table->string('team_pid')->nullable();
             $table->string('creator')->nullable();
             $table->foreign('creator')->references('pid')->on('users')->onDelete('cascade');
             $table->timestamps();
