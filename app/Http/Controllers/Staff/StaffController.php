@@ -64,7 +64,7 @@ class StaffController extends Controller
                     // 'state_of_residence' => $request->state_of_residence,
                     // 'lga_of_residence' => $request->lga_of_residence,
                     'address' => $request->address ,
-                    'region_pid' => $request->religion ?? getRegionPid() ,
+                    'region_pid' => $request->region ?? getRegionPid() ,
                     'creator' => getUserPid()
                 ];
 
