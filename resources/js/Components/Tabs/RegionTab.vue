@@ -96,7 +96,7 @@
                         <InputError class="mt-2" :message="regionForm.errors.state" />
                     </div>
                      <div>
-                        <InputLabel for="email" value="Email" />
+                        <InputLabel for="email" value="Region" />
 
                         <TextInput
                             id="email"
@@ -104,8 +104,8 @@
                             class="mt-1 block w-full"
                             v-model="regionForm.region"
                             required
-                            autofocus
-                            autocomplete="username"
+                            autocomplete="off"
+                            placeholder="e.g Bauchi"
                         />
 
                         <InputError class="mt-2" :message="regionForm.errors.region" />

@@ -32,7 +32,8 @@ class StaffController extends Controller
             'lastname' => 'required',
             'username' => 'nullable|unique:user_details',
             'gender' => 'required',
-            'role' => 'required',
+            'role' => 'required_if:region,null',
+            'region' => 'required_if:role,null',
             // 'religion' => 'required',
             'dob' => 'required',
             'state_of_origin' => 'required',
@@ -63,7 +64,7 @@ class StaffController extends Controller
                     // 'state_of_residence' => $request->state_of_residence,
                     // 'lga_of_residence' => $request->lga_of_residence,
                     'address' => $request->address ,
-                    'region_pid' => getRegionPid() ,
+                    'region_pid' => $request->religion ?? getRegionPid() ,
                     'creator' => getUserPid()
                 ];
 
@@ -78,9 +79,11 @@ class StaffController extends Controller
                 DB::beginTransaction();
                 $user = User::updateOrCreate(['pid' => $user['pid'] ],$user);
 
-                // if (!isset($request->pid)) {
+                 if(!isset($request->religion)) {
+                    $user->assignRole('region admin');
+                }else{
                     $user->assignRole($request->role);
-                // }
+                }
 
                 if ($request->file('file')) {
                     $data['path'] = $request->file('file')->store('files/bio', 'public'); // Store in public/uploads
