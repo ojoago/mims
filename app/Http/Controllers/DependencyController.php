@@ -189,7 +189,7 @@ class DependencyController extends Controller
 
     private function addOrEditZone(array $data){
         try {
-            return TradingZone::updateOrCreate(['id' => $data['id'] ], $data);
+            return TradingZone::updateOrCreate(['pid' => $data['pid'] ], $data);
         } catch (\Throwable $e) {
             logError($e->getMessage());
             return false;
