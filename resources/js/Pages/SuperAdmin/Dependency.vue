@@ -20,7 +20,7 @@ const currentTab = (tabNumber) => (tab.value = tabNumber);
 <template>
      <Head title="Dependency" />
     <MainLayout>
-        {{ $page?.props }}
+       
         <div class="container mx-auto">
             <fieldset class="m-4 pb-4 border bg-gray-100 rounded-lg">
                 <nav class=" text-sm flex justify-center bg-gray-200">

@@ -23,10 +23,10 @@ import SpinnerLoader from '@/components/SpinnerLoader.vue';
                 </div>
          <div class="main-content container flex flex-col justify-between mx-auto sm:flex-row">
             <div class="w-full">
-                <div class="content">
+                <div class="content z-50">
                      <Flash/>
                             <SpinnerLoader/>
-                            <slot/>
+                            <slot class="z-50" />
                 </div>
             </div>
              <div class="z-50">
