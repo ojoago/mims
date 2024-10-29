@@ -16,18 +16,19 @@ class AuthMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public $param;
+    public $view = 'auth';
+    public function __construct($param)
     {
-        //
+        $this->param = $param;
     }
-
     /**
      * Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Auth Mail',
+            subject: $this->param['subject'],
         );
     }
 
@@ -36,8 +37,9 @@ class AuthMail extends Mailable
      */
     public function content(): Content
     {
+        $view = $this->param['blade'] ?? $this->view;
         return new Content(
-            view: 'view.name',
+            view: 'mails.' . $view . '-mail'
         );
     }
 

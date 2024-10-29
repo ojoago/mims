@@ -48,7 +48,10 @@ const changePage = (url) => {
                 <div class="grid grid-col-2 gap-2">
                     <div>
                         
-                <InputLabel for="file" value="Excel FIle" />
+                <div class="flex justify-between">
+                    <InputLabel for="file" value="Excel File" />
+                    <a href="/files/images/meter list.xlsx" class="text-optimal font-bold">Download File</a>
+                </div>
 
                 <TextInput
                     id="file"
@@ -69,7 +72,14 @@ const changePage = (url) => {
                 </div>
         </form>
             <div class="overflow-auto rounded-lg shadow">
-                    
+                    <TextInput
+                                            id="longitude"
+                                            type="text"
+                                            class="mt-1 block w-full"
+                                           @keyup="handleKeyup" 
+                                            placeholder="Enter Meter Number"
+                                            
+                                        />
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>

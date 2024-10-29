@@ -47,6 +47,7 @@
         {"id": "Christainity", "text": "Christainity"},
         {"id": "Other", "text": "Other"},
     ]
+    
     const meterForm = ref({
         'meter_number' :'', 
         'preload':'', 
@@ -98,6 +99,7 @@
             console.log(e);
         })
     }
+
     const resetForm = () => {
         meterForm.value = {
         'meter_number': '' , 

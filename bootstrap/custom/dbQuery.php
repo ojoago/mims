@@ -14,6 +14,16 @@ use Illuminate\Support\Facades\DB;
             return false;
         }
     }
+    function loadActiveRegion($pid){
+        try {
+                $region = DB::table('regions')->where('pid', $pid)->pluck('region')->first();
+                setRegionPid($pid);
+                setRegionName($region);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return false;
+        }
+    }
 
     
 

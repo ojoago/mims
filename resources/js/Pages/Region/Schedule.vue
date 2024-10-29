@@ -47,7 +47,10 @@ const changePage = (url) => {
              <form @submit.prevent="submit">
                 <div class="grid grid-col-2 gap-2">
                     <div>
-                        <InputLabel for="file" value="Excel File" />
+                        <div class="flex justify-between">
+                            <InputLabel for="file" value="Excel File" />
+                            <a href="/files/images/MAF data.xlsx" class="text-optimal font-bold">Download File</a>
+                        </div>
                         <TextInput
                             id="file"
                             type="file"

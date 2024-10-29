@@ -5,6 +5,7 @@ namespace App\Models\Installation;
 use App\Models\State;
 use App\Models\Admin\Feeder\Feeder11;
 use App\Models\Admin\Feeder\Feeder33;
+use App\Models\Region\Team;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,6 +34,11 @@ class Installation extends Model
     public function feeder11kv()
     {
         return $this->belongsTo(Feeder11::class, 'feeder_11kv', 'pid');
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class, 'team_pid', 'id');
     }
 
     public function origin()

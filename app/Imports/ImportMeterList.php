@@ -22,7 +22,7 @@ class ImportMeterList implements ToModel,WithHeadingRow
             'status'  => $row['status'] ?? 1 ,
             'phase'  => $row['phase'],
             'type'  => $row['type'],
-            'brand'  => $row['brand'],
+            'brand'  => $row['brand'] ?? 'Technovati',
             'creator'  => getUserPid()
         ]);
     }

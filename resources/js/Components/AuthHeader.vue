@@ -144,8 +144,11 @@ import store from '@/store';
                                     </template>
 
                                     <template #content>
-                                        <button class="bg-red-300 text-white w-full hover:bg-red-300" @click="showModal = true" type="button" as="button"> Update Password </button>
-                                        <DropdownLink class="bg-red-600 text-white  hover:bg-red-600" :href="route('logout')" method="post" as="button">
+                                        <button class="bg-red-200 text-white w-full hover:bg-red-200 py-1" @click="showModal = true" type="button" as="button"> Update Password </button>
+                                        <DropdownLink class="bg-red-400 text-white text-center  hover:bg-red-400" :href="route('logout.region')" method="get" as="button" v-if="$page.props.auth.role.includes('super admin') || $page.props.auth.role.includes('management')">
+                                            Log Out Region
+                                        </DropdownLink>
+                                        <DropdownLink class="bg-red-600 text-white text-center  hover:bg-red-600" :href="route('logout')" method="post" as="button">
                                             Log Out
                                         </DropdownLink>
                                     </template>

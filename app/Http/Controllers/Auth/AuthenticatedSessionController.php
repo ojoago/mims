@@ -32,6 +32,13 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+       
+        if (auth()->user()->hasAnyRole(['management'])) {
+            return redirect()->intended(route('management.dashboard', absolute: false));
+        }
+        else if (auth()->user()->hasAnyRole(['super admin'])) {
+            return redirect()->intended(route('admin.dashboard', absolute: false));
+        }
         getUserRegion(auth()->user()['pid']);
 
         // dd(auth()->user());

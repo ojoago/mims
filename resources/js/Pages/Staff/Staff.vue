@@ -396,6 +396,7 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Names </th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Email</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Username</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Role</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Phone Number</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Gender</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Date Of Birth</th>
@@ -414,6 +415,7 @@
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.lastname }} {{ list.firstname }} {{ list.othername }} </td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list?.user?.email }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.username }}</td>
+                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list?.user?.roles[0]?.name  }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.gsm }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.gender }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.date }}</td>

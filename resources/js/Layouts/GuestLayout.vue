@@ -8,7 +8,7 @@ import SpinnerLoader from '@/components/SpinnerLoader.vue';
 
 <template>
         <section class="wrapper ">
-                <div class="header flex justify-between px-10 z-50">
+                <div class="header justify-between px-10 z-50 flex ">
                     <div class="logo">
                         <Link href="/">
                             <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800" />
@@ -21,7 +21,7 @@ import SpinnerLoader from '@/components/SpinnerLoader.vue';
                         </ul>
                     </div>
                 </div>
-         <div class="main-content container flex justify-between mx-auto">
+         <div class="main-content container flex flex-col justify-between mx-auto sm:flex-row">
             <div class="w-full">
                 <div class="content">
                      <Flash/>

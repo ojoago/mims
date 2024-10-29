@@ -16,6 +16,25 @@ use Illuminate\Validation\Rule;
 class MeterController extends Controller
 {
     // names of t7 item
+    public function meterSummary(){
+        try {
+            $data = DB::table('meter_lists')->select(DB::raw('status,COUNT(id) as count'))->groupBy('status')->where('region_pid',getRegionPid())->get();
+            return pushData($data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return pushData([],ERR_EMT);
+        }
+    }
+    public function installations(){
+        try {
+            $data = DB::table('installations')->select(DB::raw('status,COUNT(id) as count'))->groupBy('status')->where('region_pid',getRegionPid())->get();
+            return pushData($data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return pushData([],ERR_EMT);
+        }
+    }
+    // names of t7 item
     public function index(){
         try {
             $data = MeterList::paginate(20);

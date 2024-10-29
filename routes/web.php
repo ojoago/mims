@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -24,7 +25,22 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function(){
-    
+    Route::get('/meter-summary', [MeterController::class, 'meterSummary']);//->name('admin.dashboard');
+
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+    //management
+    Route::middleware(['role:management'])->group(function () {
+        Route::get('/management-dashboard', [DashboardController::class, 'managementDashboard'])->name('management.dashboard');
+    });
+    //management
+    Route::middleware(['role:super admin'])->group(function () {
+        Route::get('/admin-dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard');
+        Route::get('/login-region', [DashboardController::class, 'loginRegion'])->name('login.region');
+    });
+    Route::get('/logout-region', [DashboardController::class, 'logOutRegion'])->name('logout.region');
+
     // super admin roles 
     Route::middleware(['role:super admin|region admin'])->group(function(){
         Route::get('/dependency', [DependencyController::class, 'index'])->name('dependency');
@@ -91,7 +107,9 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/schedule-list' , [DependencyController::class, 'scheduleList'])->name('schedule.list');
         Route::get('/search-schedule-list/{query}', [DependencyController::class, 'searchScheduleList']);//->name('schedule.list');
         Route::get('/installed-list', [MeterController::class, 'installedList']);//->name('schedule.list');
+
         Route::get('/search-installed-list', [MeterController::class, 'searchInstalledList']);//->name('schedule.list');
+        Route::inertia('/customer-complains', 'Region/Complains')->name('complains');
 
 
     });
@@ -140,26 +158,5 @@ Route::get('/drop-meter-brands', [DropDownController::class, 'dropDownMeterBrand
 
 
 
-
-
-
-
-Route::get('/super', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'role:super admin']);//->name('dashboard');
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/main', function () {
-    return Inertia::render('Main');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';

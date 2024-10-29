@@ -34,59 +34,77 @@
                     <span class="nav-name">Dashboard </span>
                 </Link>
                 
-                <Link :href="route('dependency')" class="flex link hover:bg-gray-300" :class="activeRoute('dependency') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                <Link :href="route('dependency')" v-if="$page.props.auth.role.includes('super admin')" class="flex link hover:bg-gray-300" :class="activeRoute('dependency') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
                     <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
                     <span class="nav-name">Dependency </span>
                 </Link>
-                <Link :href="route('feeders')" class="flex link hover:bg-gray-300" :class="activeRoute('feeders') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                    <span class="nav-name">Feeders </span>
-                </Link>
-                <Link :href="route('create.staff')" class="flex link hover:bg-gray-300" :class="activeRoute('create.staff') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                    <span class="nav-name">Staff </span>
-                </Link>
-                <Link :href="route('schedules')" class="flex link hover:bg-gray-300" :class="activeRoute('schedules') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                    <span class="nav-name">Schedules </span>
-                </Link>
-                <Link :href="route('meter.list')" class="flex link hover:bg-gray-300" :class="activeRoute('meter.list') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                    <span class="nav-name">Meter List </span>
-                </Link>
-                <Link :href="route('inventory.list')" class="flex link hover:bg-gray-300" :class="activeRoute('inventory.list') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                    <span class="nav-name">Inventory Item </span>
-                </Link>
-                <Link :href="route('damage.item')" class="flex link hover:bg-gray-300" :class="activeRoute('damage.item') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                    <span class="nav-name">Damaged Item </span>
-                </Link>
+                <div v-if="$page.props.auth.role.includes('super admin') || $page.props.auth.role.includes('region admin')">
+                    <Link :href="route('feeders')" class="flex link hover:bg-gray-300" :class="activeRoute('feeders') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Feeders </span>
+                    </Link>
+                    <Link :href="route('create.staff')" class="flex link hover:bg-gray-300" :class="activeRoute('create.staff') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Staff </span>
+                    </Link>
+                    <Link :href="route('schedules')" class="flex link hover:bg-gray-300" :class="activeRoute('schedules') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Schedules </span>
+                    </Link>
+                    <Link :href="route('teams')" class="flex link hover:bg-gray-300" :class="activeRoute('teams') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Teams </span>
+                    </Link>
+                </div>
+                <div v-if="$page.props.auth.role.includes('super admin') || $page.props.auth.role.includes('store')">
+                    <Link :href="route('meter.list')" class="flex link hover:bg-gray-300" :class="activeRoute('meter.list') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Meter List </span>
+                    </Link>
+                    <Link :href="route('inventory.list')" class="flex link hover:bg-gray-300" :class="activeRoute('inventory.list') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Inventory Item </span>
+                    </Link>
+                    <Link :href="route('damage.item')" class="flex link hover:bg-gray-300" :class="activeRoute('damage.item') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Damaged Item </span>
+                    </Link>
+                    <Link :href="route('request.list')" class="flex link hover:bg-gray-300" :class="activeRoute('request.list') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Request List</span>
+                    </Link>
+                </div>
 
-                <Link :href="route('teams')" class="flex link hover:bg-gray-300" :class="activeRoute('teams') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                   
-                    <span class="nav-name">Teams </span>
-                </Link>
-                <Link :href="route('assigned.meters')" class="flex link hover:bg-gray-300" :class="activeRoute('assigned.meters') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                   
-                    <span class="nav-name">Assigned Meter </span>
-                </Link>
-                <Link :href="route('installations')" class="flex link hover:bg-gray-300 " :class="activeRoute('installations') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                   
-                    <span class="nav-name">Installations </span>
-                </Link>
+                <div v-if="$page.props.auth.role.includes('super admin') || $page.props.auth.role.includes('supervisor')">
+                     <Link :href="route('assigned.meters')" class="flex link hover:bg-gray-300" :class="activeRoute('assigned.meters') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Assigned Meter </span>
+                    </Link>
+                    
+                </div>
+                    <Link :href="route('request')" v-if="$page.props.auth.role.includes('super admin') || $page.props.auth.role.includes('region admin') || $page.props.auth.role.includes('supervisor')" class="flex link hover:bg-gray-300" :class="activeRoute('request') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Request </span>
+                    </Link>
+                
+                    <div v-if="$page.props.auth.role.includes('super admin') || $page.props.auth.role.includes('data entry')">
+                         <Link :href="route('installations')" class="flex link hover:bg-gray-300 " :class="activeRoute('installations') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                            <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                            <span class="nav-name">Installations </span>
+                        </Link>
 
-                <Link :href="route('request')" class="flex link hover:bg-gray-300" :class="activeRoute('request') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                    <span class="nav-name">Request </span>
-                </Link>
-                <Link :href="route('request.list')" class="flex link hover:bg-gray-300" :class="activeRoute('request.list') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
-                    <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
-                    <span class="nav-name">Request List</span>
-                </Link>
+                        <Link :href="route('complains')" class="flex link hover:bg-gray-300 " :class="activeRoute('complains') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                            <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                            <span class="nav-name">Complains </span>
+                        </Link>
+                    </div>
+                
+               
+                
+               
+
+                
+                
                 
             </ul>
         </div>
