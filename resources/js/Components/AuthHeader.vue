@@ -101,7 +101,7 @@ import store from '@/store';
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-11">
                         <div class="flex">
-                            <button class="mt-3 block md:hidden">
+                            <button class="mt-3 block md:hidden relative bg-optimal px-4 rounded-md text-white z-200"  id="toggleSideBar">
                                 <font-awesome-icon icon="fa-solid fa-bars items-center" />
                             </button>
                             <!-- Navigation Links -->

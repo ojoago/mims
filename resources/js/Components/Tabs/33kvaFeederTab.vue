@@ -177,7 +177,7 @@ const removeFeeder = (i) => {
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder?.zone?.zone }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ feeder.name }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
-                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editRegion(feeder)">Preview</button>
+                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block rounded-md" @click="editRegion(feeder)">Edit</button>
                             </td>
                             
                             

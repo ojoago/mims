@@ -2,6 +2,23 @@
 import AuthHeader from '@/Components/AuthHeader.vue';
 import Footer from '@/Components/Footer.vue';
 import SideBar from '@/Components/SideBar.vue';
+import { onMounted } from 'vue';
+
+ onMounted(() => {
+        let navName = document.querySelectorAll(".nav-link");
+        for (let i = 0; i < navName.length; i++) {
+            navName[i].addEventListener("click", () => {
+                if(window.innerWidth < 756){
+                    sideBar.classList.toggle('showSidebar')
+                }
+            })
+        }
+        let sidebarBtn = document.querySelector('#toggleSideBar')
+        let sideBar = document.querySelector('.sideBar')
+        sidebarBtn.addEventListener('click', () => {
+            sideBar.classList.toggle('showSidebar')
+        })
+    })
 
 
 </script>

@@ -19,6 +19,3 @@ import { GChart } from 'vue-google-charts'
 
 </script>
 
-<style lang="scss" scoped>
-
-</style>
