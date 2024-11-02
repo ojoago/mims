@@ -19,7 +19,7 @@
 
      const handleKeyup = (event) => {
         
-        store.dispatch('getMethod', { url:'search-schedule-list/'+event.target.value }).then((data) => {
+        store.dispatch('getMethod', { url:'search-installed-list/'+event.target.value }).then((data) => {
         if (data?.status == 200) {
             schedules.value = data.data;
         }
@@ -27,6 +27,8 @@
             console.log(e);
         })
     }
+
+
 
 </script>
 
@@ -63,10 +65,11 @@
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Longitude</th>
                             <!--<th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Connection Status</th> -->
                             <!-- <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">contact information</th> -->
-                            <th width ="5%"  class="p-3 text-sm font-semibold tracking-wide text-left table-bordered"> 
+                            <th  class="p-3 text-sm font-semibold tracking-wide text-left table-bordered"> 
                                <!--<font-awesome-icon icon="fa-solid fas fa-cog"/> -->
                                 Date
                             </th>
+                           
                         </tr>
                     </thead>
                     <tbody>
@@ -76,7 +79,7 @@
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.fullname }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.address }}</td>
                             <!--<td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.feeder_33 }}</td> -->
-                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.feeder11kv.name }}</td>
+                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.feeder11kv?.name }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.dt_name }}</td>
                             <!--<td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.band }}</td>-->
                             <!--<td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.load }}</td>-->
@@ -90,6 +93,7 @@
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
                                 {{ item.date }}
                             </td>
+                          
                         </tr>
                     </tbody>
                 </table>

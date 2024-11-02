@@ -8,6 +8,7 @@ use App\Imports\ImportMeterList;
 use Illuminate\Support\Facades\DB;
 use App\Models\Inventory\MeterList;
 use App\Http\Controllers\Controller;
+use App\Models\Installation\Complain;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Installation\Installation;
 use Illuminate\Support\Facades\Validator;
@@ -34,11 +35,41 @@ class MeterController extends Controller
             return pushData([],ERR_EMT);
         }
     }
+    
     // names of t7 item
     public function index(){
         try {
             $data = MeterList::paginate(20);
             return Inertia::render('Inventory/MeterList',['data' => $data]);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return pushData([],ERR_EMT);
+        }
+    }
+
+    // 
+    
+    public function complainList(){
+        try {
+            $data = Complain::with('meter')->latest()->limit(100)->paginate(20);
+            return pushData($data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return pushData([],ERR_EMT);
+        }
+    }
+    // 
+    
+    public function searchComplainList($query){
+        try {
+            $data = Complain::from('complains as c')->join('installations as i','i.pid','c.meter_pid')->where('c.region_pid', getRegionPid())
+                ->where(function ($where) use ($query) {
+                    $where->where('i.account_no', 'like', '%' . $query . '%')
+                        ->orWhere('i.meter_number', 'like', '%' . $query . '%')
+                        ->orWhere('i.fullname', 'like', '%' . $query . '%')
+                        ->orWhere('i.gsm', 'like', '%' . $query . '%');
+                })->select('c.*')->with('meter')->limit(10)->paginate(10);
+            return pushData($data);
         } catch (\Throwable $e) {
             logError($e->getMessage());
             return pushData([],ERR_EMT);
@@ -51,7 +82,7 @@ class MeterController extends Controller
         try {
 
 
-            $data = Installation::with('origin')->with('feeder11kv')->with('feeder33kv')->latest()->limit(100)->get();
+            $data = Installation::where('region_pid', getRegionPid())->with('origin')->with('feeder11kv')->with('feeder33kv')->latest()->limit(100)->get();
             return pushData($data);
         } catch (\Throwable $e) {
             logError($e->getMessage());
@@ -60,13 +91,76 @@ class MeterController extends Controller
     }
 
 
-    public function searchInstalledList()
+    public function searchInstalledList($query)
     {
         try {
 
 
-            $data = Installation::with('origin')->with('feeder11kv')->with('feeder33kv')->latest()->limit(100)->get();
+            $data = Installation::where('region_pid', getRegionPid())
+                ->where(function($where) use($query){
+                    $where->where('account_no', 'like', '%' . $query . '%')
+                    ->orWhere('dt_name', 'like', '%' . $query . '%')
+                    ->orWhere('meter_number', 'like', '%' . $query . '%')
+                    ->orWhere('fullname', 'like', '%' . $query . '%')
+                    ->orWhere('gsm', 'like', '%' . $query . '%');
+                })->with('origin')->with('feeder11kv')->with('feeder33kv')->latest()->limit(100)->get();
+              
             return pushData($data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return pushData([], STS_500);
+        }
+    }
+
+
+    public function addCustomerComplain(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'old_meter_number' => ['nullable', 'exists:meter_lists', Rule::unique('installations')->where(function ($q) use ($request) {
+                    $q->where('pid', '<>', $request->pid);
+                })],
+                'complain' => 'required',
+                'resolution' => 'required',
+                'status' => 'required',
+            ]);
+
+            if (!$validator->fails()) {
+                try {
+
+                    $data  = [
+                        'meter_number' => $request->meter_number ,
+                        'meter_pid' => $request->meter_pid ,
+                        'complain' => $request->complain ,
+                        'resolution' => $request->resolution ,
+                        'old_meter_number' => $request->old_meter_number ?? null ,
+                        'old_seal_number' => $request->old_seal_number ?? null ,
+                        'status' => $request->status ,
+                        'creator' => getUserPid() ,
+                        'region_pid' => getRegionPid() ,
+                    ];
+                    DB::beginTransaction();
+                    MeterList::where('meter_number', $request->meter_number)->update(['status' => matchStatus($request->status)]);
+                    if(isset($request->old_meter_number)){
+                        MeterList::where('meter_number', $request->old_meter_number)->update(['status' => 3]);
+                    }
+
+                    $result = $this->addOrUpdateComplain($data);
+                    if ($result) {
+                        DB::commit();
+                        return pushResponse($result, $request->pid ? 'Complain Recorded' : "Complain updated");
+                    }
+                    DB::rollBack();
+                    return pushResponse($result, $request->pid ? 'Record updated' : "Form recorded");
+                } catch (\Throwable $e) {
+                    logError($e->getMessage());
+                    DB::rollBack();
+                    return responseMessage(status: 204, data: [], msg: STS_500);
+                }
+            }
+            return responseMessage(data: $validator->errors()->toArray(), status: 422, msg: STS_422);
+            
         } catch (\Throwable $e) {
             logError($e->getMessage());
             return pushData([], STS_500);
@@ -203,6 +297,18 @@ class MeterController extends Controller
 
         try {
             return Installation::updateOrCreate(['pid' => $data['pid']], $data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return false;
+        }
+    }
+
+
+    private function addOrUpdateComplain(array $data)
+    {
+
+        try {
+            return Complain::updateOrCreate(['meter_pid' => $data['meter_pid']], $data);
         } catch (\Throwable $e) {
             logError($e->getMessage());
             return false;

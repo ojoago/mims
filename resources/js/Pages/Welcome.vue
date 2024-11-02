@@ -9,7 +9,7 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 <template>
     <GuestLayout >
         <h1 class="font-poppins text-2xl"> MIMS: Meter Installation Management Software.</h1>
-       <p class="font-poppins text-lg">
+       <p class="font-poppins text-lg mb-8">
           
 
 Manages installation, installers, staff and inventory. <br>

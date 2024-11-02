@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('region_pid')->references('pid')->on('regions')->onDelete('cascade');
             $table->string('pid')->unique();
             $table->string('meter_number')->unique();
-            $table->tinyInteger('status')->default(1)->comment('1:in store,2:taken out,3:installed,4:faulty');
+            $table->tinyInteger('status')->default(1)->comment('1:in store,2:taken out,3:installed,4:faulty,5:replaced');
             $table->string('phase');
             $table->string('type')->nullable();
             $table->string('brand')->nullable();

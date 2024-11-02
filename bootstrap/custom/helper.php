@@ -99,7 +99,17 @@ function getUsername()
     }
 }
 
-
+function matchStatus($role)
+{
+    $role =  match ($role) {
+        'pending' => 0,
+        'resolved' => 3,
+        'unresolved' => 4,
+        'replaced' => 5,
+        default => 0
+    };
+    return $role;
+}
 
 function removeThis($str, $chr = ',')
 {

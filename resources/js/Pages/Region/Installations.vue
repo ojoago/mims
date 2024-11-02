@@ -20,7 +20,8 @@ const currentTab = (tabNumber) => (tab.value = tabNumber);
         <div class="container mx-auto">
             <fieldset class="m-4 pb-4 border bg-gray-100 rounded-lg">
                 <nav class=" text-sm flex justify-center bg-gray-200">
-                    <a @click="currentTab(1)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 1 && `active`" >Record Form</a>
+                    <a @click="currentTab(1)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 1 && `active`" >Record From List</a>
+                    <a @click="currentTab(2)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 2 && `active`">Record Form </a>
                     <a @click="currentTab(2)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 2 && `active`">Installed List</a>
                 </nav>
 
