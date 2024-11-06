@@ -7,7 +7,7 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     import { formatError } from "@/composables/formatError";
     const { transformValidationErrors } = formatError()
 
@@ -94,8 +94,6 @@
         <Modal :show="showModal" @close="closeModal" max-width="sm" title="Add Team " @submit="createTeam">
            <form action="" class="px-4 py-2">
            
-                     
-
                      <div>
                         <InputLabel for="text" value="Team Name" />
 
@@ -113,7 +111,7 @@
 
                      <div>
                        
-                        <SelectComponent v-model="teamForm.supervisor" label="Supervisor"  placeholder="Select supervisor"
+                        <BaseSelect v-model="teamForm.supervisor" label="Supervisor" :selected="teamForm.supervisor"
                                          :options="supervisors" />
 
                         <InputError class="mt-2" :message="teamForm.errors.supervisor" />

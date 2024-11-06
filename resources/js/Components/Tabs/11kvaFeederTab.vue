@@ -3,7 +3,7 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     import store from '@/store';
     import { ref } from 'vue';
 
@@ -35,6 +35,8 @@
         }
     }
     const editFeeder = (feeder) =>{
+        loadRegions(feeder.state_id)
+        load33(feeder.zone_pid)
         feederForm.value = {
             state_id:feeder.state_id,
             zone_pid:feeder.zone_pid,
@@ -164,8 +166,7 @@
                <div class="grid grid-cols-1 gap-2">
                      <div>
 
-                       <SelectComponent v-model="feederForm.feeder33" label="33 kv feeder"  placeholder="Select Region"
-                                         :options="feeder33" />
+                        <BaseSelect v-model="feederForm.feeder33" label="33 kv feeder"  :selected="feederForm.feeder33" :options="feeder33" />
 
                         <InputError class="mt-2" :message="feederForm.errors.feeder33" />
                     </div>
