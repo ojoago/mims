@@ -16,10 +16,10 @@
         showModal.value = false;
     }
     const status = [
-        {id: 'pending', text: 'pending'},
-        {id: 'resolved', text: 'resolved'},
-        {id: 'unresolved', text: 'unresolved'},
-        {id: 'replaced', text: 'replaced'},
+        {id: 'PENDING', text: 'pending'},
+        {id: 'RESOLVED', text: 'resolved'},
+        {id: 'UNRESOLVED', text: 'unresolved'},
+        {id: 'REPLACED', text: 'replaced'},
     ]
 
 
@@ -56,7 +56,7 @@
        const complainForm = ref({
             meter_number:'' ,
             meter_pid:'' ,
-            // complain:'' ,
+            complain:'' ,
             status:'' ,
             resolution:'' ,
             new_meter_number:'' ,
@@ -68,7 +68,21 @@
      const updateStatus = (data) =>{
         complainForm.value.meter_number = data.meter_number
         complainForm.value.meter_pid = data.pid
+        complainForm.value.complain = data.complain
         showModal.value  = true
+    }
+
+     const addComplain = () =>{
+       complainForm.value.errors = {}
+        store.dispatch('postMethod', { url: '/add-customer-complain', param: complainForm.value }).then((data ) => {
+        if (data?.status == 422) {
+            complainForm.value.errors = transformValidationErrors(data.data)
+        } else if (data?.status == 201) {
+            closeModal()
+        }
+        }).catch(e => {
+            console.log(e);
+        })
     }
 
 </script>

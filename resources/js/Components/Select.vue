@@ -2,7 +2,7 @@
         <InputLabel :for="label" :value="label" />
         <select :name="label" :id="label" @change="emit('update:model-value', $event.target.value);" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" >
             <option value="" selected>{{ placeholder }}</option>
-            <option v-for="(option,loop) in options" :key="loop" :value="val == 'id' ? option.id : option.text" :v-if="option.id === modelValue && val == 'id' ? 'selected' : '' || option.text === modelValue ? 'selected' : ''" >{{
+            <option v-for="(option,loop) in options" :key="loop" :value="val == 'id' ? option.id : option.text" :v-if="option.id == modelvalue && val == 'id' ? 'selected' : '' || option.text == modelvalue ? 'selected' : ''" >{{
                     option.text
                 }}
             </option>
@@ -17,7 +17,7 @@ defineProps({
     placeholder: String,
     options: Object,
     error: String,
-    modelValue: String,
+    modelvalue: String,
     val:{
         type:String,
         default: 'id'

@@ -100,7 +100,7 @@ const maxWidthClass = computed(() => {
                         :class="maxWidthClass"
                     >
                     <div  class="px-4 py-2 flex justify-between">
-                        <span>{{ title }}</span>
+                        <span class="font-bold">{{ title }}</span>
                         <span @click="close" class="rounded-full bg-red-500 w-5 text-center cursor-pointer ">X</span>
                     </div>
                     <hr>
