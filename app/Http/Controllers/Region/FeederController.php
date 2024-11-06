@@ -59,7 +59,7 @@ class FeederController extends Controller
                     for ($i = 0; $i < $count; $i++) {
                         $data  = [
                             'name' => $request->feeder[$i]['name'],
-                            'pid' => public_id(),
+                            'pid' => $request->feeder[$i]['pid'] ?? public_id(),
                             'creator' => getUserPid(),
                             'zone_pid' => $request->region,
                         ];

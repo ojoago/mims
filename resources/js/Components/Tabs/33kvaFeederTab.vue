@@ -3,7 +3,8 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
+    // BaseSelect
     import store from '@/store';
     import { ref } from 'vue';
 
@@ -45,6 +46,20 @@ const removeFeeder = (i) => {
             }],
             errors:{}
         }
+    }
+    const editRegion = (feeder) =>{
+        loadRegions(feeder?.zone?.state_id)
+        feederForm.value = {
+            state:feeder?.zone?.state_id,
+            region:feeder?.zone_pid,
+            feeder:[{
+                name:feeder.name,
+                pid:feeder.pid,
+            }],
+            errors:{}
+        }
+        showModal.value = true;
+
     }
 
     const addFeeder33 = () =>{
@@ -117,8 +132,9 @@ const removeFeeder = (i) => {
                     </div>
                      <div>
 
-                       <SelectComponent v-model="feederForm.region" label="Trading Zone"  placeholder="Select Option"
-                                         :options="regions" />
+                      
+                        <BaseSelect label="Trading Zone" v-model="feederForm.region" :selected="feederForm.region" :options="regions" />
+                        
 
                         <InputError class="mt-2" :message="feederForm.errors.feeder" />
                     </div>
@@ -162,7 +178,7 @@ const removeFeeder = (i) => {
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>
                             <th width ="5%" class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">S/N</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Region</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Trading Zone</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Feeder </th>
                             <th width ="10%"  class="p-3 text-sm font-semibold tracking-wide text-left"> 
                                 <font-awesome-icon icon="fa-solid fa fa-cog"/>
