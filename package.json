@@ -26,7 +26,6 @@
         "npm": "^10.8.3",
         "vue-barcode-reader": "^1.0.3",
         "vue-google-charts": "^1.1.0",
-        "vue-qrcode-reader": "^5.5.11",
         "vuex": "^4.1.0"
     }
 }

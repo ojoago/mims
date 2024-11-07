@@ -11,10 +11,14 @@ class TeamAssignedMeter extends Model
     use HasFactory;
 
     protected $fillable = [
-        'region_pid' , 'date' ,'meter_pid' ,'creator' ,
+        'region_pid' , 'date' ,'meter_pid' ,'creator', 'team_pid' ,
     ];
 
     public function number(){
         return $this->belongsTo(MeterList::class, 'meter_pid', 'pid');
+    }
+
+    public function team(){
+        return $this->belongsTo(Team::class, 'team_pid', 'pid');
     }
 }

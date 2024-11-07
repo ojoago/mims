@@ -182,6 +182,17 @@ class MeterController extends Controller
         }
     }
 
+    public function addMeterNumber(Request $request){
+        $validator = Validator::make($request->all(), [
+            'old_meter_number' => ['nullable', 'exists:meter_lists', Rule::unique('installations')->where(function ($q) use ($request) {
+                $q->where('pid', '<>', $request->pid);
+            })],
+            'complain' => 'required',
+            'resolution' => 'required',
+            'status' => 'required',
+        ]);
+    }
+
 
     public function RecordForm(Request $request)
     {

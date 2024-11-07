@@ -1,47 +1,57 @@
 <script setup>
 
     import MainLayout from '@/Layouts/MainLayout.vue';
-    import { Head,useForm } from '@inertiajs/vue3';
-    import InputError from '@/Components/InputError.vue';
-    import InputLabel from '@/Components/InputLabel.vue';
-    import TextInput from '@/Components/TextInput.vue';
-import { Inertia } from '@inertiajs/inertia';
-import { StreamBarcodeReader } from "vue-barcode-reader";
-import { ImageBarcodeReader } from "vue-barcode-reader";
-import { ref } from 'vue';
+    import { Head } from '@inertiajs/vue3';
+    import { Inertia } from '@inertiajs/inertia';
+    import { StreamBarcodeReader } from "vue-barcode-reader";
+    // import { ImageBarcodeReader } from "vue-barcode-reader";
+    import { ref } from 'vue';
     defineProps({
         data:Array
     })
 
 
-    const form = useForm({
-        region: '',
-        file: '',
-    });
-
-const submit = () => {
-    form.post(route('meter.list'), {
-        onFinish: () => form.reset(),
-    });
-};
+   
 const onDecode = (detectedCodes) => {
-    alert()
-    console.log(detectedCodes);
-    detected.value = detectedCodes
-    
+    scannedNumber.value.meter_number  = detectedCodes
+    addNumber()
 };
-const onError = (detectedCodes) => {
-    alert('err')
-    console.log(detectedCodes);
-    detected.value = detectedCodes
+
+// const onLoaded = (detectedCodes) => {
+//     alert('loaded')
+//     console.log(detectedCodes);
+//     detected.value = detectedCodes
+// };
+
+
+// status
+    const scannedNumber = ref({
+        meter_number: '',
+        errors:{}
+    });
+    const scan = ref(false);
+
+    function addNumber() {
+        scan.value = false
+        store.dispatch('postMethod', { url: '/add-meter-number', param: scannedNumber.value }).then((data ) => {
+        if (data?.status == 422) {
+            scannedNumber.value.errors = transformValidationErrors(data.data)
+        } 
+        // else if (data?.status == 201) {
+           
+        // }
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+
+
+// const onLoaded = (detectedCodes) => {
+//     alert('loaded')
+//     console.log(detectedCodes);
+//     detected.value = detectedCodes
     
-};
-const onLoaded = (detectedCodes) => {
-    alert('loaded')
-    console.log(detectedCodes);
-    detected.value = detectedCodes
-    
-};
+// };
 const detected  = ref(null)
 const changePage = (url) => {
     Inertia.get(url, {}, { preserveState: true, preserveScroll: true });
@@ -65,34 +75,13 @@ const changePage = (url) => {
 
     <MainLayout>
         <div class="px-4 py-5">
-            {{ detected }}
-            <div class="w-1/4">
-               <ImageBarcodeReader @decode="onDecode" @error="onError"></ImageBarcodeReader>
-               <StreamBarcodeReader @decode="onDecode" @loaded="onLoaded"></StreamBarcodeReader>
+            <button  @click="scan = true" class=" bg-optimal text-white px-4 py-2 rounded mb-2" v-if="!scan">Scan</button>
+            
+            <div class="w-full md:w-1/4">
+                <StreamBarcodeReader @decode="onDecode" v-if="scan"></StreamBarcodeReader>
             </div>
-             <form @submit.prevent="submit">
-                <div class="grid grid-col-3 gap-2">
-                
-                    <div class="flex">
-                        <div class="flex flex-col">
-                        <InputLabel for="email" value="Scan" />
-                        <TextInput
-                            id="email"
-                            type="text"
-                            class="mt-1 block w-full"
-                            autofocus
-                            autocomplete="off"
-                        />
-                        <InputError class="mt-2" :message="form.errors.email" />
-                    </div>
-                    
-                    </div>
-                    
-                    <div class="">
-                        <button  @click="submit" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" class=" bg-optimal text-white px-4 py-2 rounded mr-2">Submit</button>
-                    </div>
-                </div>
-        </form>
+            <button  @click="scan = false" class=" bg-optimal text-white px-4 py-2 rounded mb-1" v-if="scan">Stop</button>
+           
             <div class="overflow-auto rounded-lg shadow">
                     
                 <table class="w-full">
@@ -104,7 +93,7 @@ const changePage = (url) => {
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Type</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Status</th>
                             <th width ="5%"  class="p-3 text-sm font-semibold tracking-wide text-left"> 
-                                <font-awesome-icon class="fa-solid fas fa-cog"/>
+                                <font-awesome-icon icon="fa-solid fas fa-cog"/>
                             </th>
                         </tr>
                     </thead>
@@ -127,7 +116,7 @@ const changePage = (url) => {
                   
 
                     <button @click="changePage(data?.prev_page_url)" :disabled="!data?.prev_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Previous</button>
-<button @click="changePage(data?.next_page_url)" :disabled="!data?.next_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Next</button>
+                    <button @click="changePage(data?.next_page_url)" :disabled="!data?.next_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Next</button>
                     </nav>
                 </div>
                 

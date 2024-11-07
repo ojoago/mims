@@ -97,7 +97,8 @@ Route::middleware(['auth'])->group(function(){
     
     //filed supervisor
     Route::middleware(['role:supervisor|super admin|region admin'])->group(function () {
-        Route::inertia('/team-assigned-meters', 'Region/TeamAssignedMeter')->name('assigned.meters');
+        Route::inertia('/team-assigned-meters', 'Region/TeamAssignedMeters')->name('assigned.meters');
+        Route::post('/add-meter-number', [MeterController::class, 'addMeterNumber']);//->name('assigned.meters');
         
     });
     // data staff
