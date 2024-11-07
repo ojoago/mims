@@ -25,8 +25,10 @@ const submit = () => {
 const onDetect = (detectedCodes) => {
     alert()
     console.log(detectedCodes);
+    detected.value = detectedCodes
     
 };
+const detected  = ref(null)
 const changePage = (url) => {
     Inertia.get(url, {}, { preserveState: true, preserveScroll: true });
     // store.dispatch('getMethod', { url:url }).then((data) => {
@@ -49,6 +51,7 @@ const changePage = (url) => {
 
     <MainLayout>
         <div class="px-4 py-5">
+            {{ detected }}
             <div class="w-1/4">
                 <qrcode-stream @detect="onDetect"></qrcode-stream>
             </div>
