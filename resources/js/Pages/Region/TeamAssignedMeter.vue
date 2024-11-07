@@ -6,7 +6,7 @@
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
 import { Inertia } from '@inertiajs/inertia';
-// import { StreamBarcodeReader } from "vue-barcode-reader";
+import { StreamBarcodeReader } from "vue-barcode-reader";
 import { ImageBarcodeReader } from "vue-barcode-reader";
 import { ref } from 'vue';
     defineProps({
@@ -32,6 +32,12 @@ const onDecode = (detectedCodes) => {
 };
 const onError = (detectedCodes) => {
     alert('err')
+    console.log(detectedCodes);
+    detected.value = detectedCodes
+    
+};
+const onLoaded = (detectedCodes) => {
+    alert('loaded')
     console.log(detectedCodes);
     detected.value = detectedCodes
     
@@ -62,6 +68,7 @@ const changePage = (url) => {
             {{ detected }}
             <div class="w-1/4">
                <ImageBarcodeReader @decode="onDecode" @error="onError"></ImageBarcodeReader>
+               <StreamBarcodeReader @decode="onDecode" @loaded="onLoaded"></StreamBarcodeReader>
             </div>
              <form @submit.prevent="submit">
                 <div class="grid grid-col-3 gap-2">
