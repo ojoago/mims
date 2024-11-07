@@ -7,6 +7,7 @@
     import TextInput from '@/Components/TextInput.vue';
 import { Inertia } from '@inertiajs/inertia';
 import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
+import { ref } from 'vue';
     defineProps({
         data:Array
     })
