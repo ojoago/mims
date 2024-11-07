@@ -6,7 +6,8 @@
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
 import { Inertia } from '@inertiajs/inertia';
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
+// import { StreamBarcodeReader } from "vue-barcode-reader";
+import { ImageBarcodeReader } from "vue-barcode-reader";
 import { ref } from 'vue';
     defineProps({
         data:Array
@@ -23,8 +24,14 @@ const submit = () => {
         onFinish: () => form.reset(),
     });
 };
-const onDetect = (detectedCodes) => {
+const onDecode = (detectedCodes) => {
     alert()
+    console.log(detectedCodes);
+    detected.value = detectedCodes
+    
+};
+const onError = (detectedCodes) => {
+    alert('err')
     console.log(detectedCodes);
     detected.value = detectedCodes
     
@@ -54,7 +61,7 @@ const changePage = (url) => {
         <div class="px-4 py-5">
             {{ detected }}
             <div class="w-1/4">
-                <qrcode-stream @detect="onDetect"></qrcode-stream>
+               <ImageBarcodeReader @decode="onDecode" @error="onError"></ImageBarcodeReader>
             </div>
              <form @submit.prevent="submit">
                 <div class="grid grid-col-3 gap-2">
