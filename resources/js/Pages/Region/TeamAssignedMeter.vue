@@ -6,7 +6,7 @@
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
 import { Inertia } from '@inertiajs/inertia';
-
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from 'vue-qrcode-reader'
     defineProps({
         data:Array
     })
@@ -21,6 +21,11 @@ const submit = () => {
     form.post(route('meter.list'), {
         onFinish: () => form.reset(),
     });
+};
+const onDetect = (detectedCodes) => {
+    alert()
+    console.log(detectedCodes);
+    
 };
 const changePage = (url) => {
     Inertia.get(url, {}, { preserveState: true, preserveScroll: true });
@@ -44,6 +49,9 @@ const changePage = (url) => {
 
     <MainLayout>
         <div class="px-4 py-5">
+            <div class="w-1/4">
+                <qrcode-stream @detect="onDetect"></qrcode-stream>
+            </div>
              <form @submit.prevent="submit">
                 <div class="grid grid-col-3 gap-2">
                 

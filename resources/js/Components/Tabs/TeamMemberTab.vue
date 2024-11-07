@@ -4,7 +4,7 @@
     import { ref } from 'vue';
     import Modal from '@/Components/Modal.vue';
     import InputError from '@/Components/InputError.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     import { formatError } from "@/composables/formatError";
     const { transformValidationErrors } = formatError()
 
@@ -50,11 +50,11 @@
 
    const  editTeam = (team) => {
       teamMember.value = {
-        team: team.team?.team.pid,
+        team: team.team_pid ,
         members:[{
             user_pid: '',
         }],
-        user_pid: team?.user?.user_pid,
+        user_pid: team.user_pid,
         errors:{}
       }
       showModal.value = true;
@@ -107,7 +107,7 @@
                      
 
                      <div>
-                        <SelectComponent v-model="teamMember.team" label="Teams"  placeholder="Select Team"
+                        <BaseSelect v-model="teamMember.team" label="Teams"  :selected="teamMember.team"
                                          :options="teams" />
 
                         <InputError class="mt-2" :message="teamMember.errors.team" />
@@ -115,7 +115,7 @@
 
                      <div>
                         
-                        <SelectComponent v-model="teamMember.user_pid" label="Team Member"  placeholder="Select Member"
+                        <BaseSelect v-model="teamMember.user_pid" label="Team Member"  :selected="teamMember.user_pid"
                                          :options="users" />
 
                         <InputError class="mt-2" :message="teamMember.errors.user_pid" />
@@ -127,7 +127,7 @@
         <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Team</button>
 
         <div class="overflow-auto rounded-lg shadow">
-                    
+                   
                 <table class="w-full">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>
@@ -148,7 +148,7 @@
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.team?.team }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.user?.username }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
-                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editTeam(item)">Edit</button>
+                                <button class="p-1 oy-1 text-sm bg-yellow-500 rounded-md text-white me-2 inline-block" @click="editTeam(item)">Edit</button>
                             </td>
                         </tr>
                     </tbody>

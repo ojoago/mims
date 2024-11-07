@@ -9,7 +9,10 @@ import { Inertia } from '@inertiajs/inertia';
     import SelectComponent from '@/Components/Select.vue';
     import store from '@/store';
     import { ref } from 'vue';
+
+    // import DropdownMenu from '@innologica/vue-dropdown-menu'
     import DropdownMenu from '@/Components/DropdownMenu.vue';
+    import DropMenu from '@/Components/DropMenu.vue';
      import { formatError } from "@/composables/formatError";
     const { transformValidationErrors } = formatError()
     const showModal = ref(false)
@@ -232,41 +235,40 @@ defineProps({
 
     </div>
         
-         <div class="overflow-auto rounded-lg shadow ">
+         <div class="overflow-auto rounded-lg shadow  ">
                 <table class="w-full ">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>
                             <th width ="5%" class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">S/N</th>
-                            <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Region </th>
+                           <!--- <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Region </th> -->
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Item</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">description</th>
                             <th class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">Quantity</th>
-                            <th width ="5%"  class="p-3 text-sm font-semibold tracking-wide text-left table-bordered"> 
-                                <font-awesome-icon class="fa-solid fas fa-cog"/>
+                            <th  class="p-3 text-sm font-semibold tracking-wide text-left table-bordered"> 
+                                <font-awesome-icon icon="fa-solid fas fa-cog"/>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="bg-white" v-for="(list,loop) in lists?.data" :key="loop">
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ loop+1 }}</td>
-                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.region?.name }}</td>
+                            <!---<td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.region?.name }}</td> -->
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.item?.name }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.item?.description }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ list.quantity }} {{ list.item?.unit }}</td>
                       
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered " >
 
-                                <DropdownMenu align="right" width="88">
-                                    <template #content>
-                                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Account settings</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Support</a>
-                                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
-                                        </div>
-                                    </template>
-                                </DropdownMenu>
+                                <DropMenu >
 
-                             <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="moveDamage(list)">Mark</button> 
+                                    <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" @click="moveDamage(list)">Mark Damage</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Edit</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Deduction</a>
+                                    </div>
+
+                                </DropMenu>
+
                             </td>
                         </tr>
                     </tbody>

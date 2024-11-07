@@ -14,8 +14,8 @@
     <option
       v-for="(option,loop) in options"
       :key="loop"
-      :value="option.id"
-      :selected="option.id === selected"
+      :value="val == 'id' ? option.id : option.text"
+      :selected="val == 'id' ? option.id === selected: option.text"
     >
       {{ option.text }}
     </option>

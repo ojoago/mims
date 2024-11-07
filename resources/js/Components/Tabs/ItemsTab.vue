@@ -150,7 +150,7 @@
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.unit }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.description }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
-                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editItem(item)">Edit</button>
+                                <button class="p-1 oy-1 text-sm bg-yellow-500 rounded-md text-white me-2 inline-block" @click="editItem(item)">Edit</button>
                             </td>
                             
 

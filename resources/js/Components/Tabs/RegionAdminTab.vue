@@ -5,7 +5,7 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     import store from '@/store';
     import { ref } from 'vue';
         import Modal from '@/Components/Modal.vue';
@@ -37,7 +37,7 @@
         othername:'' , 
         file:'' , 
         gender:'', 
-        religion:'' , 
+        region:'' , 
         role:'' , 
         dob:'' , 
         gsm:'' , 
@@ -263,7 +263,7 @@
                                 </div>
 
                                 <div class="flex flex-col ">
-                                            <SelectComponent v-model="staffForm.gender" label="Select Gender" placeholder="Select Gender"
+                                            <BaseSelect v-model="staffForm.gender" label="Select Gender" placeholder="Select Gender"
                                          :options="genders"/>
                                         <InputError class="mt-2" :message="staffForm.errors.gender" />   
                                 </div>
@@ -308,13 +308,13 @@
 
                                 <div class="flex flex-col ">
                                     
-                                    <SelectComponent v-model="staffForm.lga_of_origin" label="Select LGA of Origin" placeholder="Select Option"
+                                    <BaseSelect v-model="staffForm.lga_of_origin" label="Select LGA of Origin" :selected="staffForm.lga_of_origin"
                                          :options="origin_lgas"/>
                                             <InputError class="mt-2" :message="staffForm.errors.lga_of_origin" />   
                                 </div>
                                 <div class="flex flex-col ">
                                     
-                                    <SelectComponent v-model="staffForm.region" label=" Region Admin" placeholder="Select Region"
+                                    <BaseSelect v-model="staffForm.region" label=" Region Admin" :selected="staffForm.region"
                                          :options="regions"/>
                                             <InputError class="mt-2" :message="staffForm.errors.region" />   
                                 </div>

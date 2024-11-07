@@ -7,7 +7,7 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     import { formatError } from "@/composables/formatError";
     const { transformValidationErrors } = formatError()
 
@@ -90,7 +90,7 @@
                <div class="grid grid-cols-2 gap-2">
                      <div>
                         
-                        <SelectComponent v-model="regionForm.state" label="State" val = "text"  placeholder="Select State"
+                        <BaseSelect v-model="regionForm.state" label="State" val="text" :selected="regionForm.state"
                                          :options="states" />
 
                         <InputError class="mt-2" :message="regionForm.errors.state" />
@@ -137,7 +137,7 @@
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ region.region }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ region.state }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
-                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editRegion(region)">Preview</button>
+                                <button class="p-1 oy-1 text-sm bg-yellow-500 rounded-md text-white me-2 inline-block" @click="editRegion(region)">Edit</button>
                             </td>
                             
                             

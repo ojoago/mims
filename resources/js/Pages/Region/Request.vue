@@ -8,7 +8,7 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     import { formatError } from "@/composables/formatError";
     const { transformValidationErrors } = formatError()
 
@@ -166,12 +166,12 @@
                     </div>
 
                     <div class="flex flex-col ">
-                                <SelectComponent v-model="requestForm.team" label="Team" placeholder="Select Team"
+                                <BaseSelect v-model="requestForm.team" label="Team" :selected="requestForm.team"
                                 :options="teams"/>
                             <InputError class="mt-2" :message="requestForm.errors.team" />   
                     </div>
                     <div class="flex flex-col ">
-                                <SelectComponent v-model="requestForm.receiver" label="Team" placeholder="Select Receiver"
+                                <BaseSelect v-model="requestForm.receiver" label="Receiver" :selected="requestForm.receiver"
                                 :options="users"/>
                             <InputError class="mt-2" :message="requestForm.errors.receiver" />   
                     </div>
@@ -187,7 +187,7 @@
                      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
 
                         <div class="flex flex-col ">
-                                    <SelectComponent v-model="item.item_pid" label="Items" placeholder="Select Item"
+                                    <BaseSelect v-model="item.item_pid" label="Items" :selected="item.item_pid"
                                     :options="items"/>
                                 <InputError class="mt-2" :message="requestForm.errors.team" />   
                         </div>

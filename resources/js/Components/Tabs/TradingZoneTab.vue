@@ -6,7 +6,7 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     import { formatError } from "@/composables/formatError";
     const { transformValidationErrors } = formatError()
 
@@ -94,7 +94,7 @@
 
                      <div>
 
-                       <SelectComponent v-model="zoneForm.state_id" label="State"  placeholder="Select State"
+                       <BaseSelect v-model="zoneForm.state_id" label="State"  :selected="zoneForm.state_id"
                                          :options="states" />
 
                         <InputError class="mt-2" :message="zoneForm.errors.state_id" />
