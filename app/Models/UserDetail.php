@@ -36,6 +36,21 @@ class UserDetail extends Model
             get:fn() => isset($this->attributes['dob']) ? formatDate($this->attributes['dob']) : null
         );
     }
+    
+    protected function firstname() : Attribute
+    {
+        return Attribute::make(
+            get:fn($val) => ucfirst($val) 
+        );
+    }
+
+
+    protected function lastname() : Attribute
+    {
+        return Attribute::make(
+            get:fn($val) => ucfirst($val) 
+        );
+    }
 
 
 

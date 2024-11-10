@@ -56,8 +56,8 @@ const isOpen = ref(false);
 	 border-radius: 8px;
 	 background: white;
 	 border: 1px solid #eee;
-	 box-shadow: 10px 10px 0 0 rgba(0, 0, 0, .03);
-	 -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	 /* box-shadow: 10px 10px 0 0 rgba(0, 0, 0, .03); */
+	 /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
 }
  .dropDownMenuWrapper * {
 	 box-sizing: border-box;

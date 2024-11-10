@@ -5,7 +5,7 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     import { formatError } from "@/composables/formatError";
     const { transformValidationErrors } = formatError()
 
@@ -50,7 +50,7 @@
     
     const meterForm = ref({
         'meter_number' :'', 
-        'preload':'', 
+        'preload':25, 
         'state':'' , 
         'doi':'', 
         'dt_name':'',
@@ -103,7 +103,7 @@
     const resetForm = () => {
         meterForm.value = {
         'meter_number': '' , 
-        'preload': '' , 
+        'preload': 25 , 
         'state': ''  , 
         'doi': '' , 
         'dt_name': '' ,
@@ -286,7 +286,7 @@
 
                                 <div class="grid grid-cols-1  md:grid-cols-2 gap-2">
                                      <div class="flex flex-col ">
-                                              <InputLabel for="preload" value="State" />
+                                              <InputLabel for="state" value="State" />
                                                 <select v-model="meterForm.state" @change="loadStateZone($event.target.value)" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                                     <option value="" selected>Choose State</option>
                                                     <option v-for="option in states" :key="option.id" :value="option.id">
@@ -297,7 +297,7 @@
                                     </div>
                                     <div class="flex flex-col ">
                                            
-                                            <InputLabel for="preload" value="Trading Zone" />
+                                            <InputLabel for="zone" value="Trading Zone" />
                                                 <select v-model="meterForm.zone" @change="load33kvFeeder($event.target.value)" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                                     <option value="" selected>Choose State</option>
                                                     <option v-for="option in zones" :key="option.id" :value="option.id">
@@ -310,7 +310,7 @@
 
                                 <!-- next row  -->
 
-                                <div class="grid grid-cols-1  md:grid-cols-2 gap-2">
+                                <!--<div class="grid grid-cols-1  md:grid-cols-2 gap-2">
 
                                         
                                     <div class="flex flex-col ">
@@ -337,9 +337,13 @@
                                             <InputError class="mt-2" :message="meterForm?.errors?.dt_capacity" />
                                     </div>
                                     
-                                </div>
+                                </div> -->
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                               
+
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-2"> 
 
                                      <div class="flex flex-col ">
                                         <InputLabel for="upriser" value="Upriser" />
@@ -370,27 +374,25 @@
                                             <InputError class="mt-2" :message="meterForm?.errors?.dt_type" />
 
                                         </div>
-                                </div>
+                              <!--  </div> -->
 
 
-                                <div class="grid grid-cols-1  md:grid-cols-2 gap-2">
+                             <!--  <div class="grid grid-cols-1  md:grid-cols-2 gap-2"> -->
                                         
                                     <div class="flex flex-col ">
                                         
-                                            <SelectComponent v-model="meterForm.tariff" label="Present Tariff" placeholder="Select Option"
+                                            <BaseSelect v-model="meterForm.tariff" label="Present Tariff" :selected="meterForm.tariff"
                                                 :options="tariffs"/>
                                                 <InputError class="mt-2" :message="meterForm?.errors?.tariff" />  
                                     </div>
 
                                     <div class="flex flex-col ">
-                                             <SelectComponent v-model="meterForm.advtariff" label="Advised Tariff" placeholder="Select Option"
+                                             <BaseSelect v-model="meterForm.advtariff" label="Advised Tariff" :selected="meterForm.advtariff"
                                                 :options="tariffs"/>
                                                 <InputError class="mt-2" :message="meterForm?.errors?.advtariff" />  
                                     </div>
                                     
-                                </div>
-
-                        </div>
+                              </div>
 
                         <div class="grid grid-cols-1 gap-2 sm:grid-cols-3 md:grid-cols-3">
                              <div class="flex flex-col ">
@@ -452,20 +454,20 @@
                                         <InputError class="mt-2" :message="meterForm?.errors?.feeder_33kv" />       
                                 </div>
                              <div class="flex flex-col ">
-                                        <SelectComponent v-model="meterForm.feeder_11kv" label="11 kv Feeder" placeholder="Select Feeder"
+                                        <BaseSelect v-model="meterForm.feeder_11kv" label="11 kv Feeder" :selected="meterForm.feeder_11kv"
                                          :options="feeder11s"/>
                                         <InputError class="mt-2" :message="meterForm?.errors?.feeder_11kv" />       
                                 </div>
                              <div class="flex flex-col ">
                                        
-                                        <SelectComponent v-model="meterForm.premises" label="Use of Premises" placeholder="Select Option"
+                                        <BaseSelect v-model="meterForm.premises" label="Use of Premises" :selected="meterForm.premises"
                                          :options="premises"/>
                                         <InputError class="mt-2" :message="meterForm?.errors?.premises" />       
                                 </div>
                         </div>
 
 
-                        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
+                        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
                             
                              
                              <div class="flex  flex-col">
@@ -488,13 +490,13 @@
 
                                 </div>
                              <div class="flex flex-col ">
-                                        <SelectComponent v-model="meterForm.meter_type" label="Meter Type" placeholder="Select Option"
+                                        <BaseSelect v-model="meterForm.meter_type" label="Meter Type" :selected="meterForm.meter_type"
                                          :options="types"/>
                                         <InputError class="mt-2" :message="meterForm?.errors?.meter_type" />       
                                 </div>
                              <div class="flex flex-col ">
                                        
-                                        <SelectComponent v-model="meterForm.meter_brand" label="Meter Brand" placeholder="Select Option"
+                                        <BaseSelect v-model="meterForm.meter_brand" label="Meter Brand" :selected="meterForm.meter_brand"
                                          :options="brands"/>
                                         <InputError class="mt-2" :message="meterForm?.errors?.meter_brand" />       
                                 </div>
@@ -525,7 +527,7 @@
                                         <InputError class="mt-2" :message="meterForm?.errors?.pole" />       
                                 </div>
 
-                                 <div class="flex flex-col ">
+                                 <!--<div class="flex flex-col ">
                                         <InputLabel for="pole" value="Estimated Load" />
                                         <TextInput
                                             id="pole"
@@ -536,7 +538,7 @@
                                             
                                         />
                                         <InputError class="mt-2" :message="meterForm?.errors?.estimated" />       
-                                </div>
+                                </div> -->
 
                                  <div class="flex flex-col ">
                                         <InputLabel for="pole" value="Service Center" />
@@ -557,7 +559,7 @@
                                             type="number"
                                             class="mt-1 block w-full"
                                             v-model="meterForm.account_no"
-                                            placeholder="Customer Estimated Load"
+                                            placeholder="Customer Account Number"
                                             
                                         />
                                         <InputError class="mt-2" :message="meterForm?.errors?.account_no" />       
@@ -577,7 +579,7 @@
                                 </div>
 
                                 <div class="flex flex-col ">
-                                        <SelectComponent v-model="meterForm.installer" label="Installer" placeholder="Select Installer"
+                                        <BaseSelect v-model="meterForm.installer" label="Installer" :selected="meterForm.installer"
                                          :options="installers"/>
                                         <InputError class="mt-2" :message="meterForm?.errors?.installer" />       
                                 </div>
@@ -629,7 +631,9 @@
 
            </form>
         </Modal>
-        <!--<button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Team</button> -->
+       <div class="text-right">
+         <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 px-4 rounded text-right">Form</button> 
+       </div>
 
         <div class="overflow-auto rounded-lg shadow">
             <TextInput

@@ -32,6 +32,18 @@ class TeamController extends Controller
             return pushData([],STS_500);
         }
     }
+    public function loadMembers(){
+        try {
+            $teams = TeamMember::from('team_members as m')->join('teams as t','t.pid','team_pid')
+                                        ->with(['user' => function($q){$q->select('username','user_pid', 'gsm');}])
+                                        ->with(['team'  => function($q){$q->select('team','pid');}])
+                                        ->where(['m.region_pid' => getRegionPid() , 't.supervisor' => getUserPid()])->get();
+           return pushData($teams);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return pushData([],STS_500);
+        }
+    }
 
     public function createTeam(Request $request){
         $validator = Validator::make($request->all(),[

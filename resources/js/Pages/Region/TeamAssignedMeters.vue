@@ -6,23 +6,12 @@
     import { StreamBarcodeReader } from "vue-barcode-reader";
     // import { ImageBarcodeReader } from "vue-barcode-reader";
     import { ref } from 'vue';
-    defineProps({
-        data:Array
-    })
-
-
+import store from '@/store';
    
 const onDecode = (detectedCodes) => {
     scannedNumber.value.meter_number  = detectedCodes
     addNumber()
 };
-
-// const onLoaded = (detectedCodes) => {
-//     alert('loaded')
-//     console.log(detectedCodes);
-//     detected.value = detectedCodes
-// };
-
 
 // status
     const scannedNumber = ref({
@@ -45,6 +34,22 @@ const onDecode = (detectedCodes) => {
         })
     }
 
+    const meters  = ref({})
+    function loadMeters( url = '/load-team-assigned-meters') {
+        store.dispatch('getMethod', { url:url }).then((data) => {
+        if (data?.status == 200) {
+            meters.value = data.data;
+        }else{
+            meters.value = data.data;
+        }
+        }).catch(e => {
+            meters.value = [];
+            console.log(e);
+        })
+    }
+
+    loadMeters()
+
 
 // const onLoaded = (detectedCodes) => {
 //     alert('loaded')
@@ -52,21 +57,14 @@ const onDecode = (detectedCodes) => {
 //     detected.value = detectedCodes
     
 // };
-const detected  = ref(null)
-const changePage = (url) => {
-    Inertia.get(url, {}, { preserveState: true, preserveScroll: true });
-    // store.dispatch('getMethod', { url:url }).then((data) => {
-    //     console.log(data);
-    //     if (data?.status == 200) {
-    //         props.data = data.data;
-            
-            
-    //     }
-    //     }).catch(e => {
-    //         console.log(e);
-    //     })
-};
 
+
+const changePage = (link) => {
+    if (!link.url || link.active) {
+        return;
+    }
+    loadMeters(link.url)
+};
 
 </script>
 
@@ -80,7 +78,7 @@ const changePage = (url) => {
             <div class="w-full md:w-1/4">
                 <StreamBarcodeReader @decode="onDecode" v-if="scan"></StreamBarcodeReader>
             </div>
-            <button  @click="scan = false" class=" bg-optimal text-white px-4 py-2 rounded mb-1" v-if="scan">Stop</button>
+            <button  @click="scan = false" class=" bg-optimal text-white px-4 py-2 rounded mt-2 mb-1" v-if="scan">Stop</button>
            
             <div class="overflow-auto rounded-lg shadow">
                     
@@ -98,26 +96,23 @@ const changePage = (url) => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white" v-for="(item,loop) in data?.data" :key="loop">
+                        <tr class="bg-white" v-for="(item,loop) in meters?.data" :key="loop">
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ loop+1 }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.meter_number }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.phase }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.type }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.status }}</td>
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered" >
-                                <button class="p-1 oy-1 text-sm bg-yellow-500 text-white me-2 inline-block" @click="editItem(item)">Edit</button>
+                                <button class="p-1 oy-1 text-sm bg-yellow-500 rounded-md text-white me-2 inline-block" @click="editItem(item)">Edit</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="mt-4">
-                     <!-- Render the pagination links -->
-                    <nav v-if="data?.links.length">
-                  
-
-                    <button @click="changePage(data?.prev_page_url)" :disabled="!data?.prev_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Previous</button>
-                    <button @click="changePage(data?.next_page_url)" :disabled="!data?.next_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Next</button>
-                    </nav>
+                    <div class="flex space-x-1">
+                        <pagination-links v-for="(link, i) of meters.links" :link="link" :key="i"
+                            @next="changePage($event,link)"></pagination-links>
+                    </div>
                 </div>
                 
         </div>

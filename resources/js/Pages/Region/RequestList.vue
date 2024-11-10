@@ -8,7 +8,7 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     import { formatError } from "@/composables/formatError";
     const { transformValidationErrors } = formatError()
 
@@ -16,7 +16,6 @@
 
     const showModal = ref(false)
     const closeModal = () =>{
-        resetForm()
         showModal.value = false;
     }
     
@@ -37,7 +36,7 @@
 
     function createItemName() {
         requestForm.errors = {}
-        store.dispatch('postMethod', { url: '/request-item', param: requestForm.value }).then((data ) => {
+        store.dispatch('postMethod', { url: '/approve-request', param: requestForm.value }).then((data ) => {
         if (data?.status == 422) {
             requestForm.value.errors = transformValidationErrors(data.data)
         } else if (data?.status == 201) {
@@ -49,14 +48,7 @@
         })
     }
 
-    const resetForm = () => {
-      requestForm.value = {
-        state: '',
-        region: '',
-        errors:{}
-      }
-    };
-
+  
    const  editRequest = (item) => {
       requestForm.value = {
         date: item.date ,
@@ -84,26 +76,7 @@
     loadItem()
 
     
-    const teams = ref({})
-    function loadTeams() {
-        store.dispatch('loadDropdown', 'teams/').then(({ data }) => {
-            teams.value = data;
-        }).catch(e => {
-            console.log(e);
-        })
-    }
 
-    loadTeams()
-    const users = ref({})
-    function loadUsers() {
-        store.dispatch('loadDropdown', 'users/').then(({ data }) => {
-            users.value = data;
-        }).catch(e => {
-            console.log(e);
-        })
-    }
-
-    loadUsers()
     const items = ref({})
     function loadItems() {
         store.dispatch('loadDropdown', 'item-quantity').then(({ data }) => {
@@ -116,22 +89,6 @@
     loadItems()
 
 
-    
-    const addItem = () => {
-        requestForm.value.items.push({
-            item_pid:'' ,
-            quantity:'' ,
-        })
-    }
-
-    const removeItem = (i) => {
-        let len = requestForm.value.items.length;
-        if (len === 1) {
-            store.commit('notify', { message: 'One Item is required to proceed', type: 'warning' })
-            return;
-        }
-        requestForm.value.items.splice(i, 1);
-    }
 
 
 </script>
@@ -148,10 +105,10 @@
                 
                <div class="" v-for="(item,loop) in requestForm.items" :key="loop">
                      
-                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
 
                         <div class="flex flex-col ">
-                                    <SelectComponent v-model="item.item_pid" label="Items" placeholder="Select Item"
+                                    <BaseSelect v-model="item.item_pid" label="Items" :selected="item.item_pid"
                                     :options="items"/>
                                 <InputError class="mt-2" :message="requestForm.errors.team" />   
                         </div>
@@ -162,6 +119,20 @@
                                     type="number" step="0.5"
                                     class="mt-1 block w-full"
                                     v-model="item.quantity"
+                                    placeholder="Enter Quantity"
+                                    required
+                                />
+                                <InputError class="mt-2" :message="requestForm.errors.quantity" />       
+                        </div>
+
+                        <div class="flex flex-col ">
+                                <InputLabel for="quantity" value="Supply" />
+                                <TextInput
+                                    id="date"
+                                    type="number" step="0.5"
+                                    class="mt-1 block w-full"
+                                    v-model="item.quantity_supplied"
+                                    :value="item.quantity"
                                     placeholder="Enter Quantity"
                                     required
                                 />
@@ -205,12 +176,9 @@
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item?.collector?.username }}</td>
                             <!--<td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.description }}</td> -->
                            <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered flex" >
-                                <button class="p-1 oy-1 text-sm bg-red-500 text-white me-2 inline-block" @click="editRequest(item)">Reject</button>
-                                <button class="p-1 oy-1 text-sm bg-optimal text-white me-2 inline-block" @click="editRequest(item)">Approve</button>
+                               <!-- <button class="p-1 oy-1 text-sm bg-red-500 text-white me-2 inline-block" @click="editRequest(item)">Reject</button> -->
+                                <button :disabled="item.status" :class="item.status && 'bg-gray-400'" class="p-1 oy-1 text-sm bg-optimal rounded-md text-white me-2 inline-block"  @click="editRequest(item)">Approve</button>
                             </td>
-                            
-
-
                             
                         </tr>
                     </tbody>

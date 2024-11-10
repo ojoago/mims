@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Installation\Complain;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Installation\Installation;
+use App\Models\Region\TeamAssignedMeter;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -26,10 +27,25 @@ class MeterController extends Controller
             return pushData([],ERR_EMT);
         }
     }
-    public function installations(){
+    public function meterInstallation(){
         try {
-            $data = DB::table('installations')->select(DB::raw('status,COUNT(id) as count'))->groupBy('status')->where('region_pid',getRegionPid())->get();
-            return pushData($data);
+            $daily = DB::table('installations as i')->join('meter_lists as m', 'm.meter_number', 'i.meter_number')
+                        ->select(DB::raw('m.status,doi,COUNT(i.id) as count'))
+                        ->groupBy('i.doi')
+                        ->groupBy('m.status')->where('i.region_pid',getRegionPid())
+                        // ->whereMonth('i.doi',date('m'))->whereYear('i.doi',date('Y'))
+                        ->get();
+
+            $monthly = DB::table('installations')
+                        ->select(DB::raw('MONTHNAME(doi) as month,COUNT(id) as count'))
+                        ->groupBy(DB::raw('MONTHNAME(doi)'))
+                        ->where('region_pid',getRegionPid())->whereYear('doi',date('Y'))->get()->toArray();
+            // $data = DB::table('installations as i')->join('meter_lists as m', 'm.meter_number', 'i.meter_number')
+            //             ->select(DB::raw('m.status,doi,COUNT(i.id) as count'))
+            //             ->groupBy('i.doi')
+            //             ->groupBy('m.status')->where('i.region_pid',getRegionPid())->get();
+            $data = ['daily' => $daily , 'monthly' => $monthly];
+            return responseMessage(status: 200, data: $data, msg: '');
         } catch (\Throwable $e) {
             logError($e->getMessage());
             return pushData([],ERR_EMT);
@@ -40,6 +56,7 @@ class MeterController extends Controller
     public function index(){
         try {
             $data = MeterList::paginate(20);
+            return pushData($data);
             return Inertia::render('Inventory/MeterList',['data' => $data]);
         } catch (\Throwable $e) {
             logError($e->getMessage());
@@ -182,15 +199,40 @@ class MeterController extends Controller
         }
     }
 
+    // register meter assigned to team 
+
     public function addMeterNumber(Request $request){
-        $validator = Validator::make($request->all(), [
-            'old_meter_number' => ['nullable', 'exists:meter_lists', Rule::unique('installations')->where(function ($q) use ($request) {
-                $q->where('pid', '<>', $request->pid);
-            })],
-            'complain' => 'required',
-            'resolution' => 'required',
-            'status' => 'required',
-        ]);
+        try {
+            if(!$team = getUserTeam()){
+                return responseMessage(status: 204, data: [], msg: 'You are not a team member');
+            }
+            $pid = MeterList::where(['meter_number' => $request->meter_number , 'region_pid'  => getRegionPid() ])->pluck('pid')->first();
+            if(!$pid){
+                return responseMessage(status: 204, data: [], msg: 'Meter Number not found');
+            }
+            if(!TeamAssignedMeter::where('meter_pid',$pid)->exists()){
+                return responseMessage(status: 204, data: [], msg: 'Meter Number already registered');
+            }
+            $data = ['region_pid' => getRegionPid(), 'date' =>justDate() ,'meter_pid' => $pid ,'creator' => getUserPid(), 'team_pid' => $team];
+            $result = TeamAssignedMeter::create($data);
+            return pushResponse($result,'Meter Registred!!');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return responseMessage(status: 204, data: [], msg: STS_500);
+        }
+    }
+    // register meter assigned to team 
+
+    public function loadTeamAssignedMeters(){
+        try {
+            $data = MeterList::from('meter_lists as m')->join('team_assigned_meters as a','m.pid','a.meter_pid')
+                                                    ->join('teams as t','t.pid','a.team_pid')
+                                                    ->where(['region_pid' => getRegionPid() , 'supervisor'=> getUserPid()])->select('m.*')->paginate(20);
+            return pushData($data);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return responseMessage(status: 204, data: [], msg: STS_500);
+        }
     }
 
 
@@ -205,9 +247,9 @@ class MeterController extends Controller
             'state' => 'required',
             'doi' => 'nullable|date',
             'dt_name' => 'required',
-            'dt_code' => 'required',
-            'dt_type' => 'required',
-            'upriser' => 'required|numeric',
+            'dt_code' => 'nullable',
+            'dt_type' => 'nullable',
+            'upriser' => 'nullable|numeric',
             'pole' => 'required|numeric',
             'tariff' => 'required',
             'advtariff' => 'required',
@@ -217,13 +259,13 @@ class MeterController extends Controller
             'premises' => 'required',
             'phase' => 'required',
             'address' => 'required',
-            'remark' => 'required',
+            'remark' => 'nullable',
             'feeder_33kv' => 'required',
             'feeder_11kv' => 'required',
             'meter_type' => 'required',
             'meter_brand' => 'required',
             // 'meter_tech' => 'required',
-            'estimated' => 'required',
+            'estimated' => 'nullable',
             'account_no' => 'required',
             'business_unit' => 'required',
             'x_cordinate' => 'required',

@@ -1,5 +1,5 @@
 <script setup>
-import PaginationLink from '@/Components/PaginationLink.vue';
+import PaginationLinks from '@/Components/PaginationLinks.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import { Inertia } from '@inertiajs/inertia';
     import Modal from '@/Components/Modal.vue';
@@ -10,7 +10,6 @@ import { Inertia } from '@inertiajs/inertia';
     import store from '@/store';
     import { ref } from 'vue';
 
-    import DropdownMenu from '@/Components/DropdownMenu.vue';
     import DropMenu from '@/Components/DropMenu.vue';
      import { formatError } from "@/composables/formatError";
     const { transformValidationErrors } = formatError()
@@ -274,7 +273,12 @@ defineProps({
                 </table>
                 <div >
                      <!-- Render the pagination links -->
-                    <PaginationLink @action="changePage(lists?.next_page_url)" :pages="links"/>
+                    <div class="mt-4">
+                        <div class="flex space-x-1">
+                            <pagination-links v-for="(link, i) of lists.links" :link="link" :key="i"
+                                @next="changePage($event,link)"></pagination-links>
+                        </div>
+                    </div>
                 </div>
                 
         </div>

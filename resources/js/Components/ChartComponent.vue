@@ -1,8 +1,9 @@
 <template>
     <div>
         <GChart v-if="length> 1" :type="chart" :data="data"
-                        :options="options" />
+                        :options="options" style="width: 100%; height: auto" />
                         <span v-else class="text-center p-4 mt-4"> {{ options?.title }}, No Data loaded</span>
+                        
     </div>
 </template>
 

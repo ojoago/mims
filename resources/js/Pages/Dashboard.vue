@@ -6,9 +6,38 @@ import { ref } from 'vue';
 import ChartComponent from '@/Components/ChartComponent.vue';
 
 const meterData = ref({options: {
+    // theme: 'maximized',
+    // chartArea:{width:"60%",height:"auto",} ,
+    legend: { position: 'bottom', alignment: 'start' },
+    backgroundColor: {
+        fill: '#f1f1f1',
+        fillOpacity: 0.8
+      },
     title: 'Meters',
-    width: 700,
-    height: 700,
+    vAxis: {minValue: 0}
+}, data:[]})
+
+const dailyData = ref({options: {
+    // chartArea:{top:0,width:"80%",height:"100%"} ,
+    legend: { position: 'bottom', alignment: 'start' },
+    backgroundColor: {
+        fill: '#f1f1f1',
+        fillOpacity: 0.8
+      },
+    title: 'Daily Installations',
+    // width: window.innerWidth,
+    // height: 300,
+}, data:[]})
+
+const monthlyData = ref({options: {
+    // chartArea:{width:"60%",height:"auto"} ,
+    legend: { position: 'bottom', alignment: 'start' },
+    backgroundColor: {
+        fill: '#f1f1f1',
+        fillOpacity: 0.8
+      },
+    title: 'Monthly Installations',
+     vAxis: {minValue: 0}
 }, data:[]})
 
 
@@ -31,24 +60,50 @@ const meterStatus = ['','In store','Taken out for Installation','Installed','Fau
             console.log(e);
         })
     }
+    
+//  const total = ref(0)
+ const installation = ref({})
+    function meterInstallation(url = 'meter-installation'){
+        store.dispatch('getMethod', { url:url }).then((data) => {
+
+        if (data?.status == 200) {
+            installation.value = data.data;
+            monthlyData.value.data.push(['Month','total'])
+            // monthlyData.value.data.push(data?.data?.monthly)
+            data?.data?.monthly.forEach((element) => {
+                monthlyData.value.data.push([element?.month , element.count])
+            })
+            
+            dailyData.value.data.push(['Day','total'])
+            // dailyData.value.data.push(data?.data?.daily)
+            data?.data?.daily.forEach((element) => {
+                dailyData.value.data.push([element?.doi , element.count])
+            })
+            // meterData.value.options.title = 'Meters, Total: ' + total.value
+        }
+        }).catch(e => {
+            console.log(e);
+        })
+    }
+
     meterSummary()
+    meterInstallation()
+
 </script>
 
 <template>
     <Head title="Dashboard" />
 
     <MainLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
-        </template>
 
-        <div class="py-1 z-2000">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">You're logged in!</div>
-                    {{ summary }}
-                    <ChartComponent :length="meterData?.data?.length" chart="PieChart" :data="meterData?.data" :options="meterData?.options" />
-
+        <div class="py-1 ">
+            <div class="px-2 ">
+                <div class="bg-[#f1f1f1] overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="flex flex-col md:flex-row">
+                        <ChartComponent :length="monthlyData?.data?.length" chart="PieChart" :data="monthlyData?.data" :options="monthlyData?.options" />
+                        <ChartComponent :length="meterData?.data?.length" chart="PieChart" :data="meterData?.data" :options="meterData?.options" />
+                    </div>
+                    <ChartComponent :length="dailyData?.data?.length" chart="ColumnChart" :data="dailyData?.data" :options="dailyData?.options" />
                 </div>
             </div>
         </div>

@@ -4,8 +4,6 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Region from '@/Components/Tabs/RegionTab.vue';
-// import Feeders from '@/Components/Tabs/33kvaFeederTab.vue';
-// import Feeder11kv from '@/Components/Tabs/11kvaFeederTab.vue';
 import Items from '@/Components/Tabs/ItemsTab.vue';
 import TradingZoneTab from '@/Components/Tabs/TradingZoneTab.vue';
 import MeterBrandTab from '@/Components/Tabs/MeterBrandTab.vue';
@@ -14,8 +12,6 @@ import RegionAdminTab from '@/Components/Tabs/RegionAdminTab.vue';
 const tab = ref(1);
 const currentTab = (tabNumber) => (tab.value = tabNumber);
 
-
-
 </script>
 <template>
      <Head title="Dependency" />
@@ -23,13 +19,13 @@ const currentTab = (tabNumber) => (tab.value = tabNumber);
        
         <div class="container mx-auto">
             <fieldset class="m-4 pb-4 border bg-gray-100 rounded-lg">
-                <nav class=" text-sm flex justify-center bg-gray-200">
-                    <a @click="currentTab(1)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 1 && `active`" >Regions</a>
-                    <a @click="currentTab(7)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 7 && `active`">Region Admin</a>
-                    <a @click="currentTab(2)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 2 && `active`">Store Items</a>
-                    <a @click="currentTab(3)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 3 && `active`">Trading Zone</a>
-                    <a @click="currentTab(5)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 5 && `active`">Meter Type </a>
-                    <a @click="currentTab(6)" class="inline-block px-4 py-2 cursor-pointer" :class="tab  === 6 && `active`">Meter Brand</a>
+                <nav class="grid grid-cols-2 text-sm text-center bg-gray-200  md:grid-cols-6">
+                    <a @click="currentTab(1)" class="inline-block p-2 cursor-pointer border-2 border-gray-300" :class="tab  === 1 && `active`" >Regions</a>
+                    <a @click="currentTab(7)" class="inline-block p-2 cursor-pointer  border-2 border-gray-300" :class="tab  === 7 && `active`">Region Admin</a>
+                    <a @click="currentTab(2)" class="inline-block p-2 cursor-pointer  border-2 border-gray-300" :class="tab  === 2 && `active`">Store Items</a>
+                    <a @click="currentTab(3)" class="inline-block p-2 cursor-pointer  border-2 border-gray-300" :class="tab  === 3 && `active`">Trading Zone</a>
+                    <a @click="currentTab(5)" class="inline-block p-2 cursor-pointer  border-2 border-gray-300" :class="tab  === 5 && `active`">Meter Type </a>
+                    <a @click="currentTab(6)" class="inline-block p-2 cursor-pointer  border-2 border-gray-300" :class="tab  === 6 && `active`">Meter Brand</a>
                 </nav>
 
             

@@ -4,6 +4,7 @@ import { Link } from '@inertiajs/vue3';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 
 import SpinnerLoader from '@/components/SpinnerLoader.vue';
+import Footer from '@/Components/Footer.vue';
 </script>
 
 <template>
@@ -21,7 +22,7 @@ import SpinnerLoader from '@/components/SpinnerLoader.vue';
                         </ul>
                     </div>
                 </div>
-         <div class="main-content container flex flex-col justify-between mx-auto sm:flex-row">
+         <div class="main-content  container flex flex-col justify-between mx-auto sm:flex-row">
             <div class="w-full">
                 <div class="content z-50">
                      <Flash/>

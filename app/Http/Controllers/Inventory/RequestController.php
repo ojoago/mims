@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
+use App\Models\Inventory\ItemQuantity;
 use App\Models\Inventory\RequestDetail;
 use App\Models\Inventory\RequestItem;
 use Illuminate\Http\Request;
@@ -38,6 +39,7 @@ class RequestController extends Controller
         }
     }
     //
+    
     public function itemRequest(Request $request){
 
         $validator = Validator::make($request->all(),[
@@ -88,6 +90,47 @@ class RequestController extends Controller
                 DB::rollBack();
                 return pushResponse($result, '');
 
+            } catch (\Throwable $e) {
+                logError($e->getMessage());
+                DB::rollBack();
+                return responseMessage(msg: STS_500, status: 204);
+            }
+        }
+
+        return responseMessage(data: $validator->errors()->toArray(), status: 422, msg: STS_422);
+
+    }
+
+    public function approveRequest(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'items.*.item_pid' => 'required' ,
+            'items.*.quantity' => 'required|gt:0',
+            'items.*.quantity_supplied' => 'required|gt:0'
+        ]);
+
+
+        if(!$validator->fails()){
+            try {
+                DB::beginTransaction();
+                RequestDetail::where(['pid' => $request->pid, 'region_pid' => getRegionPid() ])->update(['status' => 1]);
+                $result = false;
+                $count = count($request->items);
+                if ($count > 0) {
+                    for ($i = 0; $i < $count; $i++) {
+                        $item = ItemQuantity::where(['region_pid' => getRegionPid() , 'item_pid' => $request->items[$i]['item_pid']])->first();
+                        $item->quantity -= $request->items[$i]['quantity_supplied']; 
+                        $item->save();
+                        $result = RequestItem::where(['request_pid' => $request->pid, 'region_pid' => getRegionPid() , 'item_pid' => $request->items[$i]['item_pid']])->update(['quantity_supplied' => $request->items[$i]['quantity_supplied']]);
+                    }
+                    if($result){
+                        DB::commit();
+                        return pushResponse($result, 'Request updated' );
+                    }
+                }
+                DB::rollBack();
+                return pushResponse($result, '');
+                
             } catch (\Throwable $e) {
                 logError($e->getMessage());
                 DB::rollBack();

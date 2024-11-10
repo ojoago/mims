@@ -5,13 +5,13 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    // import SelectComponent from '@/Components/Select.vue';
     import BaseSelect from '@/Components/BaseSelect.vue';
     import store from '@/store';
     import { ref } from 'vue';
-        import Modal from '@/Components/Modal.vue';
-   
-  import { formatError } from "@/composables/formatError";
+    import Modal from '@/Components/Modal.vue';
+    import { formatError } from "@/composables/formatError";
+    
     const { transformValidationErrors } = formatError()
 
     const showModal = ref(false)
@@ -135,6 +135,7 @@
         gender:user.gender, 
         dob:user.dob, 
         gsm:user.gsm, 
+        pid:user.user_pid, 
         role:user?.user?.roles[0]?.name, 
         email:user?.user?.email ,
         state_of_origin:user?.origin?.id ,
@@ -168,6 +169,21 @@
     }
     loadStaff()
 
+    
+         const handleKeyup = (event) => {
+            if(event.target.value.trim() == ''){
+                return
+            }
+            store.dispatch('getMethod', { url:'search-staff-list/'+event.target.value }).then((data) => {
+            if (data?.status == 200) {
+                staff.value = data.data;
+            }else{
+                staff.value = []
+            }
+            }).catch(e => {
+                console.log(e);
+            })
+    }
 
 </script>
 
@@ -332,6 +348,16 @@
         <button @click="showModal = true " class="bg-optimal text-white p-1 mb-2 rounded">Add Staff</button>
 
                  <div class="overflow-auto rounded-lg shadow ">
+                     <div>
+                    <TextInput
+                                            id="longitude"
+                                            type="text"
+                                            class="mt-1 block w-full"
+                                           @keyup="handleKeyup" 
+                                            placeholder="enter Staff Name or Phone Number"
+                                            
+                                        />
+                </div>
                 <table class="w-full ">
                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                         <tr>

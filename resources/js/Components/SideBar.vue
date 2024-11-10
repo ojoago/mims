@@ -80,6 +80,10 @@
                         <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
                         <span class="nav-name">Assigned Meter </span>
                     </Link>
+                     <Link :href="route('team.members')" class="flex nav-link hover:bg-gray-300" :class="activeRoute('team.members') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">
+                        <font-awesome-icon icon="fa-solid fa-keyboard " class="facon pt-1" />
+                        <span class="nav-name">Team Members </span>
+                    </Link>
                     
                 </div>
                     <Link :href="route('request')" v-if="$page.props.auth.role.includes('super admin') || $page.props.auth.role.includes('region admin') || $page.props.auth.role.includes('supervisor')" class="flex nav-link hover:bg-gray-300" :class="activeRoute('request') ? 'bg-gray-200 text-optimal font-bold' : 'bg-gray-400'">

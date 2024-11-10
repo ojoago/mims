@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Region\Region;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Models\Region\Region;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -40,7 +41,7 @@ class DashboardController extends Controller
     private function loadRegions(){
         try {
             // setRegionPid() ;
-            return Region::get();
+            return Region::select('*',DB::raw('(select count(i.id)  from installations i where i.region_pid = regions.pid ) as total'))->get();
         } catch (\Throwable $e) {
             logError($e->getMessage());
             return [];

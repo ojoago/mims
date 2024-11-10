@@ -8,6 +8,7 @@ use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class StaffController extends Controller
@@ -24,13 +25,33 @@ class StaffController extends Controller
 
         }
     }
+    //
+    public function searchStaff($query){
+        try {
+            $data = UserDetail::with('user')->with('user.roles')->with('origin')->with('lga')->where('region_pid',getRegionPid())->where(function($q) use ($query){
+                $q->where('firstname','like','%'.$query.'%')
+                ->orWhere('lastname','like','%'.$query.'%')
+                ->orWhere('othername','like','%'.$query.'%')
+                ->orWhere('username','like','%'.$query.'%')
+                ->orWhere('gsm','like','%'.$query.'%');
+            })->get();
+            return pushData($data, 'Users loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return responseMessage(status: 204, data: [], msg: STS_500);
+        }
+    }
 
     public function createStaff(Request $request){
         $validator = Validator::make($request->all(),[
-            'email' => 'required|unique:users',
+            'email' => ['required',Rule::unique('users')->where(function($q) use($request){
+                $q->where('pid','<>',$request->pid);
+            })],
             'firstname' => 'required',
             'lastname' => 'required',
-            'username' => 'nullable|unique:user_details',
+            'username' => ['nullable', Rule::unique('user_details')->where(function ($q) use ($request) {
+                $q->where('user_pid', '<>', $request->pid);
+            })],
             'gender' => 'required',
             'role' => 'required_if:region,null',
             'region' => 'required_if:role,null',
@@ -41,7 +62,7 @@ class StaffController extends Controller
             // 'state_of_residence' => 'required',
             // 'lga_of_residence' => 'required',
             'address' => 'required',
-            'file' => 'required',
+            'file' => 'required_if:pid,null',
         ]);
 
         if(!$validator->fails()){
@@ -77,12 +98,16 @@ class StaffController extends Controller
                 ];
                 
                 DB::beginTransaction();
-                $user = User::updateOrCreate(['pid' => $user['pid'] ],$user);
-
-                 if(!isset($request->religion)) {
-                    $user->assignRole('region admin');
+                if(!isset($request->pid)){
+                    $user = User::updateOrCreate(['pid' => $user['pid'] ],$user);
                 }else{
-                    $user->assignRole($request->role);
+                    $user = User::where('pid', $request->pid)->first();
+                    $user->roles()->detach();
+                    if (isset($request->religion)) {
+                        $user->assignRole('region admin');
+                    } else {
+                        $user->assignRole($request->role);
+                    }
                 }
 
                 if ($request->file('file')) {

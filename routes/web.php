@@ -4,7 +4,6 @@ use App\Http\Controllers\DashboardController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DropDownController;
 use App\Http\Controllers\DependencyController;
 use App\Http\Controllers\Region\TeamController;
@@ -26,17 +25,18 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function(){
     Route::get('/meter-summary', [MeterController::class, 'meterSummary']);//->name('admin.dashboard');
+    Route::get('/meter-installation', [MeterController::class, 'meterInstallation']);//->name('admin.dashboard');
 
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
     //management
     Route::middleware(['role:management'])->group(function () {
-        Route::get('/management-dashboard', [DashboardController::class, 'managementDashboard'])->name('management.dashboard');
     });
     //management
-    Route::middleware(['role:super admin'])->group(function () {
+    Route::middleware(['role:super admin|management'])->group(function () {
         Route::get('/admin-dashboard', [DashboardController::class, 'adminDashboard'])->name('admin.dashboard');
+        Route::get('/management-dashboard', [DashboardController::class, 'managementDashboard'])->name('management.dashboard');
         Route::get('/login-region', [DashboardController::class, 'loginRegion'])->name('login.region');
     });
     Route::get('/logout-region', [DashboardController::class, 'logOutRegion'])->name('logout.region');
@@ -83,11 +83,9 @@ Route::middleware(['auth'])->group(function(){
         Route::inertia('/staff', 'Staff/Staff')->name('create.staff');
         Route::post('/staff' , [StaffController::class, 'createStaff']);
         Route::get('/load-staff' , [StaffController::class, 'loadStaff']);
+        Route::get('/search-staff-list/{query}' , [StaffController::class, 'searchStaff']);
         
-        // request 
-        Route::inertia('/request', 'Region/Request')->name('request');
-        Route::get('/load-request' , [RequestController::class, 'index']);
-        Route::post('/request-item' , [RequestController::class, 'itemRequest']);
+        
         //Schedule 
         Route::get('/schedules' , [DependencyController::class, 'schedules'])->name('schedules');
         Route::post('/schedules' , [DependencyController::class, 'uploadSchedule']);
@@ -96,9 +94,20 @@ Route::middleware(['auth'])->group(function(){
     });
     
     //filed supervisor
+    Route::middleware(['role:supervisor|region admin'])->group(function () {
+        // request 
+        Route::inertia('/request', 'Region/Request')->name('request');
+        Route::get('/load-request', [RequestController::class, 'index']);
+        Route::post('/request-item', [RequestController::class, 'itemRequest']);;
+        
+    });
+    //filed supervisor
     Route::middleware(['role:supervisor|super admin|region admin'])->group(function () {
         Route::inertia('/team-assigned-meters', 'Region/TeamAssignedMeters')->name('assigned.meters');
         Route::post('/add-meter-number', [MeterController::class, 'addMeterNumber']);//->name('assigned.meters');
+        Route::get('/load-team-assigned-meters', [MeterController::class, 'loadTeamAssignedMeters']);//->name('assigned.meters');
+        Route::inertia('/team-members', 'Region/TeamMember')->name('team.members');
+        Route::get('/load-teams', [TeamController::class, 'loadMembers']);//->name('team.members');
         
     });
     // data staff
@@ -126,14 +135,17 @@ Route::middleware(['auth'])->group(function(){
     Route::middleware(['role:store|super admin|region admin'])->group(function () {
         Route::inertia('/request-list', 'Region/RequestList')->name('request.list');
         Route::get('/load-request-list', [RequestController::class, 'loadRequestList']);
-        Route::get('/meter-list',[MeterController::class,'index'])->name('meter.list');
-        Route::post('/meter-list',[MeterController::class,'addMeterList']);
+        Route::inertia('/meter-list', 'Inventory/MeterList')->name('meter.list');
+        Route::get('/load-meter-list',[MeterController::class,'index']);
+        Route::post('/upload-meter-list',[MeterController::class,'addMeterList'])->name('upload.list');
         Route::get('/inventory-list',[ItemController::class,'inventoryList'])->name('inventory.list');
         Route::post('/add-inventory-item',[ItemController::class,'addInventoryItem'])->name('add.inventory.item');
         Route::post('/remove-damage-item',[ItemController::class,'removeDamageItem'])->name('remove.damage.item');
         Route::get('/damaged-items',[ItemController::class,'damagedItems'])->name('damage.item');
         Route::get('/damaged-item-details',[ItemController::class,'damagedItemDetail'])->name('damaged.item.detail');
-        
+        // approve request 
+        Route::post('/approve-request', [RequestController::class, 'approveRequest']);
+
     });
     
     

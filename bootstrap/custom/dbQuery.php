@@ -46,4 +46,17 @@ use Illuminate\Support\Facades\DB;
         }
     }
 
+    function getUserTeam(){
+        try {
+            $team = DB::table('teams')->where('supervisor', getUserPid())->pluck('pid')->first();
+            if(!$team){
+                $team = DB::table('team_members')->where('user_pid', getUserPid())->pluck('team_pid')->first();
+            }
+            return $team;
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return false;
+        }
+    }
+
     

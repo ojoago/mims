@@ -7,7 +7,7 @@
     import Modal from '@/Components/Modal.vue';
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
 
     const { transformValidationErrors } = formatError()
 
@@ -16,10 +16,10 @@
         showModal.value = false;
     }
     const status = [
-        {id: 'PENDING', text: 'pending'},
-        {id: 'RESOLVED', text: 'resolved'},
-        {id: 'UNRESOLVED', text: 'unresolved'},
-        {id: 'REPLACED', text: 'replaced'},
+        {id: 'PENDING', text: 'PENDING'},
+        {id: 'RESOLVED', text: 'RESOLVED'},
+        {id: 'UNRESOLVED', text: 'UNRESOLVED'},
+        {id: 'REPLACED', text: 'REPLACED'},
     ]
 
 
@@ -69,6 +69,7 @@
         complainForm.value.meter_number = data.meter_number
         complainForm.value.meter_pid = data.pid
         complainForm.value.complain = data.complain
+        complainForm.value.status = data.status
         showModal.value  = true
     }
 
@@ -152,7 +153,7 @@
                    
 
                 <div>
-                    <SelectComponent v-model="complainForm.status" label="Status"  placeholder="Select Option"
+                    <BaseSelect v-model="complainForm.status" label="Status"  :selected="complainForm.status"
                                         :options="status" />
                     <InputError class="mt-2" :message="complainForm.errors.status" />
                 </div>

@@ -6,10 +6,13 @@
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
 import { Inertia } from '@inertiajs/inertia';
+import { ref } from 'vue';
+import store from '@/store';
+    import PaginationLinks from '@/Components/PaginationLinks.vue';
 
-    defineProps({
-        data:Array
-    })
+    // defineProps({
+    //     data:Array
+    // })
 
 
     const form = useForm({
@@ -18,23 +21,43 @@ import { Inertia } from '@inertiajs/inertia';
     });
 
 const submit = () => {
-    form.post(route('meter.list'), {
+    form.post(route('upload.list'), {
         onFinish: () => form.reset(),
     });
 };
-const changePage = (url) => {
-    Inertia.get(url, {}, { preserveState: true, preserveScroll: true });
-    // store.dispatch('getMethod', { url:url }).then((data) => {
-    //     console.log(data);
-    //     if (data?.status == 200) {
-    //         props.data = data.data;
-            
-            
-    //     }
-    //     }).catch(e => {
-    //         console.log(e);
-    //     })
+const changePage = (link) => {
+    if (!link.url || link.active) {
+        return;
+    }
+    loadMeterLists(link.url)
 };
+const handleKeyup = (event) => {
+    if(event.target.value.trim() == ''){
+                return
+            }
+            store.dispatch('getMethod', { url:'search-meter-list/'+event.target.value }).then((data) => {
+            if (data?.status == 200) {
+                lists.value = data.data;
+            }else{
+                lists.value = []
+            }
+            }).catch(e => {
+                console.log(e);
+            })
+};
+
+ const lists = ref({})
+    function loadMeterLists(url = 'load-meter-list'){
+        store.dispatch('getMethod', { url:url }).then((data) => {
+        if (data?.status == 200) {
+            lists.value = data.data;
+        }
+        }).catch(e => {
+            lists.value = [];
+            console.log(e);
+        })
+    }
+    loadMeterLists()
 
 
 </script>
@@ -94,7 +117,7 @@ const changePage = (url) => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white" v-for="(item,loop) in data?.data" :key="loop">
+                        <tr class="bg-white" v-for="(item,loop) in lists?.data" :key="loop">
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ loop+1 }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.meter_number }}</td>
                             <td class="p-3 text-sm font-semibold tracking-wide text-left table-bordered">{{ item.phase }}</td>
@@ -107,13 +130,11 @@ const changePage = (url) => {
                     </tbody>
                 </table>
                 <div class="mt-4">
-                     <!-- Render the pagination links -->
-                    <nav v-if="data?.links?.length">
-                        <button @click="changePage(data?.prev_page_url)" :disabled="!data?.prev_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Previous</button>
-                        <button @click="changePage(data?.next_page_url)" :disabled="!data?.next_page_url" class="px-4 py-2 bg-gray-300 rounded disabled:opacity-50">Next</button>
-                    </nav>
+                    <div class="flex space-x-1">
+                        <pagination-links v-for="(link, i) of lists.links" :link="link" :key="i"
+                            @next="changePage($event,link)"></pagination-links>
+                    </div>
                 </div>
-                
         </div>
         </div>
     </MainLayout>

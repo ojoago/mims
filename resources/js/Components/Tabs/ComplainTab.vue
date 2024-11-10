@@ -4,7 +4,7 @@
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
-    import SelectComponent from '@/Components/Select.vue';
+    import BaseSelect from '@/Components/BaseSelect.vue';
     const { transformValidationErrors } = formatError()
     
     import store from '@/store';
@@ -16,10 +16,10 @@
         showModal.value = false;
     }
     const status = [
-        {id: 'pending', text: 'pending'},
-        {id: 'resolved', text: 'resolved'},
-        {id: 'unresolved', text: 'unresolved'},
-        {id: 'replaced', text: 'replaced'},
+        {id: 'PENDING', text: 'PENDING'},
+        {id: 'RESOLVED', text: 'RESOLVED'},
+        {id: 'UNRESOLVED', text: 'UNRESOLVED'},
+        {id: 'REPLACED', text: 'REPLACED'},
     ]
 
 
@@ -100,7 +100,7 @@
                    
 
                 <div>
-                    <SelectComponent v-model="complainForm.status" label="Status"  placeholder="Select Option"
+                    <BaseSelect v-model="complainForm.status" label="Status"  :selected="complainForm.status"
                                         :options="status" />
                     <InputError class="mt-2" :message="complainForm.errors.status" />
                 </div>

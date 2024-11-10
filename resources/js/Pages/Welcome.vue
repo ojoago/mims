@@ -1,6 +1,5 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import Footer from '@/Components/Footer.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 
 
@@ -11,20 +10,18 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
         <h1 class="font-poppins text-2xl"> MIMS: Meter Installation Management Software.</h1>
        <p class="font-poppins text-lg mb-8">
           
-
-Manages installation, installers, staff and inventory. <br>
+<ol>
+    Manages installation, installers, staff and Inventory. <br>
 It automates installation processes starting from schedule, to requesting for meter by team lead to capturing which meter is install for a particular customer, when was it installed,
-The modules are. <br>
-1 inventory: this keeps track of every installation items in a particular region with the help of store manager. <br>
-2 schedule: this module provide an interface through which we upload list of customers to be installed in a particular region as provided by Disco (JED) <br>
-3 Request:
-This module keep track of how many meters and it's accessories has been given to a particular installation teams. <br>
-4 installation records:
-This module is an interface through which we keep a digital copy of customers information in-line with the installation form provided my Disco (JED).
-And also keep track of meter status (a. In store, b. Assigned to installation team for installation, c. installed, d. Faulty, e. Replaced. Etc) <br>
-5. Customer complains:
-Keep track of customers complain and resolutions. 
-Report: comprehensive report interface that summarizes activities of each regions using charts and tables for management decisions
+The modules are.
+<li><strong>Inventory</strong>: This keeps track of every installation item in a particular region with the help of the store manager.</li>
+<li><strong>Schedule</strong>: This module provides an interface through which we upload a list of customers to be installed in a particular region as provided by Disco (JED).</li>
+<li><strong>Request</strong>: This module keeps track of how many meters and their accessories have been given to particular installation teams.</li>
+<li><strong>Installation Records</strong>: This module is an interface through which we keep a digital copy of customers' information in line with the installation form provided by Disco (JED). It also keeps track of meter status (a. In store, b. Assigned to installation team for installation, c. Installed, d. Faulty, e. Replaced, etc.).</li>
+<li><strong>Customer Complaints</strong>: Keeps track of customers' complaints and resolutions.</li>
+<li><strong>Report</strong>: A comprehensive report interface that summarizes activities of each region using charts and tables for management decisions.</li>
+</ol>
+
        </p>
         
     </GuestLayout>
