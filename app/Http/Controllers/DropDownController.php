@@ -143,7 +143,7 @@ class DropDownController extends Controller
     public function dropDownRoles()
     {
         try {
-            $data = DB::table('roles')->select('name as id', 'name as text')->get();
+            $data = DB::table('roles')->select('name as id', 'name as text')->where('name','<>', 'super admin')->get();
             return responseMessage(status: 200, data: $data, msg: 'data loaded');
 
             return response()->json($data);
