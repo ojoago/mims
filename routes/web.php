@@ -137,6 +137,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/load-request-list', [RequestController::class, 'loadRequestList']);
         Route::inertia('/meter-list', 'Inventory/MeterList')->name('meter.list');
         Route::get('/load-meter-list',[MeterController::class,'index']);
+        Route::get('/search-meter-list/{query}',[MeterController::class,'searchMeterList']);
         Route::post('/upload-meter-list',[MeterController::class,'addMeterList'])->name('upload.list');
         Route::get('/inventory-list',[ItemController::class,'inventoryList'])->name('inventory.list');
         Route::post('/add-inventory-item',[ItemController::class,'addInventoryItem'])->name('add.inventory.item');

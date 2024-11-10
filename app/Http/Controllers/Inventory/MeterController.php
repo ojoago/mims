@@ -63,6 +63,16 @@ class MeterController extends Controller
             return pushData([],ERR_EMT);
         }
     }
+    public function searchMeterList($query){
+        try {
+            $data = MeterList::where('meter_number', 'like', '%' . $query . '%')->paginate(20);
+            return pushData($data);
+            return Inertia::render('Inventory/MeterList',['data' => $data]);
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            return pushData([],ERR_EMT);
+        }
+    }
 
     // 
     
