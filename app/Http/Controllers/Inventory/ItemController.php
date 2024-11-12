@@ -214,16 +214,11 @@ class ItemController extends Controller
                     $result = $qnt->save();
                 }
                 $result = DamagedItem::create($data);
-                if($result){
-                    DB::commit();
-                }else{
-                    DB::rollBack();
-                }
+              
                 return $result;
             }
         } catch (\Throwable $e) {
             logError($e->getMessage());
-            DB::rollBack();
             return false;
         }
     }
