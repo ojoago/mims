@@ -237,7 +237,7 @@ class MeterController extends Controller
         try {
             $data = MeterList::from('meter_lists as m')->join('team_assigned_meters as a','m.pid','a.meter_pid')
                                                     ->join('teams as t','t.pid','a.team_pid')
-                                                    ->where(['region_pid' => getRegionPid() , 'supervisor'=> getUserPid()])->select('m.*')->paginate(20);
+                                                    ->where(['a.region_pid' => getRegionPid() , 'supervisor'=> getUserPid()])->select('m.*')->paginate(20);
             return pushData($data);
         } catch (\Throwable $e) {
             logError($e->getMessage());

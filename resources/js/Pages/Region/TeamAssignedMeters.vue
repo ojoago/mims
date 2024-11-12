@@ -26,9 +26,9 @@ const onDecode = (detectedCodes) => {
         if (data?.status == 422) {
             scannedNumber.value.errors = transformValidationErrors(data.data)
         } 
-        // else if (data?.status == 201) {
-           
-        // }
+        else if (data?.status == 201) {
+           loadMeters()
+        }
         }).catch(e => {
             console.log(e);
         })
