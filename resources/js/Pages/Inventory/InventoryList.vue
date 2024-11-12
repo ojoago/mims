@@ -22,6 +22,7 @@ import { Inertia } from '@inertiajs/inertia';
         showDamageModal.value =false
     }
     const moveDamage = (list) =>{
+        
         damageItem.value.item_pid = list.item_pid
         damageItem.value.qnt = list.quantity
         showDamageModal.value = true
@@ -34,6 +35,7 @@ import { Inertia } from '@inertiajs/inertia';
         date:'',
         qnt:0,
         quantity:0,
+        errors:[],
     })
     loadItem()
     function loadItem() {

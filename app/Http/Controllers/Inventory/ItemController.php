@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Inventory\DamagedItem;
 use App\Models\Inventory\DamagedItemDetail;
 use App\Models\Inventory\ItemQuantity;
-use App\Models\Inventory\ItemsQuantity;
+// use App\Models\Inventory\ItemsQuantity;
 use Illuminate\Support\Facades\Validator;
 
 class ItemController extends Controller
@@ -33,7 +33,11 @@ class ItemController extends Controller
     public function inventoryList()
     {
         try {
-            $lists = ItemQuantity::with('item')->with('region')->paginate(20);
+            if (superAdmin()) {
+                $lists = ItemQuantity::with('item')->with('region')->paginate(20);
+            } else {
+                $lists = ItemQuantity::where('region_pid', getRegionPid())->with('item')->with('region')->paginate(20);
+            }
             return Inertia::render('Inventory/InventoryList', ['lists' => $lists]);
         } catch (\Throwable $e) {
             logError($e->getMessage());
@@ -44,7 +48,13 @@ class ItemController extends Controller
     public function damagedItems()
     {
         try {
-            $lists = DamagedItem::with('item')->with('region')->paginate(20);
+            if (superAdmin()) {
+                $lists = ItemQuantity::with('item')->with('region')->paginate(20);
+            } else {
+                $lists = DamagedItem::where('region_pid', getRegionPid())->with('item')->with('region')->paginate(20);
+            }
+
+            // $lists = DamagedItem::with('item')->with('region')->paginate(20);
             return Inertia::render('Inventory/DamagedItem', ['lists' => $lists]);
         } catch (\Throwable $e) {
             logError($e->getMessage());
@@ -55,7 +65,11 @@ class ItemController extends Controller
     public function damagedItemDetail()
     {
         try {
-            $lists = DamagedItemDetail::with('item')->with('region')->paginate(20);
+            if (superAdmin()) {
+                $lists = DamagedItemDetail::with('item')->with('region')->paginate(20);
+            } else {
+                $lists = DamagedItemDetail::where('region_pid', getRegionPid())->with('item')->with('region')->paginate(20);
+            }
             return pushData($lists,'Data loaded');
         } catch (\Throwable $e) {
             logError($e->getMessage());
@@ -147,7 +161,19 @@ class ItemController extends Controller
                     'region_pid' => getRegionPid(),
                 ];
                 DB::beginTransaction();
-                $result = $this->removeDamagedItem($data);
+                $qnt = ItemQuantity::where(['item_pid' => $data['item_pid'], 'region_pid' => $data['region_pid']])->first();
+                $qnt->quantity -= $data['quantity'];
+                $save = $qnt->save();
+                if ($save) {
+                    $qnt = DamagedItem::where(['item_pid' => $data['item_pid'], 'region_pid' => $data['region_pid']])->first();
+                    if ($qnt) {
+                        $qnt->quantity += $data['quantity'];
+                        $result = $qnt->save();
+                    }
+                    $result = DamagedItem::create($data);
+
+                
+                }
                 if($result){
                     $detail = [
                             'region_pid'=> getRegionPid() , 
@@ -203,7 +229,6 @@ class ItemController extends Controller
 
     private function removeDamagedItem(array $data){
         try {
-           
             $qnt = ItemQuantity::where(['item_pid' => $data['item_pid'],'region_pid' => $data['region_pid']])->first();
             $qnt->quantity -= $data['quantity'];
             $save = $qnt->save();
