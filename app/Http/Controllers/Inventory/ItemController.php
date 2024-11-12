@@ -195,8 +195,8 @@ class ItemController extends Controller
     }
 
     private function removeDamagedItem(array $data){
-        try {
-            DB::beginTransaction();
+        // try {
+            // DB::beginTransaction();
             $qnt = ItemQuantity::where(['item_pid' => $data['item_pid'],'region_pid' => $data['region_pid']])->first();
             $qnt->quantity -= $data['quantity'];
             $save = $qnt->save();
@@ -207,17 +207,17 @@ class ItemController extends Controller
                     $result = $qnt->save();
                 }
                 $result = DamagedItem::create($data);
-                if($result){
-                    DB::commit();
-                }else{
-                    DB::rollBack();
-                }
+                // if($result){
+                //     DB::commit();
+                // }else{
+                //     DB::rollBack();
+                // }
                 return $result;
             }
-        } catch (\Throwable $e) {
-            logError($e->getMessage());
-            DB::rollBack();
-            return false;
-        }
+        // } catch (\Throwable $e) {
+        //     logError($e->getMessage());
+        //     DB::rollBack();
+        //     return false;
+        // }
     }
 }
