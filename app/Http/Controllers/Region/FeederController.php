@@ -23,7 +23,11 @@ class FeederController extends Controller
     public function load33kvFeeder(){
 
         try {
-            $data = Feeder33::with('zone')->get();
+            if (superAdmin()) {
+                $data = Feeder33::with('zone')->get();
+            }else{
+                $data = Feeder33::where('region_pid', getRegionPid())->with('zone')->get();
+            }
             return pushData($data, '33 kv feeders loaded');
         } catch (\Throwable $th) {
             //throw $th;
@@ -34,7 +38,11 @@ class FeederController extends Controller
     public function load11kvFeeder(){
 
         try {
-            $data = Feeder11::with('zone')->with('feeder')->get();
+            if(superAdmin()){
+                $data = Feeder11::with('zone')->with('feeder')->get();
+            }else{
+                $data = Feeder11::where('region_pid', getRegionPid())->with('zone')->with('feeder')->get();
+            }
             return pushData($data, '11 kv feeders loaded');
         } catch (\Throwable $th) {
             //throw $th;

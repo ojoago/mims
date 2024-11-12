@@ -109,7 +109,6 @@ class StaffController extends Controller
                     'password' => '1234',
                 ];
 
-              
                 DB::beginTransaction();
                 if(!isset($request->pid)){
                     $user = User::updateOrCreate(['pid' => $user['pid'] ],$user);

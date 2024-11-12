@@ -30,7 +30,7 @@ class DashboardController extends Controller
         setRegionPid();
         setRegionName();
 
-        if (auth()->user()->hasRole('super admin')) {
+        if (superAdmin()) {
             // The user has the 'writer' role
             return redirect()->route('admin.dashboard')->with('success','Welcome back');
         }

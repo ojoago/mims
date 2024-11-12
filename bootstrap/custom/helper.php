@@ -99,6 +99,11 @@ function getUsername()
     }
 }
 
+function superAdmin()
+{
+    return auth()->user()->hasRole('super admin') ;
+}
+
 function matchStatus($role)
 {
     $role =  match ($role) {

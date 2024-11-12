@@ -105,10 +105,10 @@ defineProps({
     }
 
     const removeDamagedItem = () =>{
-        itemForm.errors = {}
+        damageItem.errors = {}
         store.dispatch('postMethod', { url: '/remove-damage-item', param: damageItem.value }).then((data ) => {
         if (data?.status == 422) {
-            itemForm.value.errors = transformValidationErrors(data.data)
+            damageItem.value.errors = transformValidationErrors(data.data)
         } else if (data?.status == 201) {
             closeModal()
         }
@@ -174,6 +174,7 @@ defineProps({
                     </button>
            </form>
         </Modal>
+
         <Modal :show="showDamageModal" @close="closeModal" max-width="sm" title="Remove Damage Item " @submit="removeDamagedItem">
            <form action="" class="px-4 py-2">
             
@@ -191,7 +192,7 @@ defineProps({
                         
                     />
                     </div>
-                    <InputError class="mt-2" :message="itemForm.errors.quantity" />
+                    <InputError class="mt-2" :message="damageItem.errors.quantity" />
                 </div>
                <div>
                     <InputLabel for="feeder" value="Item Quantity" />
@@ -206,7 +207,7 @@ defineProps({
                         
                     />
                     </div>
-                    <InputError class="mt-2" :message="itemForm.errors.date" />
+                    <InputError class="mt-2" :message="damageItem.errors.date" />
                 </div>
                <div>
                     <InputLabel for="feeder" value="Cause of Damage" />
@@ -222,7 +223,7 @@ defineProps({
                         
                     ></textarea>
                     </div>
-                    <InputError class="mt-2" :message="itemForm.errors.feeder" />
+                    <InputError class="mt-2" :message="damageItem.errors.feeder" />
                 </div>
               
            </form>
