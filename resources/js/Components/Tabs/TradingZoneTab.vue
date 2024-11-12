@@ -53,6 +53,7 @@
       zoneForm.value = {
         zone: item.zone,
         state_id: item.state_id,
+        pid: item.pid,
         id: item.id,
         errors:{}
       }

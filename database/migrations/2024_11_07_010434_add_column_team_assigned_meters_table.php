@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('team_assigned_meters', function (Blueprint $table) {
-            $table->id();
             $table->string('team_pid');
             $table->foreign('team_pid')->references('pid')->on('teams')->onDelete('cascade');
         });
