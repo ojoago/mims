@@ -83,6 +83,7 @@ Route::middleware(['auth'])->group(function(){
         Route::inertia('/staff', 'Staff/Staff')->name('create.staff');
         Route::post('/staff' , [StaffController::class, 'createStaff']);
         Route::get('/load-staff' , [StaffController::class, 'loadStaff']);
+        Route::get('/load-admin-staff' , [StaffController::class, 'loadAdminStaff']);
         Route::get('/search-staff-list/{query}' , [StaffController::class, 'searchStaff']);
         
         

@@ -1,7 +1,5 @@
 <script setup>
 
-    import MainLayout from '@/Layouts/MainLayout.vue';
-    import { Head } from '@inertiajs/vue3';
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
     import TextInput from '@/Components/TextInput.vue';
@@ -149,7 +147,7 @@
 // address   
 
     const staff = ref({})
-    function loadStaff(url = 'load-staff'){
+    function loadStaff(url = 'load-admin-staff'){
         store.dispatch('getMethod', { url:url }).then((data) => {
         if (data?.status == 200) {
             staff.value = data.data;

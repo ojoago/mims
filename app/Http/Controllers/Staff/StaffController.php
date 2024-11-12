@@ -25,6 +25,17 @@ class StaffController extends Controller
 
         }
     }
+    public function loadAdminStaff(){
+        try {
+            $data = UserDetail::with('user')->with('user.roles')->with('origin')->with('lga')->get();
+            return pushData($data, 'Users loaded');
+        } catch (\Throwable $e) {
+            logError($e->getMessage());
+            
+            return responseMessage(status: 204, data: [], msg: STS_500);
+
+        }
+    }
     //
     public function searchStaff($query){
         try {
@@ -43,6 +54,7 @@ class StaffController extends Controller
     }
 
     public function createStaff(Request $request){
+       
         $validator = Validator::make($request->all(),[
             'email' => ['required',Rule::unique('users')->where(function($q) use($request){
                 $q->where('pid','<>',$request->pid);
@@ -96,14 +108,20 @@ class StaffController extends Controller
                     'email' => $request->email,
                     'password' => '1234',
                 ];
-                
+
+              
                 DB::beginTransaction();
                 if(!isset($request->pid)){
                     $user = User::updateOrCreate(['pid' => $user['pid'] ],$user);
+                    if (isset($request->region)) {
+                        $user->assignRole('region admin');
+                    } else {
+                        $user->assignRole($request->role);
+                    }
                 }else{
                     $user = User::where('pid', $request->pid)->first();
                     $user->roles()->detach();
-                    if (isset($request->religion)) {
+                    if (isset($request->region)) {
                         $user->assignRole('region admin');
                     } else {
                         $user->assignRole($request->role);
